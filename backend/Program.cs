@@ -4,13 +4,18 @@ using backend.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add services to the container.
 builder.Services.AddSingleton<OrderService>();
-builder.Services.AddSingleton<OrderDAL>();
+builder.Services.AddSingleton<TokenService>();
 
+// Add DALs to the container
+builder.Services.AddSingleton<OrderDAL>();
+builder.Services.AddSingleton<TokenDAL>();
+
+//Adds controllers to the container
 builder.Services.AddControllers();
 
 if (builder.Environment.IsDevelopment())
