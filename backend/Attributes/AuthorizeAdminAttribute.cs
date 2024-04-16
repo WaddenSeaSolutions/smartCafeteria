@@ -23,7 +23,7 @@ public class AuthorizeAdminAttribute : Attribute, IAuthorizationFilter
             var user = tokenService.validateTokenAndReturnUser(token);
 
             // Additional step to confirm the user has an admin role
-            if (user.UserRole != "admin" || user.Deleted)
+            if (user.Role != "admin" || user.Deleted)
             {
                 context.Result = new UnauthorizedResult();
             }

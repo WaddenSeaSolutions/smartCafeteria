@@ -23,7 +23,7 @@ public class TokenDAL
             SELECT id as {nameof(User.Id)},
             username as {nameof(User.Username)},
             password as {nameof(User.Password)},
-            userrole as {nameof(User.UserRole)},
+            role as {nameof(User.Role)},
             deleted as {nameof(User.Deleted)}
             FROM forum.users
             WHERE username = @Username";
