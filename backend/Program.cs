@@ -1,6 +1,7 @@
 using backend;
 using backend.DAL;
 using backend.Service;
+using backend.WebSockets.MessageHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,22 @@ builder.Services.AddSingleton<TokenDAL>();
 
 //Adds controllers to the container
 builder.Services.AddControllers();
+
+// Instantiate the LoginMessageHandler and store it as an variable.
+IMessageHandler loginHandler = new LoginMessageHandler();
+
+// Create a dictionary mapping message types to handlers.
+Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMessageHandler>
+{
+    { "login", loginHandler }
+};
+
+// Instantiate the WebSocketManager with the dictionary of handlers. Should now have handlers stored in the WebSocketManager
+WebSocketManager webSocketManager = new WebSocketManager(messageHandlers);
+
+// Add the WebSocketManager to the services
+builder.Services.AddSingleton(webSocketManager);
+
 
 if (builder.Environment.IsDevelopment())
 {
