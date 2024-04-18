@@ -23,7 +23,7 @@ import {environment} from "../../environments/environment";
         <br>
         <div style="display: flex; justify-content: center;">
           <ion-button class="btnBackground" style="flex: 1; margin: 3%" (click)="login()">Login</ion-button>
-          <ion-button class="btnBackground" style="flex: 1; margin: 3%" (click)="registerNewUser()">Opret Konto</ion-button>
+
         </div>
       </div>
     </ion-content>
