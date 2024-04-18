@@ -20,7 +20,8 @@ builder.Services.AddSingleton<TokenDAL>();
 builder.Services.AddControllers();
 
 // Instantiate the LoginMessageHandler and store it as an variable.
-IMessageHandler loginHandler = new LoginMessageHandler();
+UserService userService = new UserService();
+IMessageHandler loginHandler = new LoginMessageHandler(userService);
 
 // Create a dictionary mapping message types to handlers.
 Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMessageHandler>

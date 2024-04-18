@@ -1,4 +1,3 @@
-using System.Net.WebSockets;
 using System.Text.Json;
 using Fleck;
 using backend.WebSockets.MessageHandlers;
@@ -15,8 +14,6 @@ public class WebSocketManager
         _server = new WebSocketServer("ws://0.0.0.0:8181");
         _server.Start(socket =>
         {
-            socket.OnOpen = () => Console.WriteLine("Open!");
-            socket.OnClose = () => Console.WriteLine("Close!");
             socket.OnMessage = message =>
             {
                 var jsonDocument = JsonDocument.Parse(message);
