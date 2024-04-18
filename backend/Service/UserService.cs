@@ -1,11 +1,21 @@
+using backend.DAL;
 using backend.Model;
 
 namespace backend.Service;
 
 public class UserService
 {
-    public User loginUser()
+    UserDAL _userDAL;
+    
+    public UserService(UserDAL userDAL)
     {
-        throw new NotImplementedException();
+        _userDAL = userDAL;
+    }
+    
+    public User loginUser(string loginDataUsername, string loginDataPassword)
+    {
+        User user = _userDAL.userFromUsername(loginDataUsername);
+        
+        
     }
 }

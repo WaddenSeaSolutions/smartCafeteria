@@ -15,13 +15,16 @@ builder.Services.AddSingleton<TokenService>();
 // Add DALs to the container
 builder.Services.AddSingleton<OrderDAL>();
 builder.Services.AddSingleton<TokenDAL>();
+builder.Services.AddSingleton<UserDAL>(); // Add this line
 
-//Adds controllers to the container
-builder.Services.AddControllers();
+// Add services to the container.
+builder.Services.AddSingleton<OrderService>();
+builder.Services.AddSingleton<TokenService>();
+builder.Services.AddSingleton<UserService>(); // Add this line
 
 // Instantiate the LoginMessageHandler and store it as an variable.
-UserService userService = new UserService();
-IMessageHandler loginHandler = new LoginMessageHandler(userService);
+// UserService userService = new UserService(); // Remove this line
+IMessageHandler loginHandler = builder.Services.BuildServiceProvider().GetRequiredService<LoginMessageHandler>();
 
 // Create a dictionary mapping message types to handlers.
 Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMessageHandler>

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using backend.Model;
 using backend.Service;
 using Fleck;
@@ -10,11 +11,20 @@ public class LoginMessageHandler : IMessageHandler
     
     public LoginMessageHandler(UserService userService)
     {
-        _userService = new UserService();
+        _userService = userService;
     }
     public Task HandleMessage(string message, IWebSocketConnection socket)
     {
-        User userToBeAuthenticated = _userService.loginUser();
+        LoginData loginData = JsonSerializer.Deserialize<LoginData>(message);
+        
+        User userToBeAuthenticated = _userService.loginUser(loginData.Username, loginData.Password);
+        
         return Task.CompletedTask;
+    }
+    
+    public class LoginData
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }
