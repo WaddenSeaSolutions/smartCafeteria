@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import {LoginPageComponent} from "./login-page/login-page.component";
 
 const routes: Routes = [
   {
@@ -8,8 +9,12 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: '/home',
     pathMatch: 'full'
+  },
+  {
+    path: 'login-page',
+    component: LoginPageComponent
   },
 ];
 
