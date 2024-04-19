@@ -24,7 +24,7 @@ public class UserDAL
             password as {nameof(User.Password)},
             role as {nameof(User.Role)},
             deleted as {nameof(User.Deleted)}
-            FROM forum.users
+            FROM cafeteria.user
             WHERE username = @Username
             WHERE deleted = false";
         
@@ -36,6 +36,26 @@ public class UserDAL
         catch (Exception e)
         {
             throw new Exception("User is deleted/banned");
+        }
+    }
+
+    public void registerPersonnel(string username, string hashedPassword, string role)
+    {
+        try
+        {
+            var sql = $@"
+            INSERT INTO cafeteria.user (username, password, role)
+            VALUES (@Username, @Password, @Role)";
+        
+            using (var conn = _dataSource.OpenConnection())
+            {
+                conn.Execute(sql, new {Username = username, Password = hashedPassword, Role = role});
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw new Exception("Failed to register personnel");
         }
     }
 }

@@ -18,12 +18,11 @@ public class LoginMessageHandler : IMessageHandler
     public async Task HandleMessage(string message, IWebSocketConnection socket)
     {
         LoginData loginData = JsonSerializer.Deserialize<LoginData>(message);
-        
+    
         User userToBeAuthenticated = _userService.loginUser(loginData.Username, loginData.Password);
 
         string tokenForUser = _tokenService.createToken(userToBeAuthenticated);
 
-        Console.WriteLine(loginData.Username + loginData.Password + "great success");
         await socket.Send(tokenForUser);
     }
     
