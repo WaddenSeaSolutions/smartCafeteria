@@ -27,11 +27,13 @@ builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<OrderDAL>();
 builder.Services.AddSingleton<TokenDAL>();
 builder.Services.AddSingleton<UserDAL>();
+builder.Services.AddSingleton<RegisterUserDAL>();
 
 // Add services to the container.
 builder.Services.AddSingleton<OrderService>();
 builder.Services.AddSingleton<TokenService>();
 builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<RegisterUserService>();
 
 // Add message handlers to the container.
 builder.Services.AddSingleton<LoginMessageHandler>();
