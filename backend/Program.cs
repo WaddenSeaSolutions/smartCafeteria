@@ -5,25 +5,40 @@ using backend.WebSockets.MessageHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString,
+        dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
+}
+if (builder.Environment.IsProduction())
+{
+    builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString);
+}
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add services to the container.
 builder.Services.AddSingleton<OrderService>();
 builder.Services.AddSingleton<TokenService>();
+builder.Services.AddSingleton<UserService>();
 
 // Add DALs to the container
 builder.Services.AddSingleton<OrderDAL>();
 builder.Services.AddSingleton<TokenDAL>();
-builder.Services.AddSingleton<UserDAL>(); // Add this line
+builder.Services.AddSingleton<UserDAL>();
 
 // Add services to the container.
 builder.Services.AddSingleton<OrderService>();
 builder.Services.AddSingleton<TokenService>();
-builder.Services.AddSingleton<UserService>(); // Add this line
+builder.Services.AddSingleton<UserService>();
+
+// Add message handlers to the container.
+builder.Services.AddSingleton<LoginMessageHandler>();
+
+builder.Services.AddControllers();
 
 // Instantiate the LoginMessageHandler and store it as an variable.
-// UserService userService = new UserService(); // Remove this line
 IMessageHandler loginHandler = builder.Services.BuildServiceProvider().GetRequiredService<LoginMessageHandler>();
 
 // Create a dictionary mapping message types to handlers.
@@ -37,17 +52,6 @@ WebSocketManager webSocketManager = new WebSocketManager(messageHandlers);
 
 // Add the WebSocketManager to the services
 builder.Services.AddSingleton(webSocketManager);
-
-
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString,
-        dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
-}
-if (builder.Environment.IsProduction())
-{
-    builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString);
-}
 
 var app = builder.Build();
 

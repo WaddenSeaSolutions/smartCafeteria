@@ -25,7 +25,8 @@ public class UserDAL
             role as {nameof(User.Role)},
             deleted as {nameof(User.Deleted)}
             FROM forum.users
-            WHERE username = @Username";
+            WHERE username = @Username
+            WHERE deleted = false";
         
             using (var conn = _dataSource.OpenConnection())
             {

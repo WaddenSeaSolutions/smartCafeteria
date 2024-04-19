@@ -14,8 +14,21 @@ public class UserService
     
     public User loginUser(string loginDataUsername, string loginDataPassword)
     {
-        User user = _userDAL.userFromUsername(loginDataUsername);
-        
-        
+        try
+        {
+            User userToCheck = _userDAL.userFromUsername(loginDataUsername);
+
+            if (BCrypt.Net.BCrypt.Verify(loginDataPassword, userToCheck.Password))
+            {
+                return userToCheck;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("An error occurred during login" + e.Message);
+            throw new Exception("Login failed");
+        }
+
+        return null;
     }
 }
