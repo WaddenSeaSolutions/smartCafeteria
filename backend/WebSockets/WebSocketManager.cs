@@ -17,7 +17,7 @@ public class WebSocketManager
             socket.OnMessage = message =>
             {
                 var jsonDocument = JsonDocument.Parse(message);
-                var messageType = jsonDocument.RootElement.GetProperty("type").GetString();
+                var messageType = jsonDocument.RootElement.GetProperty("Type").GetString();
                 HandleMessage(messageType, message, socket);
             };
         });

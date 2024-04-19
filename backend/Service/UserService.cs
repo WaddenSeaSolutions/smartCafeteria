@@ -31,4 +31,19 @@ public class UserService
 
         return null;
     }
+
+    public void registerPersonnel(string username, string password, string role)
+    {
+
+        try
+        {
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+            _userDAL.registerPersonnel(username, hashedPassword, role);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 }

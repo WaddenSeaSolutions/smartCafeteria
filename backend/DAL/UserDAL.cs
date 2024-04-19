@@ -38,4 +38,23 @@ public class UserDAL
             throw new Exception("User is deleted/banned");
         }
     }
+
+    public void registerPersonnel(string username, string hashedPassword, string role)
+    {
+        try
+        {
+            var sql = $@"
+            INSERT INTO forum.users (username, password, role)
+            VALUES (@Username, @Password, @Role)";
+        
+            using (var conn = _dataSource.OpenConnection())
+            {
+                conn.Execute(sql, new {Username = username, Password = hashedPassword, Role = role});
+            }
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Failed to register personnel");
+        }
+    }
 }
