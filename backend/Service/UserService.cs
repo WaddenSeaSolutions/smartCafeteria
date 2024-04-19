@@ -37,13 +37,14 @@ public class UserService
 
         try
         {
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, 12);
+            
             _userDAL.registerPersonnel(username, hashedPassword, role);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            Console.WriteLine(e.Message);
+            throw new Exception( "Failed to register");
         }
     }
 }

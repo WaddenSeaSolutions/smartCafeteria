@@ -24,7 +24,7 @@ public class UserDAL
             password as {nameof(User.Password)},
             role as {nameof(User.Role)},
             deleted as {nameof(User.Deleted)}
-            FROM forum.users
+            FROM cafeteria.user
             WHERE username = @Username
             WHERE deleted = false";
         
@@ -44,7 +44,7 @@ public class UserDAL
         try
         {
             var sql = $@"
-            INSERT INTO forum.users (username, password, role)
+            INSERT INTO cafeteria.user (username, password, role)
             VALUES (@Username, @Password, @Role)";
         
             using (var conn = _dataSource.OpenConnection())
@@ -54,6 +54,7 @@ public class UserDAL
         }
         catch (Exception e)
         {
+            Console.WriteLine(e.Message);
             throw new Exception("Failed to register personnel");
         }
     }
