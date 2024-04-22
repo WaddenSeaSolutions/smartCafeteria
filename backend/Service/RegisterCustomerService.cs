@@ -1,14 +1,14 @@
-using backend.DAL;
-using backend.Model;
+using backend.Interface;
 using backend.WebSockets.MessageHandlers;
 
 namespace backend.Service;
 
 public class RegisterCustomerService
 {
-    private RegisterCustomerDAL _registerCustomerDal;
-
-    public RegisterCustomerService(RegisterCustomerDAL registerCustomerDal)
+    private IRegisterCustomerDAL _registerCustomerDal;
+    
+    
+    public RegisterCustomerService(IRegisterCustomerDAL registerCustomerDal)
     {
         _registerCustomerDal = registerCustomerDal;
     }
