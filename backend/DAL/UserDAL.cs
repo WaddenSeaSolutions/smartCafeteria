@@ -44,12 +44,12 @@ public class UserDAL
         try
         {
             var sql = $@"
-            INSERT INTO cafeteria.user (username, password, role)
-            VALUES (@Username, @Password, @Role)";
+            INSERT INTO cafeteria.user (username, password, role, deleted)
+            VALUES (@Username, @Password, @Role, @Deleted)";
         
             using (var conn = _dataSource.OpenConnection())
             {
-                conn.Execute(sql, new {Username = username, Password = hashedPassword, Role = role});
+                conn.Execute(sql, new {Username = username, Password = hashedPassword, Role = role, Deleted = false});
             }
         }
         catch (Exception e)
