@@ -1,10 +1,11 @@
+using backend.Interface;
 using backend.Model;
 using Dapper;
 using Npgsql;
 
 namespace backend.DAL;
 
-public class UserDAL
+public class UserDAL : IUserDAL
 {
     private readonly NpgsqlDataSource _dataSource;
 

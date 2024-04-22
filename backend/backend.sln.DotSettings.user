@@ -3,6 +3,7 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5fbe5206_002D12d0_002D4159_002Db1c9_002D5eaeac0034cd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="RegisterCustomer_CreatesCustomer_ReturnsTrue #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::E6F350BD-E316-4BDD-AE7B-885323A59F4A::net8.0::backend.Tests.RegisterCustomerTests.RegisterCustomer_CreatesCustomer_ReturnsTrue&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::E6F350BD-E316-4BDD-AE7B-885323A59F4A::net8.0::backend.Tests.RegisterPersonnelTests.RegisterPersonnel_CreatesPersonnel_ReturnsTrue&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8ef624cb_002De0ea_002D41bf_002Dabfc_002Df4b49e6949f4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="RegisterCustomer_CreatesCustomer_ReturnsTrue" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
