@@ -1,11 +1,11 @@
-using backend.Model;
+using backend.Interface;
 using backend.WebSockets.MessageHandlers;
 using Dapper;
 using Npgsql;
 
 namespace backend.DAL;
 
-public class RegisterCustomerDAL
+public class RegisterCustomerDAL : IRegisterCustomerDAL
 {
     private readonly NpgsqlDataSource _dataSource;
 
