@@ -6,28 +6,28 @@ using Fleck;
 
 namespace backend.WebSockets.MessageHandlers;
 
-public class RegisterUserHandler : IMessageHandler
+public class RegisterCustomerHandler : IMessageHandler
 {
-    private readonly RegisterUserService _registerUserService;
+    private readonly RegisterCustomerService _registerCustomerService;
 
-    public RegisterUserHandler(RegisterUserService registerUserService)
+    public RegisterCustomerHandler(RegisterCustomerService registerCustomerService)
     {
-        _registerUserService = registerUserService;
+        _registerCustomerService = registerCustomerService;
     }
 
     public async Task HandleMessage(string message, IWebSocketConnection socket)
     {
         Console.WriteLine("handler");
-        RegisterUserData registerUserData =  JsonSerializer.Deserialize<RegisterUserData>(message);
+        RegisterCustomerData registerCustomerData =  JsonSerializer.Deserialize<RegisterCustomerData>(message);
 
-        var result = _registerUserService.RegisterUser(registerUserData);
+        var result = _registerCustomerService.RegisterCustomer(registerCustomerData);
         if (result = true)
         {
-            await socket.Send(registerUserData.Username);
+            await socket.Send(registerCustomerData.Username);
         }
     }
     
-    public class RegisterUserData
+    public class RegisterCustomerData
     {
         [Required]
         [MinLength(5)]

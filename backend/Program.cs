@@ -27,18 +27,18 @@ builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<OrderDAL>();
 builder.Services.AddSingleton<TokenDAL>();
 builder.Services.AddSingleton<UserDAL>();
-builder.Services.AddSingleton<RegisterUserDAL>();
+builder.Services.AddSingleton<RegisterCustomerDAL>();
 
 // Add services to the container.
 builder.Services.AddSingleton<OrderService>();
 builder.Services.AddSingleton<TokenService>();
 builder.Services.AddSingleton<UserService>();
-builder.Services.AddSingleton<RegisterUserService>();
+builder.Services.AddSingleton<RegisterCustomerService>();
 
 // Add message handlers to the container.
 builder.Services.AddSingleton<LoginMessageHandler>();
 
-builder.Services.AddSingleton<RegisterUserHandler>();
+builder.Services.AddSingleton<RegisterCustomerHandler>();
 
 builder.Services.AddSingleton<RegisterPersonnelHandler>();
 
@@ -49,7 +49,7 @@ builder.Services.AddControllers();
 // Instantiate the LoginMessageHandler and store it as an variable.
 IMessageHandler loginHandler = builder.Services.BuildServiceProvider().GetRequiredService<LoginMessageHandler>();
 
-IMessageHandler registerHandler = builder.Services.BuildServiceProvider().GetRequiredService<RegisterUserHandler>();
+IMessageHandler registerHandler = builder.Services.BuildServiceProvider().GetRequiredService<RegisterCustomerHandler>();
 
 IMessageHandler registerPersonnelHandler = builder.Services.BuildServiceProvider().GetRequiredService<RegisterPersonnelHandler>();
 

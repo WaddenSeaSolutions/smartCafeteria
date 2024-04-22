@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import {LoginPageComponent} from "./login-page/login-page.component";
 import {RegisterComponent} from "./register/register.component";
+import {RegisterPersonnelComponent} from "./register-personnel/register-personnel.component";
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
+  },
+  {
+    path: 'register-personnel',
+    component: RegisterPersonnelComponent
   },
 ];
 
