@@ -7,6 +7,11 @@ namespace backend.Service;
 public class RegisterUserService
 {
     private RegisterUserDAL _registerUserDal;
+
+    public RegisterUserService(RegisterUserDAL registerUserDal)
+    {
+        _registerUserDal = registerUserDal;
+    }
     public bool RegisterUser(RegisterUserHandler.RegisterUserData? registerUserData)
     {
         try

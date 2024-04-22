@@ -17,6 +17,7 @@ public class RegisterUserHandler : IMessageHandler
 
     public async Task HandleMessage(string message, IWebSocketConnection socket)
     {
+        Console.WriteLine("handler");
         RegisterUserData registerUserData =  JsonSerializer.Deserialize<RegisterUserData>(message);
 
         var result = _registerUserService.RegisterUser(registerUserData);

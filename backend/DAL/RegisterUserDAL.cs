@@ -8,8 +8,14 @@ namespace backend.DAL;
 public class RegisterUserDAL
 {
     private readonly NpgsqlDataSource _dataSource;
+
+    public RegisterUserDAL(NpgsqlDataSource npgsqlDataSource)
+    {
+        _dataSource = npgsqlDataSource;
+    }
     public bool RegisterUser(RegisterUserHandler.RegisterUserData registerUserData)
     {
+        Console.WriteLine("dal");
         var sql = $@"INSERT INTO cafeteria.user (username, password, role, deleted)
         VALUES (@username, @password, @role, @deleted);";
 
