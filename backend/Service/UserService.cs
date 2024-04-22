@@ -1,13 +1,14 @@
 using backend.DAL;
+using backend.Interface;
 using backend.Model;
 
 namespace backend.Service;
 
 public class UserService
 {
-    UserDAL _userDAL;
+    private IUserDAL _userDAL;
     
-    public UserService(UserDAL userDAL)
+    public UserService(IUserDAL userDAL)
     {
         _userDAL = userDAL;
     }
