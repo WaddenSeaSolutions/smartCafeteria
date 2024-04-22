@@ -10,7 +10,7 @@ public class AuthorizeAdminAttribute : Attribute, IAuthorizationFilter
     public void OnAuthorization(AuthorizationFilterContext context)
     {
         var tokenService = (TokenService)context.HttpContext.RequestServices.GetService(typeof(TokenService));
-        var token = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var token = context.HttpContext.Request.Headers["AuthorizationAdmin"].FirstOrDefault()?.Split(" ").Last();
         if (token == null)
         {
             context.Result = new UnauthorizedResult();
