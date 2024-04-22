@@ -27,21 +27,30 @@ builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<OrderDAL>();
 builder.Services.AddSingleton<TokenDAL>();
 builder.Services.AddSingleton<UserDAL>();
+builder.Services.AddSingleton<RegisterUserDAL>();
 
 // Add services to the container.
 builder.Services.AddSingleton<OrderService>();
 builder.Services.AddSingleton<TokenService>();
 builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<RegisterUserService>();
 
 // Add message handlers to the container.
 builder.Services.AddSingleton<LoginMessageHandler>();
+
+builder.Services.AddSingleton<RegisterUserHandler>();
+
 builder.Services.AddSingleton<RegisterPersonnelHandler>();
+
 
 
 builder.Services.AddControllers();
 
 // Instantiate the LoginMessageHandler and store it as an variable.
 IMessageHandler loginHandler = builder.Services.BuildServiceProvider().GetRequiredService<LoginMessageHandler>();
+
+IMessageHandler registerHandler = builder.Services.BuildServiceProvider().GetRequiredService<RegisterUserHandler>();
+
 IMessageHandler registerPersonnelHandler = builder.Services.BuildServiceProvider().GetRequiredService<RegisterPersonnelHandler>();
 
 
@@ -49,7 +58,10 @@ IMessageHandler registerPersonnelHandler = builder.Services.BuildServiceProvider
 Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMessageHandler>
 {
     { "login", loginHandler },
+    {"register", registerHandler},
+    
     { "registerPersonnel", registerPersonnelHandler }
+
 };
 
 // Instantiate the WebSocketManager with the dictionary of handlers. Should now have handlers stored in the WebSocketManager
