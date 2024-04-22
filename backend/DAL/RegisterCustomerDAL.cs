@@ -5,15 +5,15 @@ using Npgsql;
 
 namespace backend.DAL;
 
-public class RegisterUserDAL
+public class RegisterCustomerDAL
 {
     private readonly NpgsqlDataSource _dataSource;
 
-    public RegisterUserDAL(NpgsqlDataSource npgsqlDataSource)
+    public RegisterCustomerDAL(NpgsqlDataSource npgsqlDataSource)
     {
         _dataSource = npgsqlDataSource;
     }
-    public bool RegisterUser(RegisterUserHandler.RegisterUserData registerUserData)
+    public bool RegisterCustomer(RegisterCustomerHandler.RegisterCustomerData registerCustomerData)
     {
         Console.WriteLine("dal");
         var sql = $@"INSERT INTO cafeteria.user (username, password, role, deleted)
@@ -24,7 +24,7 @@ public class RegisterUserDAL
             var result = conn.Execute(sql,
                 new
                 {
-                    username = registerUserData.Username, password = registerUserData.Password, role = "customer",
+                    username = registerCustomerData.Username, password = registerCustomerData.Password, role = "customer",
                     deleted = false
                 });
             if (result > 0)
