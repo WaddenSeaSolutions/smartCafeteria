@@ -8,7 +8,7 @@ public class WebSocketManager
     private readonly Dictionary<string, IMessageHandler> _messageHandlers;
     private readonly WebSocketServer _server;
 
-    private readonly Dictionary<Guid, ConnectionMetadata> _connectionMetadata;
+    public static Dictionary<Guid, ConnectionMetadata> _connectionMetadata;
     
     public WebSocketManager(Dictionary<string, IMessageHandler> messageHandlers)
     {
@@ -19,6 +19,15 @@ public class WebSocketManager
         
         _server.Start(socket =>
         {
+            socket.OnOpen = () =>
+            {
+                var connectionMetadata = new ConnectionMetadata
+                {
+                    ConnectionId = socket.ConnectionInfo.Id.ToString(),
+                };
+                _connectionMetadata[socket.ConnectionInfo.Id] = connectionMetadata;
+            };  
+            
             socket.OnMessage = message =>
             {
                 var jsonDocument = JsonDocument.Parse(message);
