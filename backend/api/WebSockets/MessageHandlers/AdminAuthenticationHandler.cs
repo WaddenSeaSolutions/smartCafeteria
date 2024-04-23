@@ -1,40 +1,60 @@
-using backend.Attributes;
 using backend.Model;
+using backend.Service;
 using Fleck;
+using System.Text.Json;
+using Microsoft.IdentityModel.Tokens;
 
 namespace backend.WebSockets.MessageHandlers
 {
-    [AuthorizeAdmin]
     public class AdminAuthenticationHandler : IMessageHandler
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly TokenService _tokenService;
 
-        public AdminAuthenticationHandler(IHttpContextAccessor httpContextAccessor)
+        public AdminAuthenticationHandler(TokenService tokenService)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _tokenService = tokenService;
         }
       
-        public Task HandleMessage(string message, IWebSocketConnection socket)
+        public async Task HandleMessage(string message, IWebSocketConnection socket)
         {
-            Console.WriteLine("hej kenni");
-            // Get the user from HttpContext
-            var user = _httpContextAccessor.HttpContext.Items["User"] as User;
-            // Update the ConnectionMetadata for this connection
-            var connectionId = Guid.Parse(socket.ConnectionInfo.Id.ToString());
-            Console.WriteLine("Admin authenticated");
-            if (WebSocketManager._connectionMetadata.TryGetValue(connectionId, out var connectionMetadata))
+            Console.WriteLine("Got here in AdminAuthenticationHandler");
+            // Extract the token from the message
+            var jsonDocument = JsonDocument.Parse(message);
+            var token = jsonDocument.RootElement.GetProperty("Token").GetString();
+            Console.WriteLine("Token: " + token);
+            
+            try
             {
-                connectionMetadata.Username = user.Username;
-                connectionMetadata.Authenticated = true;
-                connectionMetadata.IsAdmin = user.Role == "admin";
-            }
-            else
-            {
-                throw new Exception("Connection not found in _connectionMetadata dictionary");
-            }
+                // Validate the token and get the user
+                var user = _tokenService.validateTokenAndReturnUser(token);
 
-            socket.Send("Admin authenticated");
-            return Task.CompletedTask;
+                // Check if the user is an admin
+                if (user.Role != "admin")
+                {
+                    socket.Send("Unauthorized");
+                    return;
+                }
+
+                // Update the ConnectionMetadata for this connection
+                var connectionId = Guid.Parse(socket.ConnectionInfo.Id.ToString());
+                if (WebSocketManager._connectionMetadata.TryGetValue(connectionId, out var connectionMetadata))
+                {
+                    connectionMetadata.Username = user.Username;
+                    connectionMetadata.Authenticated = true;
+                    connectionMetadata.IsAdmin = user.Role == "admin";
+                }
+                else
+                {
+                    Console.WriteLine("Exeption thrown in AdminAuthenticationHandler");
+                    throw new Exception("Connection not found in _connectionMetadata dictionary");
+                }
+
+                socket.Send("Admin authenticated");
+            }
+            catch (SecurityTokenException)
+            {
+                socket.Send("Invalid token");
+            }
         }
     }
 }
