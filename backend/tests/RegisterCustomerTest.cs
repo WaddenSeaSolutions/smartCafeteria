@@ -1,12 +1,11 @@
-using NUnit.Framework;
-using Moq;
-using FluentAssertions;
 using backend.Interface;
 using backend.Service;
 using backend.WebSockets.MessageHandlers;
+using FluentAssertions;
+using NUnit.Framework;
+using Moq;
 
-namespace backend.Tests
-{
+[TestFixture]
     public class RegisterCustomerTests
     {
         private Mock<IRegisterCustomerDAL> _mockRegisterCustomerDal;
@@ -38,4 +37,3 @@ namespace backend.Tests
             result.Should().BeTrue();
         }
     }
-}

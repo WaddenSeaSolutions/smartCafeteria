@@ -16,22 +16,11 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18.x.x
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: 18.x.x
 
-      - name: Build test code
-        run: cd backend/Tests && sleep 60 && dotnet build
-
-      - name: Build and run Web API + getting process ID for shutting down later
-        run: cd backend && dotnet run backend --disable-host-check > /dev/null 2>&1 & sleep 20
-        env:
-          pgconn: ${{secrets.PGCONN}}
-          
       - name: Run the tests
-        run: cd backend && dotnet test Tests
-        env:
-          pgconn: ${{secrets.PGCONN}}
-
-      - name: Shutdown Web API
-        run: npx kill-port 5000
+        run: cd backend/tests && dotnet test
+#        env:
+#          pgconn: ${{secrets.PGCONN}}
