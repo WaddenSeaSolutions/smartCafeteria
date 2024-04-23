@@ -29,7 +29,7 @@ jobs:
           pgconn: ${{secrets.PGCONN}}
 
       - name: Run the tests
-        run: cd backend/Tests && dotnet test --project Tests.csproj
+        run: cd backend/tests && dotnet test
         env:
           pgconn: ${{secrets.PGCONN}}
 
