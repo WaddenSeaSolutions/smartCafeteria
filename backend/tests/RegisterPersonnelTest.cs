@@ -7,6 +7,7 @@ using backend.WebSockets.MessageHandlers;
 
 namespace backend.Tests
 {
+    [TestFixture]
     public class RegisterPersonnelTests
     {
         private Mock<IUserDAL> _mockUserDal;
