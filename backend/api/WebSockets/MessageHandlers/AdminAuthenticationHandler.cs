@@ -1,4 +1,3 @@
-using backend.Model;
 using backend.Service;
 using Fleck;
 using System.Text.Json;
@@ -17,11 +16,9 @@ namespace backend.WebSockets.MessageHandlers
       
         public async Task HandleMessage(string message, IWebSocketConnection socket)
         {
-            Console.WriteLine("Got here in AdminAuthenticationHandler");
             // Extract the token from the message
             var jsonDocument = JsonDocument.Parse(message);
             var token = jsonDocument.RootElement.GetProperty("Token").GetString();
-            Console.WriteLine("Token: " + token);
             
             try
             {
@@ -34,7 +31,6 @@ namespace backend.WebSockets.MessageHandlers
                     socket.Send("Unauthorized");
                     return;
                 }
-
                 // Update the ConnectionMetadata for this connection
                 var connectionId = Guid.Parse(socket.ConnectionInfo.Id.ToString());
                 if (WebSocketManager._connectionMetadata.TryGetValue(connectionId, out var connectionMetadata))
