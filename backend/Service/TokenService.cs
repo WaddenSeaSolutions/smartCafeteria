@@ -1,11 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
 using backend.DAL;
 using backend.Model;
-using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Service;
