@@ -26,8 +26,7 @@ public class UserDAL : IUserDAL
             role as {nameof(User.Role)},
             deleted as {nameof(User.Deleted)}
             FROM cafeteria.user
-            WHERE username = @Username
-            WHERE deleted = false";
+            WHERE username = @Username AND deleted = false";
         
             using (var conn = _dataSource.OpenConnection())
             {
@@ -36,6 +35,7 @@ public class UserDAL : IUserDAL
         }
         catch (Exception e)
         {
+            Console.WriteLine(e.Message);
             throw new Exception("User is deleted/banned");
         }
     }

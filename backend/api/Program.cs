@@ -38,7 +38,8 @@ builder.Services.AddSingleton<RegisterCustomerHandler>();
 
 builder.Services.AddSingleton<RegisterPersonnelHandler>();
 
-
+builder.Services.AddSingleton<AdminAuthenticationHandler>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
 
@@ -49,14 +50,16 @@ IMessageHandler registerHandler = builder.Services.BuildServiceProvider().GetReq
 
 IMessageHandler registerPersonnelHandler = builder.Services.BuildServiceProvider().GetRequiredService<RegisterPersonnelHandler>();
 
+IMessageHandler adminAuthenticationHandler =
+    builder.Services.BuildServiceProvider().GetRequiredService<AdminAuthenticationHandler>();
 
-// Create a dictionary mapping message types to handlers.
+//a dictionary mapping message types to handlers.
 Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMessageHandler>
 {
     { "login", loginHandler },
     {"register", registerHandler},
-    
-    { "registerPersonnel", registerPersonnelHandler }
+    { "registerPersonnel", registerPersonnelHandler },
+    {"adminAuthentication", adminAuthenticationHandler}
 
 };
 
