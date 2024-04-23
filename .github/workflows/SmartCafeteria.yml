@@ -21,15 +21,15 @@ jobs:
           node-version: 18.x.x
 
       - name: Build test code
-        run: cd backend/Tests && sleep 60 && dotnet build
+        run: cd backend/Tests && dotnet build
 
       - name: Build and run Web API + getting process ID for shutting down later
-        run: cd backend && dotnet run backend --disable-host-check > /dev/null 2>&1 & sleep 20
+        run: cd backend && dotnet run --project backend.csproj --disable-host-check > /dev/null 2>&1 & sleep 20
         env:
           pgconn: ${{secrets.PGCONN}}
-          
+
       - name: Run the tests
-        run: cd backend && dotnet test Tests
+        run: cd backend/Tests && dotnet test --project Tests.csproj
         env:
           pgconn: ${{secrets.PGCONN}}
 
