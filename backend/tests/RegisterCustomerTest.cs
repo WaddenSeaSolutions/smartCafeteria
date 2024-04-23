@@ -1,10 +1,9 @@
-using NUnit.Framework;
-using Moq;
-using FluentAssertions;
 using backend.Interface;
 using backend.Service;
 using backend.WebSockets.MessageHandlers;
-
+using FluentAssertions;
+using NUnit.Framework;
+using Moq;
 namespace backend.Tests
 {
     public class RegisterCustomerTests
