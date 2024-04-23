@@ -60,7 +60,6 @@ Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMe
     {"register", registerHandler},
     { "registerPersonnel", registerPersonnelHandler },
     {"adminAuthentication", adminAuthenticationHandler}
-
 };
 
 // Instantiate the WebSocketManager with the dictionary of handlers. Should now have handlers stored in the WebSocketManager

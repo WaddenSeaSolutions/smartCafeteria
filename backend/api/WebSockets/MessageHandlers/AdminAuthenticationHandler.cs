@@ -4,6 +4,7 @@ using Fleck;
 
 namespace backend.WebSockets.MessageHandlers
 {
+    [AuthorizeAdmin]
     public class AdminAuthenticationHandler : IMessageHandler
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -12,9 +13,10 @@ namespace backend.WebSockets.MessageHandlers
         {
             _httpContextAccessor = httpContextAccessor;
         }
-        [AuthorizeAdmin]
+      
         public Task HandleMessage(string message, IWebSocketConnection socket)
         {
+            Console.WriteLine("hej kenni");
             // Get the user from HttpContext
             var user = _httpContextAccessor.HttpContext.Items["User"] as User;
             // Update the ConnectionMetadata for this connection
@@ -24,13 +26,14 @@ namespace backend.WebSockets.MessageHandlers
             {
                 connectionMetadata.Username = user.Username;
                 connectionMetadata.Authenticated = true;
-                connectionMetadata.IsAdmin = user.Role == "Admin";
+                connectionMetadata.IsAdmin = user.Role == "admin";
             }
             else
             {
                 throw new Exception("Connection not found in _connectionMetadata dictionary");
             }
-            
+
+            socket.Send("Admin authenticated");
             return Task.CompletedTask;
         }
     }
