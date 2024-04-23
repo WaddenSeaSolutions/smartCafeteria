@@ -8,5 +8,7 @@ public class ConnectionMetadata
     
     public Boolean Authenticated { get; set; }
     
+    public string Role { get; set; }
+    
     public bool IsAdmin { get; set; }
 }
