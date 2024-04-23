@@ -1,5 +1,6 @@
 using backend;
 using backend.DAL;
+using backend.Interface;
 using backend.Service;
 using backend.WebSockets.MessageHandlers;
 
@@ -17,22 +18,17 @@ if (builder.Environment.IsProduction())
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-// Add services to the container.
-builder.Services.AddSingleton<OrderService>();
-builder.Services.AddSingleton<TokenService>();
-builder.Services.AddSingleton<UserService>();
-
 // Add DALs to the container
 builder.Services.AddSingleton<OrderDAL>();
 builder.Services.AddSingleton<TokenDAL>();
-builder.Services.AddSingleton<UserDAL>();
-builder.Services.AddSingleton<RegisterCustomerDAL>();
-
+builder.Services.AddSingleton<IUserDAL, UserDAL>();
+builder.Services.AddSingleton<IRegisterCustomerDAL, RegisterCustomerDAL>();
 // Add services to the container.
 builder.Services.AddSingleton<OrderService>();
 builder.Services.AddSingleton<TokenService>();
 builder.Services.AddSingleton<UserService>();
+
+
 builder.Services.AddSingleton<RegisterCustomerService>();
 
 // Add message handlers to the container.
