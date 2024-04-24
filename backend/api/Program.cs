@@ -18,16 +18,21 @@ if (builder.Environment.IsProduction())
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 // Add DALs to the container
 builder.Services.AddSingleton<OrderDAL>();
 builder.Services.AddSingleton<TokenDAL>();
-builder.Services.AddSingleton<IUserDAL, UserDAL>();
-builder.Services.AddSingleton<IRegisterCustomerDAL, RegisterCustomerDAL>();
+builder.Services.AddSingleton<IUserDAL,UserDAL>();
+builder.Services.AddSingleton<IRegisterCustomerDAL,RegisterCustomerDAL>();
+
 // Add services to the container.
-builder.Services.AddSingleton<OrderService>();
-builder.Services.AddSingleton<TokenService>();
 builder.Services.AddSingleton<UserService>();
 
+
+// Add services to the container.
+builder.Services.AddSingleton<OrderService>();
+builder.Services.AddSingleton<ITokenService,TokenService>();
+builder.Services.AddSingleton<IUserService,UserService>();
 
 builder.Services.AddSingleton<RegisterCustomerService>();
 
