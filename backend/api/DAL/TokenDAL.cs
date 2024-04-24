@@ -25,7 +25,7 @@ public class TokenDAL
             password as {nameof(User.Password)},
             role as {nameof(User.Role)},
             deleted as {nameof(User.Deleted)}
-            FROM forum.users
+            FROM cafeteria.user
             WHERE username = @Username";
         
             using (var conn = _dataSource.OpenConnection())
@@ -35,6 +35,7 @@ public class TokenDAL
         }
         catch (Exception e)
         {
+            Console.WriteLine(e.Message);
             throw new Exception("User is deleted/banned");
         }
     }

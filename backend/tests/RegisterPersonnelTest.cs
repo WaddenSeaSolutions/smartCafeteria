@@ -5,8 +5,8 @@ using backend.Interface;
 using backend.Service;
 using backend.WebSockets.MessageHandlers;
 
-namespace backend.Tests
-{
+
+    [TestFixture]
     public class RegisterPersonnelTests
     {
         private Mock<IUserDAL> _mockUserDal;
@@ -38,4 +38,3 @@ namespace backend.Tests
             _mockUserDal.Verify(dal => dal.registerPersonnel(registerPersonnelData.Username, It.IsAny<string>(), "Personnel"), Times.Once);
         }
     }
-}   
