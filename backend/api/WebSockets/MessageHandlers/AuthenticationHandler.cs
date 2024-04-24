@@ -1,15 +1,16 @@
 using backend.Service;
 using Fleck;
 using System.Text.Json;
+using backend.Interface;
 using Microsoft.IdentityModel.Tokens;
 
 namespace backend.WebSockets.MessageHandlers
 {
     public class AuthenticationHandler : IMessageHandler
     {
-        private readonly TokenService _tokenService;
+        private readonly ITokenService _tokenService;
 
-        public AuthenticationHandler(TokenService tokenService)
+        public AuthenticationHandler(ITokenService tokenService)
         {
             _tokenService = tokenService;
         }
