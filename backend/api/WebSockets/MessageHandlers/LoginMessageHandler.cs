@@ -1,4 +1,5 @@
 using System.Text.Json;
+using backend.Interface;
 using backend.Model;
 using backend.Service;
 using Fleck;
@@ -7,10 +8,10 @@ namespace backend.WebSockets.MessageHandlers;
 
 public class LoginMessageHandler : IMessageHandler
 {
-    private readonly UserService _userService;
-    private readonly TokenService _tokenService;
+    private readonly IUserService _userService;
+    private readonly ITokenService _tokenService;
     
-    public LoginMessageHandler(UserService userService, TokenService tokenService)
+    public LoginMessageHandler(IUserService userService, ITokenService tokenService)
     {
         _userService = userService;
         _tokenService = tokenService;

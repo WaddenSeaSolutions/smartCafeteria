@@ -2,12 +2,13 @@
 using System.Security.Claims;
 using System.Text;
 using backend.DAL;
+using backend.Interface;
 using backend.Model;
 using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Service;
 
-public class TokenService
+public class TokenService : ITokenService
 {
     private TokenDAL _tokenDal;
     

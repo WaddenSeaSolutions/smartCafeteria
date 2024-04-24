@@ -4,7 +4,7 @@ using backend.Model;
 
 namespace backend.Service;
 
-public class UserService
+public class UserService : IUserService
 {
     private IUserDAL _userDAL;
     
