@@ -5,6 +5,7 @@ using backend.Model;
 using backend.WebSockets.MessageHandlers;
 using FluentAssertions;
 using Fleck;
+using System.Threading.Tasks;
 
 [TestFixture]
 public class LoginMessageHandlerTest
@@ -29,8 +30,11 @@ public class LoginMessageHandlerTest
         var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxMCIsInVuaXF1ZV9uYW1lIjoiam9uZXMiLCJyb2xlIjoiY3VzdG9tZXIiLCJuYmYiOjE3MTM4NTgwMjAsImV4cCI6MTgwODQ2NjAyMCwiaWF0IjoxNzEzODU4MDIwfQ.mhLLco9BxFnqnwJwfhVea0YDrVUzHivyhd4VQUocwRU";
         var loginDataJson = "{\"Username\":\"jones\",\"Password\":\"password\"}";
 
-        _mockUserService.Setup(s => s.loginUser(It.IsAny<string>(), It.IsAny<string>())).Returns(validUser);
-        _mockTokenService.Setup(s => s.createToken(It.IsAny<User>())).Returns(token);
+        _mockUserService.Setup(s => s.loginUser("jones", "password")).Returns(validUser);
+        _mockTokenService.Setup(s => s.createToken(validUser)).Returns(token);
+
+        // Mock the token service to return the expected user when validating the token
+        _mockTokenService.Setup(s => s.validateTokenAndReturnUser(token)).Returns(validUser);
 
         var mockSocket = new Mock<IWebSocketConnection>();
         string sentToken = null;
@@ -40,6 +44,6 @@ public class LoginMessageHandlerTest
         await _handler.HandleMessage(loginDataJson, mockSocket.Object);
 
         // Assert
-        token.Should().BeSameAs(sentToken);
+        sentToken.Should().Be(token); // This assertion checks if the token sent to the user matches the token you've set up in your mock.
     }
 }
