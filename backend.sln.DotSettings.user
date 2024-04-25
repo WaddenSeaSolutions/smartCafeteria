@@ -1,4 +1,4 @@
-<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AAuthorizeAdminAttribute_002Ecs_002Fl_003A_002E_002E_003FAttributes_003FAuthorizeAdminAttribute_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5fbe5206_002D12d0_002D4159_002Db1c9_002D5eaeac0034cd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="RegisterCustomer_CreatesCustomer_ReturnsTrue #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;ProjectFile&gt;EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4/f:RegisterCustomerTest.cs&lt;/ProjectFile&gt;&#xD;
@@ -15,5 +15,9 @@
   &lt;Or&gt;&#xD;
     &lt;ProjectFile&gt;EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4/f:RegisterCustomerTest.cs&lt;/ProjectFile&gt;&#xD;
     &lt;ProjectFile&gt;EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4/f:RegisterPersonnelTest.cs&lt;/ProjectFile&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::LoginMessageHandlerTest.HandleMessage_ShouldSendToken_WhenUserIsValid&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::LoginMessageHandlerTest.HandleMessage_ShouldSendCorrectToken_WhenLoginIsSuccessful&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
   &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
