@@ -30,7 +30,7 @@ builder.Services.AddSingleton<UserService>();
 
 
 // Add services to the container.
-builder.Services.AddSingleton<OrderService>();
+builder.Services.AddSingleton<IOrderService, OrderService>();
 builder.Services.AddSingleton<ITokenService,TokenService>();
 builder.Services.AddSingleton<IUserService,UserService>();
 
@@ -44,6 +44,9 @@ builder.Services.AddSingleton<RegisterCustomerHandler>();
 builder.Services.AddSingleton<RegisterPersonnelHandler>();
 
 builder.Services.AddSingleton<AuthenticationHandler>();
+
+builder.Services.AddSingleton<OrderOptionCreateHandler>();
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
@@ -55,6 +58,8 @@ IMessageHandler registerHandler = builder.Services.BuildServiceProvider().GetReq
 
 IMessageHandler registerPersonnelHandler = builder.Services.BuildServiceProvider().GetRequiredService<RegisterPersonnelHandler>();
 
+IMessageHandler orderOptionCreateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionCreateHandler>();
+
 IMessageHandler adminAuthenticationHandler =
     builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationHandler>();
 
@@ -64,7 +69,8 @@ Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMe
     { "login", loginHandler },
     {"register", registerHandler},
     { "registerPersonnel", registerPersonnelHandler },
-    {"authentication", adminAuthenticationHandler}
+    {"authentication", adminAuthenticationHandler},
+    {"orderOptionCreate", orderOptionCreateHandler}
 };
 
 // Instantiate the WebSocketManager with the dictionary of handlers. Should now have handlers stored in the WebSocketManager
