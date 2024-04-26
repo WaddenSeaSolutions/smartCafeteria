@@ -15,7 +15,6 @@ public class RegisterCustomerDAL : IRegisterCustomerDAL
     }
     public bool RegisterCustomer(RegisterCustomerHandler.RegisterCustomerData registerCustomerData)
     {
-        Console.WriteLine("dal");
         var sql = $@"INSERT INTO cafeteria.user (username, password, role, deleted)
         VALUES (@username, @password, @role, @deleted);";
 

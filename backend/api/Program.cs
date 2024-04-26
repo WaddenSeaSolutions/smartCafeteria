@@ -55,6 +55,8 @@ IMessageHandler registerHandler = builder.Services.BuildServiceProvider().GetReq
 
 IMessageHandler registerPersonnelHandler = builder.Services.BuildServiceProvider().GetRequiredService<RegisterPersonnelHandler>();
 
+IMessageHandler orderOptionCreateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionCreateHandler>();
+
 IMessageHandler adminAuthenticationHandler =
     builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationHandler>();
 
@@ -64,7 +66,8 @@ Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMe
     { "login", loginHandler },
     {"register", registerHandler},
     { "registerPersonnel", registerPersonnelHandler },
-    {"authentication", adminAuthenticationHandler}
+    {"authentication", adminAuthenticationHandler},
+    {"orderOptionCreate", orderOptionCreateHandler}
 };
 
 // Instantiate the WebSocketManager with the dictionary of handlers. Should now have handlers stored in the WebSocketManager
