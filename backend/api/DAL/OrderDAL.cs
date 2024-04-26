@@ -17,8 +17,7 @@ public class OrderDAL
     {
         try
         {
-            var sql = "INSERT INTO cafeteria.orderoption (optionname, active) VALUES (@optionName, @active)";
-
+            var sql = "INSERT INTO cafeteria.orderoption (optionname, active) VALUES (@optionName, @active) RETURNING id";
             using (var conn = _dataSource.OpenConnection())
             {
                 return conn.QueryFirst<OrderOption>(sql, new {optionName = optionToCreate.OptionName, active = optionToCreate.active});

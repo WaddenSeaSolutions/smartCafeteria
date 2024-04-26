@@ -4,6 +4,6 @@ namespace backend.Interface;
 
 public interface IOrderService
 {
-    public OrderOptionDTO CreateOrderOption(OrderOptionDTO optionToCreate);
+    public OrderOption CreateOrderOption(OrderOptionDTO optionToCreate);
 
 }

@@ -1,9 +1,10 @@
 ﻿using backend.DAL;
+using backend.Interface;
 using backend.Model;
 
 namespace backend.Service;
 
-public class OrderService
+public class OrderService : IOrderService
 {
     private readonly OrderDAL _orderDal;
     
@@ -12,8 +13,9 @@ public class OrderService
         _orderDal = orderDal;
     }
     
-    public void CreateOrderOption(OrderOptionDTO optionToCreate)
+    public OrderOption CreateOrderOption(OrderOptionDTO optionToCreate)
     {
-        _orderDal.CreateOrderOption(optionToCreate);
+        Console.WriteLine("Hello there");
+        return _orderDal.CreateOrderOption(optionToCreate);
     }
 }

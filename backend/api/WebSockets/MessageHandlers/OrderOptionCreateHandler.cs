@@ -25,6 +25,7 @@ public class OrderOptionCreateHandler : IMessageHandler
             throw new UnauthorizedAccessException();
         }
         
-        throw new NotImplementedException();
+        socket.Send("Unauthorized");
+        return Task.CompletedTask;
     }
 }

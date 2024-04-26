@@ -30,7 +30,7 @@ builder.Services.AddSingleton<UserService>();
 
 
 // Add services to the container.
-builder.Services.AddSingleton<OrderService>();
+builder.Services.AddSingleton<IOrderService, OrderService>();
 builder.Services.AddSingleton<ITokenService,TokenService>();
 builder.Services.AddSingleton<IUserService,UserService>();
 
@@ -44,6 +44,9 @@ builder.Services.AddSingleton<RegisterCustomerHandler>();
 builder.Services.AddSingleton<RegisterPersonnelHandler>();
 
 builder.Services.AddSingleton<AuthenticationHandler>();
+
+builder.Services.AddSingleton<OrderOptionCreateHandler>();
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
