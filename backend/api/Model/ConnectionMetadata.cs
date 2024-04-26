@@ -4,6 +4,8 @@ public class ConnectionMetadata
 {
     public string ConnectionId { get; set; }
     
+    public int UserId { get; set; }
+    
     public string Username { get; set; }
     
     public Boolean Authenticated { get; set; }
