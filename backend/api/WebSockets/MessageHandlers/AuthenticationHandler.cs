@@ -31,13 +31,14 @@ namespace backend.WebSockets.MessageHandlers
                 if (WebSocketManager._connectionMetadata.TryGetValue(connectionId, out var connectionMetadata))
                 {
                     connectionMetadata.Username = user.Username;
+                    connectionMetadata.UserId = user.Id;
                     connectionMetadata.Authenticated = true;
                     connectionMetadata.Role = user.Role;
                     connectionMetadata.IsAdmin = user.Role == "admin";
                 }
                 else
                 {
-                    Console.WriteLine("Exeption thrown in AdminAuthenticationHandler");
+                    Console.WriteLine("Exception thrown in AdminAuthenticationHandler");
                 }
 
                 socket.Send("User Authenticated");

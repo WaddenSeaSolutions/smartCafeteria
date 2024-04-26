@@ -1,4 +1,5 @@
 using System.Text.Json;
+using backend.Interface;
 using backend.Service;
 using Fleck;
 
@@ -6,10 +7,10 @@ namespace backend.WebSockets.MessageHandlers;
 
 public class RegisterPersonnelHandler : IMessageHandler
 {
-    private readonly UserService _userService;
+    private readonly IUserService _userService;
 
     
-    public RegisterPersonnelHandler(UserService userService)
+    public RegisterPersonnelHandler(IUserService userService)
     {
         _userService = userService;
     }

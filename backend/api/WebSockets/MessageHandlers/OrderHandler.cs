@@ -22,7 +22,7 @@ public class OrderHandler : IMessageHandler
     public async Task HandleMessage(string message, IWebSocketConnection socket)
     {
         // Check if the connection is in the dictionary and if the associated role is valid
-        if (!WebSocketManager._connectionMetadata.ContainsKey(socket.ConnectionInfo.Id) || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role != "valid_role")
+        if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role != "customer")
         {
             socket.Send("You do not have permission to create an order.");
             return;
@@ -41,6 +41,6 @@ public class OrderHandler : IMessageHandler
 
 public class orderDTO
 {
-    //TODO find ud af hvad der skal ske med order content
+    
     //Todo ift. om den skal ændres til et objekt med 7 properties
 }
