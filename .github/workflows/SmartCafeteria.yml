@@ -22,6 +22,6 @@ jobs:
 
       - name: Run the tests
         run: cd backend/tests && dotnet test
-#        env:
-#          pgconn: ${{secrets.PGCONN}}
-#          jwtKey: ${{secrets.JWTKEY}}
+        env:
+          pgconn: ${{secrets.PGCONN}}
+          jwtKey: ${{secrets.JWTKEY}}
