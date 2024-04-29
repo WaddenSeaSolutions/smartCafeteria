@@ -5,11 +5,11 @@ using Fleck;
 
 namespace backend.WebSockets.MessageHandlers;
 
-public class OrderOptionCreateHandler : IMessageHandler
+public class OrderOptionUpdateHandler : IMessageHandler
 {
     private readonly IOrderService _orderService;
     
-    public OrderOptionCreateHandler(IOrderService orderService)
+    public OrderOptionUpdateHandler(IOrderService orderService)
     {
         _orderService = orderService;
     }
@@ -18,14 +18,15 @@ public class OrderOptionCreateHandler : IMessageHandler
     {
         if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "admin")
         {
-            OrderOptionDTO orderOptionDto = JsonSerializer.Deserialize<OrderOptionDTO>(message);
+            OrderOption orderOption = JsonSerializer.Deserialize<OrderOption>(message);
             
-            _orderService.CreateOrderOption(orderOptionDto);
+            OrderOption updatedOrderOption = _orderService.UpdateOrderOption(orderOption);
+            string updatedOrderOptionJson = JsonSerializer.Serialize(updatedOrderOption);
             
-            throw new UnauthorizedAccessException();
+            socket.Send(updatedOrderOptionJson);
+            return Task.CompletedTask;
         }
-        
-        socket.Send("Unauthorized");
-        return Task.CompletedTask;
+
+        throw new NotImplementedException();
     }
 }
