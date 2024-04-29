@@ -1,10 +1,12 @@
-﻿using backend.Model;
+﻿using backend.Interface;
+using backend.Model;
 using Dapper;
 using Npgsql;
 
 namespace backend.DAL;
 
-public class TokenDAL
+
+public class TokenDAL : ITokenDAL
 {
     
     private readonly NpgsqlDataSource _dataSource;
