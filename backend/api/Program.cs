@@ -23,6 +23,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<OrderDAL>();
 builder.Services.AddSingleton<TokenDAL>();
 builder.Services.AddSingleton<IUserDAL,UserDAL>();
+builder.Services.AddSingleton<ITokenDAL,TokenDAL>();
 builder.Services.AddSingleton<IRegisterCustomerDAL,RegisterCustomerDAL>();
 
 // Add services to the container.
