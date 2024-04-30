@@ -73,9 +73,5 @@ export class LoginPageComponent {
         });
     }
   }
-
-  async registerNewUser() {
-    await this.router.navigate(['register'])
-  }
 }
 

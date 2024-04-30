@@ -10,11 +10,11 @@ namespace backend.Service;
 
 public class TokenService : ITokenService
 {
-    private TokenDAL _tokenDal;
+    private ITokenDAL _tokenDal;
     
     private static readonly byte[] Secret = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("jwtKey")!);
 
-    public TokenService(TokenDAL tokenDal)
+    public TokenService(ITokenDAL tokenDal)
     {
         _tokenDal = tokenDal;
     }
