@@ -48,6 +48,8 @@ builder.Services.AddSingleton<AuthenticationHandler>();
 
 builder.Services.AddSingleton<OrderOptionCreateHandler>();
 
+builder.Services.AddSingleton<OrderOptionDeleteHandler>();
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
@@ -61,8 +63,9 @@ IMessageHandler registerPersonnelHandler = builder.Services.BuildServiceProvider
 
 IMessageHandler orderOptionCreateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionCreateHandler>();
 
-IMessageHandler adminAuthenticationHandler =
-    builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationHandler>();
+IMessageHandler orderOptionDeleteHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionDeleteHandler>();
+
+IMessageHandler adminAuthenticationHandler = builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationHandler>();
 
 //a dictionary mapping message types to handlers.
 Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMessageHandler>
@@ -71,7 +74,8 @@ Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMe
     {"register", registerHandler},
     { "registerPersonnel", registerPersonnelHandler },
     {"authentication", adminAuthenticationHandler},
-    {"orderOptionCreate", orderOptionCreateHandler}
+    {"orderOptionCreate", orderOptionCreateHandler},
+    {"orderOptionDelete", orderOptionDeleteHandler}
 };
 
 // Instantiate the WebSocketManager with the dictionary of handlers. Should now have handlers stored in the WebSocketManager

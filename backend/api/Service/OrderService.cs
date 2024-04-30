@@ -15,7 +15,16 @@ public class OrderService : IOrderService
     
     public OrderOption CreateOrderOption(OrderOptionDTO optionToCreate)
     {
-        Console.WriteLine("Hello there");
         return _orderDal.CreateOrderOption(optionToCreate);
+    }
+
+    public OrderOption DeleteOrderOption(OrderOption orderOption)
+    {
+        return _orderDal.DeleteOrderOption(orderOption);
+    }
+
+    public OrderOption UpdateOrderOption(OrderOption orderOption)
+    {
+        return _orderDal.UpdateOrderOption(orderOption);
     }
 }

@@ -29,4 +29,38 @@ public class OrderDAL
             throw new Exception("Failed to create order option");
         }
     }
+    
+    public OrderOption DeleteOrderOption(OrderOption orderOption)
+    {
+        try
+        {
+            var sql = "DELETE FROM cafeteria.orderoption WHERE id = @id RETURNING id";
+            using (var conn = _dataSource.OpenConnection())
+            {
+                return conn.QueryFirst<OrderOption>(sql, new {id = orderOption.Id});
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new Exception("Failed to delete order option");
+        }
+    }
+
+    public OrderOption UpdateOrderOption(OrderOption orderOption)
+    {
+        try
+        {
+            var sql = "UPDATE cafeteria.orderoption SET active = @active WHERE id = @id RETURNING id";
+            using (var conn = _dataSource.OpenConnection())
+            {
+                return conn.QueryFirst<OrderOption>(sql, new {active = orderOption.active, id = orderOption.Id});
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new Exception("Failed to update order option");
+        }
+    }
 }
