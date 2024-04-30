@@ -24,9 +24,10 @@ public class WebSocketManager
                 var connectionMetadata = new ConnectionMetadata
                 {
                     ConnectionId = socket.ConnectionInfo.Id.ToString(),
+                    Socket = socket
                 };
                 _connectionMetadata[socket.ConnectionInfo.Id] = connectionMetadata;
-            };  
+            };
             
             socket.OnMessage = message =>
             {

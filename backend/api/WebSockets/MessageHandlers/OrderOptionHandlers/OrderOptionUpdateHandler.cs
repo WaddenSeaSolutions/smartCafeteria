@@ -16,17 +16,26 @@ public class OrderOptionUpdateHandler : IMessageHandler
     
     public Task HandleMessage(string message, IWebSocketConnection socket)
     {
-        if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "admin")
+        if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
         {
             OrderOption orderOption = JsonSerializer.Deserialize<OrderOption>(message);
-            
+        
             OrderOption updatedOrderOption = _orderService.UpdateOrderOption(orderOption);
-            string updatedOrderOptionJson = JsonSerializer.Serialize(updatedOrderOption);
+            updatedOrderOption.IsUpdated = true; //Shows frontend that it needs to replace this order option instead of adding it to the list.
             
-            socket.Send(updatedOrderOptionJson);
+            string updatedOrderOptionJson = JsonSerializer.Serialize(updatedOrderOption);
+        
+            foreach (var connection in WebSocketManager._connectionMetadata.Values)
+            {
+                if (connection.Role == "personnel" || connection.IsAdmin)
+                {
+                    connection.Socket.Send(updatedOrderOptionJson);
+                }
+            }
+        
             return Task.CompletedTask;
         }
-
-        throw new NotImplementedException();
+    
+        return Task.CompletedTask;
     }
 }

@@ -7,4 +7,6 @@ public class OrderOption
     public string OptionName { get; set; }
     
     public Boolean active { get; set; }
+    
+    public bool IsUpdated { get; set; }
 }
