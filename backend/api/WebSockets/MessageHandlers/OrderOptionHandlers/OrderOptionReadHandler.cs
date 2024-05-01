@@ -19,6 +19,8 @@ public class OrderOptionReadHandler : IMessageHandler
         if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
         {
             OrderOption orderOption = JsonSerializer.Deserialize<OrderOption>(message);
+            
+            OrderOption orderOptionToJson = _orderService.ReadOrderOption(orderOption);
         }
         throw new NotImplementedException();
     }

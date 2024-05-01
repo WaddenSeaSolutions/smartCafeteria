@@ -17,6 +17,7 @@ public class RegisterPersonnelHandler : IMessageHandler
     
     public Task HandleMessage(string message, IWebSocketConnection socket)
     {
+        Console.WriteLine("Hello");
         if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
         {
             RegisterPersonnelData registerPersonnelData = JsonSerializer.Deserialize<RegisterPersonnelData>(message);

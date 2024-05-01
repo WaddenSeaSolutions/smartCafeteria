@@ -22,7 +22,14 @@ public class OrderOptionCreateHandler : IMessageHandler
             
             OrderOption orderOptionToJson = _orderService.CreateOrderOption(orderOptionDto);
             string orderOptionJson = JsonSerializer.Serialize(orderOptionToJson);
-            socket.Send(orderOptionJson);
+            foreach (var connection in WebSocketManager._connectionMetadata)
+            {
+                if (connection.Value.Role == "personnel" || connection.Value.IsAdmin)
+                {
+                    connection.Value.Socket.Send(orderOptionJson);
+                }
+            }
+
             return Task.CompletedTask;
         }
         
