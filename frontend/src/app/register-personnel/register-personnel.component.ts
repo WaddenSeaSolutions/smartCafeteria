@@ -51,7 +51,7 @@ import {WebsocketService} from "../../websocketService";
         </div>
         <br>
         <ion-button class="btnBackground" style="display: flex" (click)="registerUser()"
-                    [disabled]="password2.value?.length! < 8 || password.value?.length! < 8 || password.value !== password2.value || username.value?.length! < 5">
+                    [disabled]="formIsValid()">
           Registrer din konto
         </ion-button>
       </div>
@@ -65,8 +65,7 @@ import {WebsocketService} from "../../websocketService";
 export class RegisterPersonnelComponent {
 
   formIsValid(): boolean {
-    return this.username.valid && this.password.valid && this.password2.valid;
-  }
+    return this.password2.value?.length! < 8 || this.password2.value?.length! < 8 || this.password.value !== this.password2.value || this.username.value?.length! < 5  }
 
   username = new FormControl('', {
     validators: [
@@ -104,12 +103,12 @@ export class RegisterPersonnelComponent {
   nameValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
       return new Promise<ValidationErrors | null>((resolve) => {
-        this.websocketService.sendData({action: 'checkUsername', username: control.value});
+        this.websocketService.sendData({action: 'registerPersonnel', username: control.value});
 
         this.websocketService.socket.onmessage = (event) => {
           const response = JSON.parse(event.data);
 
-          if (response.action === 'checkUsername') {
+          if (response.action === 'registerPersonnel') {
             resolve(response.exists ? {usernameExists: true} : null);
           }
         }
@@ -120,8 +119,9 @@ export class RegisterPersonnelComponent {
 // Method to register the new user
   async registerUser() {
     const registrant = {
-      username: this.username.value,
-      password: this.password.value,
+      action: "registerPersonnel",
+      Username: this.username.value,
+      Password: this.password.value,
     }
     try {
       this.websocketService.sendData(registrant);
