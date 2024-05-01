@@ -5,7 +5,6 @@ using backend.Interface;
 using backend.Service;
 using backend.Model;
 using FluentAssertions;
-
 [TestFixture]
 public class LoginTest
 {

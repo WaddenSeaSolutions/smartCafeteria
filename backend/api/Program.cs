@@ -76,6 +76,7 @@ Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMe
     {"authentication", adminAuthenticationHandler},
     {"orderOptionCreate", orderOptionCreateHandler},
     {"orderOptionDelete", orderOptionDeleteHandler}
+
 };
 
 // Instantiate the WebSocketManager with the dictionary of handlers. Should now have handlers stored in the WebSocketManager
