@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {AbstractControl, FormControl, Validators} from "@angular/forms";
+import {AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, Validators} from "@angular/forms";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {ToastController} from "@ionic/angular";
 import {environment} from "../../environments/environment";
-import {catchError, map, of} from "rxjs";
+import {catchError, map, Observable, of} from "rxjs";
 import {UsersRegister} from "../register/register.component";
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import {WebsocketService} from "../../websocketService";
+
 
 @Component({
   selector: 'app-register-personnel',
@@ -15,7 +18,8 @@ import {UsersRegister} from "../register/register.component";
       <div style="margin-left: 25%; margin-right: 25%; padding: 2%; border: 1px solid grey ; text-align: center; ">
         <header style="text-align: center; font-size: 20px"> Registrer en person</header>
         <ion-item>
-          <ion-input [debounce]="1500" style="text-align: center" placeholder="Brugernavn" [formControl]="username"> </ion-input>
+          <ion-input [debounce]="1500" style="text-align: center" placeholder="Brugernavn"
+                     [formControl]="username"></ion-input>
         </ion-item>
         <div *ngIf="username.hasError('minlength')">
           <p>Brugernavn skal være mindst 5 tegn</p>
@@ -28,23 +32,28 @@ import {UsersRegister} from "../register/register.component";
         </div>
         <br>
         <ion-item>
-          <ion-input type="password" style="text-align: center" placeholder="Kodeord" [formControl]="password"> </ion-input>
+          <ion-input type="password" style="text-align: center" placeholder="Kodeord"
+                     [formControl]="password"></ion-input>
         </ion-item>
         <br>
         <ion-item>
-          <ion-input type="password" style="text-align: center" placeholder="Gentag Kodeord" [formControl]="password2"> </ion-input>
+          <ion-input type="password" style="text-align: center" placeholder="Gentag Kodeord"
+                     [formControl]="password2"></ion-input>
         </ion-item>
-        <div *ngIf="password.hasError('minlength')" >
+        <div *ngIf="password.hasError('minlength')">
           <p>Kodeordet skal være minimum 8 lang</p>
         </div>
-        <div *ngIf="password.hasError('maxlength')" >
+        <div *ngIf="password.hasError('maxlength')">
           <p>Kodeordet må maks være 30 tegn</p>
         </div>
         <div *ngIf="password2.hasError('passwordsNotMatch')">
           <p>De indtastede kodeord er ikke ens</p>
         </div>
         <br>
-        <ion-button class="btnBackground" style="display: flex" (click)="registerUser()" [disabled]="!formIsValid()">Registrer din konto</ion-button>
+        <ion-button class="btnBackground" style="display: flex" (click)="registerUser()"
+                    [disabled]="password2.value?.length! < 8 || password.value?.length! < 8 || password.value !== password2.value || username.value?.length! < 5">
+          Registrer din konto
+        </ion-button>
       </div>
     </ion-content>
 
@@ -64,7 +73,7 @@ export class RegisterPersonnelComponent {
       Validators.required,
       Validators.minLength(5),
       Validators.maxLength(20)],
-    asyncValidators: [this.nameValidator(this.http)],
+    asyncValidators: [this.nameValidator()],
     updateOn: 'change' // Validation will be triggered after changes
   });
   password = new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(30)]);
@@ -85,22 +94,26 @@ export class RegisterPersonnelComponent {
     return null;
   }
 
-  constructor(private http: HttpClient, private router: Router, private toastController: ToastController) {
+  constructor(private websocketService: WebsocketService, private router: Router, private toastController: ToastController) {
     this.checkIfLoggedIn = localStorage.getItem('token') != null;
     // if (this.checkIfLoggedIn){
     //   this.router.navigate(['home'])
     // }
   }
 
-  nameValidator(http: HttpClient) {
-    return (control: AbstractControl) => {
-      return http.post<boolean>(`${environment.baseUrl}/checkUsername,${control.value}`, {})
-        .pipe(
-          map(result => {
-            return (result === true ? {usernameExists: true} : null);
-          }),
-          catchError(() => of(null))
-        );
+  nameValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+      return new Promise<ValidationErrors | null>((resolve) => {
+        this.websocketService.sendData({action: 'checkUsername', username: control.value});
+
+        this.websocketService.socket.onmessage = (event) => {
+          const response = JSON.parse(event.data);
+
+          if (response.action === 'checkUsername') {
+            resolve(response.exists ? {usernameExists: true} : null);
+          }
+        }
+      });
     };
   }
 
@@ -111,13 +124,18 @@ export class RegisterPersonnelComponent {
       password: this.password.value,
     }
     try {
-      let response = new HttpResponse();
-      await this.http.post<UsersRegister>(environment.baseUrl + '/register', registrant).toPromise();
+      this.websocketService.sendData(registrant);
 
-      if (response.ok) {
-        this.okResponse("Din konto blev oprettet")
-        // Proceed to login-page if the request was successful
-        this.router.navigate(["login-page"]);
+      this.websocketService.socket.onmessage = (event) => {
+        const response = JSON.parse(event.data);
+
+        if (response.ok) {
+          this.okResponse("Din konto blev oprettet")
+          // Proceed to login-page if the request was successful
+          this.router.navigate(["login-page"]);
+        } else {
+          this.errorResponse("Noget gik galt")
+        }
       }
     } catch (error) {
       this.errorResponse("Noget gik galt")

@@ -3,11 +3,12 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5fbe5206_002D12d0_002D4159_002Db1c9_002D5eaeac0034cd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="RegisterCustomer_CreatesCustomer_ReturnsTrue #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;ProjectFile&gt;EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4/f:RegisterCustomerTest.cs&lt;/ProjectFile&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7a1a0567_002D70ce_002D47a0_002D960f_002D835333146bd5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestLogin" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7a1a0567_002D70ce_002D47a0_002D960f_002D835333146bd5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestLogin" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::LoginTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::tests.TokenServiceTest.TestCreateToken&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::LoginTest.LoginUser_ValidCredentials_ReturnsUser&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::LoginTest.LoginUser_InvalidCredentials_ReturnsNull&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8ef624cb_002De0ea_002D41bf_002Dabfc_002Df4b49e6949f4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="RegisterCustomer_CreatesCustomer_ReturnsTrue" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -22,17 +23,8 @@
     &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::LoginTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bb9c8167_002D8b68_002D400e_002Dafff_002D2877f03cdac0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;backend&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Or&gt;&#xD;
-    &lt;ProjectFile&gt;EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4/f:RegisterCustomerTest.cs&lt;/ProjectFile&gt;&#xD;
-    &lt;ProjectFile&gt;EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4/f:RegisterPersonnelTest.cs&lt;/ProjectFile&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::LoginMessageHandlerTest.HandleMessage_ShouldSendToken_WhenUserIsValid&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::LoginMessageHandlerTest.HandleMessage_ShouldSendCorrectToken_WhenLoginIsSuccessful&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::LoginMessageHandlerTest.HandleMessage_ShouldFail_WhenTokenIsInvalid&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::LoginTests.TestLogin&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-  &lt;/Or&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bb9c8167_002D8b68_002D400e_002Dafff_002D2877f03cdac0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;backend&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\pjusk\Documents\GitHub\smartCafeteria\backend\tests" Presentation="&amp;lt;backend&amp;gt;\&amp;lt;tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/EnvironmentVariablesIndexed/=/@EntryIndexedValue"></s:String>
 	<s:Boolean x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/EnvironmentVariablesIndexed/=DOTNET_005FENVIRONMENT/@EntryIndexRemoved">True</s:Boolean>
