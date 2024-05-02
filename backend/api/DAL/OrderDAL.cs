@@ -63,4 +63,21 @@ public class OrderDAL
             throw new Exception("Failed to update order option");
         }
     }
+
+    public OrderOption ReadOrderOption(OrderOption orderOption)
+    {
+        try
+        {
+            var sql = "SELECT * FROM cafeteria.orderoption WHERE id = @id";
+            using (var conn = _dataSource.OpenConnection())
+            {
+                return conn.QueryFirst<OrderOption>(sql, new {id = orderOption.Id});
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new Exception("Failed to read order option");
+        }
+    }
 }

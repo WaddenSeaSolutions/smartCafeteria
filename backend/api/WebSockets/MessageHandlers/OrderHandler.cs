@@ -35,8 +35,6 @@ public class OrderHandler : IMessageHandler
         
         throw new NotImplementedException();
     }
-    
-    
 }
 
 public class orderDTO

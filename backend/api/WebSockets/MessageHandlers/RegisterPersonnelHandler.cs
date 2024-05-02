@@ -17,11 +17,20 @@ public class RegisterPersonnelHandler : IMessageHandler
     
     public Task HandleMessage(string message, IWebSocketConnection socket)
     {
-        RegisterPersonnelData registerPersonnelData = JsonSerializer.Deserialize<RegisterPersonnelData>(message);
+        Console.WriteLine("Hello");
+        if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
+        {
+            RegisterPersonnelData registerPersonnelData = JsonSerializer.Deserialize<RegisterPersonnelData>(message);
 
-        _userService.registerPersonnel(registerPersonnelData.Username, registerPersonnelData.Password, "Personnel");
-        
-        socket.Send("Personnel registered");
+            _userService.registerPersonnel(registerPersonnelData.Username, registerPersonnelData.Password, "Personnel");
+
+            socket.Send("Personnel registered");
+        }
+        else
+        {
+            socket.Send("Unauthorized");
+        }
+
         return Task.CompletedTask;
     }
     
