@@ -5,7 +5,6 @@ import {Router} from "@angular/router";
 import {ToastController} from "@ionic/angular";
 import {environment} from "../../environments/environment";
 import {catchError, map, Observable, of} from "rxjs";
-import {UsersRegister} from "../register/register.component";
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import {WebsocketService} from "../../websocketService";
 
