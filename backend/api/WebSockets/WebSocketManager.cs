@@ -32,7 +32,7 @@ public class WebSocketManager
             socket.OnMessage = message =>
             {
                 var jsonDocument = JsonDocument.Parse(message);
-                var messageType = jsonDocument.RootElement.GetProperty("Type").GetString();
+                var messageType = jsonDocument.RootElement.GetProperty("action").GetString();
                 HandleMessage(messageType, message, socket);
             };
         });

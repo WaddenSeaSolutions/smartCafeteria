@@ -9,12 +9,11 @@ import { AppRoutingModule } from './app-routing.module';
 import {LoginPageComponent} from "./login-page/login-page.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
-import {RegisterComponent} from "./register/register.component";
 import {RegisterPersonnelComponent} from "./register-personnel/register-personnel.component";
 
 
 @NgModule({
-  declarations: [AppComponent, LoginPageComponent, RegisterComponent, RegisterPersonnelComponent],
+  declarations: [AppComponent, LoginPageComponent, RegisterPersonnelComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule, HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
