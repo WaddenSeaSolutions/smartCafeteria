@@ -52,6 +52,10 @@ builder.Services.AddSingleton<OrderOptionUpdateHandler>();
 
 builder.Services.AddSingleton<OrderOptionDeleteHandler>();
 
+builder.Services.AddSingleton<MQTTClientDAL>();
+
+builder.Services.AddSingleton<MqttClientService>();
+
 
 
 
@@ -104,5 +108,7 @@ app.UseCors(options =>
 });
 
 app.MapControllers();
+
+app.Services.GetService<MqttClientService>().CommunicateWithBroker();
 
 app.Run();

@@ -40,7 +40,13 @@ export class LoginPageComponent {
     password: this.password,
   });
 
-  constructor(private router: Router, private websocketService: WebsocketService) { }
+  constructor(private router: Router, private websocketService: WebsocketService) {
+    // const checkIfLoggedIn = localStorage.getItem('token') != null;
+    // if (checkIfLoggedIn) {
+    //   this.router.navigate(['home']);
+    // }
+  }
+
 
   login() {
     console.log('Username validity:', this.username.valid);
