@@ -7,8 +7,14 @@ using MQTTnet.Formatter;
 
 namespace backend.Service;
 
-public class MQTTClientService
+public class MqttClientService
 {
+    private readonly MQTTClientDAL _mqttClientDal;
+
+    public MqttClientService(MQTTClientDAL mqttClientDal)
+    {
+        _mqttClientDal = mqttClientDal;
+    }
     public async Task CommunicateWithBroker()
     {
         var mqttFactory = new MqttFactory();
@@ -30,7 +36,7 @@ public class MQTTClientService
                 var message = e.ApplicationMessage.ConvertPayloadToString();
                 Console.WriteLine("Message received:" + message);
                 var messageObject = JsonSerializer.Deserialize<MqttClientWantsToSendMessageToRoom>(message);
-
+                var orderNumbers = message.Split(",").Select(int.Parse).ToList();
                 var timestamp = DateTimeOffset.UtcNow;
                 var userId = 1;
                 OrderMQTT order = new OrderMQTT
@@ -41,7 +47,12 @@ public class MQTTClientService
                     Timestamp = timestamp,
                     Options = messageObject.message
                 };
-                var insertionResult = MQTTClientDAL.CreateNewOrderFromMQTT(order);
+                
+                
+                var insertionResult = _mqttClientDal.CreateNewOrderFromMQTT(order);
+                
+                _mqttClientDal.AddContentToOrder(orderNumbers,insertionResult.Id);
+                
             }
             catch (Exception exc)
             {

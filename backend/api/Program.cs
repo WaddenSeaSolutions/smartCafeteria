@@ -52,6 +52,8 @@ builder.Services.AddSingleton<OrderOptionUpdateHandler>();
 
 builder.Services.AddSingleton<OrderOptionDeleteHandler>();
 
+builder.Services.AddSingleton<MQTTClientDAL>();
+
 builder.Services.AddSingleton<MqttClientService>();
 
 
