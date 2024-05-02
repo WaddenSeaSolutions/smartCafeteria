@@ -80,4 +80,21 @@ public class OrderDAL
             throw new Exception("Failed to read order option");
         }
     }
+
+    public List<OrderOption> GetOrderOptions()
+    {
+        try
+        {
+            var sql = "SELECT * FROM cafeteria.orderoption";
+            using (var conn = _dataSource.OpenConnection())
+            {
+                return conn.Query<OrderOption>(sql).ToList();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new Exception("Failed to get order options");
+        }
+    }
 }

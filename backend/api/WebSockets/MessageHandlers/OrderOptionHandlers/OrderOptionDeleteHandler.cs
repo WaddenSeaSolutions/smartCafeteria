@@ -22,13 +22,9 @@ public class OrderOptionDeleteHandler : IMessageHandler
             OrderOption orderOption = JsonSerializer.Deserialize<OrderOption>(message);
 
             OrderOption deletedOrderOption = _orderService.DeleteOrderOption(orderOption);
-            DeletedOrderOption deletedOrderOptionJson = new DeletedOrderOption
-            {
-                OrderOption = deletedOrderOption,
-                Deleted = true
-            };
+            deletedOrderOption.IsDeleted = true; //Shows frontend that it needs to remove this order option from the list.
 
-            string deletedOrderOptionJsonString = JsonSerializer.Serialize(deletedOrderOptionJson);
+            string deletedOrderOptionJsonString = JsonSerializer.Serialize(deletedOrderOption);
 
             foreach (var connection in WebSocketManager._connectionMetadata)
             {
@@ -45,9 +41,3 @@ public class OrderOptionDeleteHandler : IMessageHandler
         return Task.CompletedTask;
     }
 }
-
-    public class DeletedOrderOption
-    {
-        public OrderOption OrderOption { get; set; }
-        public bool Deleted { get; set; }
-    }

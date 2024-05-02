@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {environment} from "../../environments/environment";
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import {WebsocketService} from "../../websocketService";
 
 @Component({
   selector: 'app-login-page',
@@ -33,45 +32,54 @@ import {environment} from "../../environments/environment";
   styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent {
-  username = new FormControl('', Validators.compose([Validators.min(5), Validators.max(20), Validators.required]))
-  password = new FormControl('', Validators.compose([Validators.min(8), Validators.max(30), Validators.required]))
-
-  public checkIfLoggedIn: boolean;
+  username = new FormControl('', Validators.compose([Validators.min(5), Validators.max(20), Validators.required]));
+  password = new FormControl('', Validators.compose([Validators.min(8), Validators.max(30), Validators.required]));
 
   myFormGroup = new FormGroup({
     username: this.username,
     password: this.password,
-  })
+  });
 
-  constructor(private http: HttpClient, private router: Router) {
-    this.checkIfLoggedIn = localStorage.getItem('token') != null;
-
-  //   if (this.checkIfLoggedIn){
-  //     this.router.navigate(['home'])
-  //   }
+  constructor(private router: Router, private websocketService: WebsocketService) {
+    // const checkIfLoggedIn = localStorage.getItem('token') != null;
+    // if (checkIfLoggedIn) {
+    //   this.router.navigate(['home']);
+    // }
   }
 
+
   login() {
+    console.log('Username validity:', this.username.valid);
+    console.log('Password validity:', this.password.valid);
     if (this.myFormGroup.valid || true) {
-      this.http.post(environment.baseUrl + '/login', this.myFormGroup.value, {responseType: 'text'})
-        .subscribe({
-          next: (response) => {
-            if (response) {
-              // store token
-              localStorage.setItem('token', response);
-              let payload = JSON.parse(atob(response.split(".")[1]))
-              //Store the role, only allows for visual admin controls
-              localStorage.setItem('role', payload.role)
-              //Go to homepage after successful login
-              this.router.navigate(["home"])
-              location.reload();
-            }
-          },
-          error: (err) => {
-            console.error(err);
-          }
-        });
+      const loginMessage = {
+        action: 'login',
+        Username: this.myFormGroup.value.username,
+        Password: this.myFormGroup.value.password,
+      };
+
+      console.log('Sending login message:', loginMessage); // Log the message being sent
+
+      this.websocketService.sendData(loginMessage);
+
+      this.websocketService.socket.onmessage = (event) => {
+        console.log('Received message from server:', event.data); // Log the message received from the server
+
+        const response = JSON.parse(event.data);
+        if (response.success) {
+          // store token
+          localStorage.setItem('token', response.token);
+          let payload = JSON.parse(atob(response.token.split(".")[1]))
+          //Store the role, only allows for visual admin controls
+          localStorage.setItem('role', payload.role)
+          //Go to homepage after successful login
+          this.router.navigate(["home"])
+          location.reload();
+        } else {
+          // Handle error here
+          console.error('Login failed');
+        }
+      };
     }
   }
 }
-

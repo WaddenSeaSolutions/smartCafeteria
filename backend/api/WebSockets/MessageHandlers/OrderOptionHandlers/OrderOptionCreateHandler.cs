@@ -21,6 +21,8 @@ public class OrderOptionCreateHandler : IMessageHandler
             OrderOptionDTO orderOptionDto = JsonSerializer.Deserialize<OrderOptionDTO>(message);
             
             OrderOption orderOptionToJson = _orderService.CreateOrderOption(orderOptionDto);
+            orderOptionToJson.isNew = true; //Shows frontend that it needs to add this orderoption to the list.
+            
             string orderOptionJson = JsonSerializer.Serialize(orderOptionToJson);
             foreach (var connection in WebSocketManager._connectionMetadata)
             {
