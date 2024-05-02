@@ -51,32 +51,22 @@ export class LoginPageComponent {
   login() {
     console.log('Username validity:', this.username.valid);
     console.log('Password validity:', this.password.valid);
-    if (this.myFormGroup.valid || true) {
+    if (this.myFormGroup.valid) {
       const loginMessage = {
         action: 'login',
         Username: this.myFormGroup.value.username,
         Password: this.myFormGroup.value.password,
       };
-
-      console.log('Sending login message:', loginMessage); // Log the message being sent
+      console.log('Sending login message:', loginMessage);
 
       this.websocketService.sendData(loginMessage);
 
       this.websocketService.socket.onmessage = (event) => {
-        console.log('Received message from server:', event.data); // Log the message received from the server
-
         const response = JSON.parse(event.data);
-        if (response.success) {
-          // store token
+        if (response.token) { // check for the presence of the token property
           localStorage.setItem('token', response.token);
-          let payload = JSON.parse(atob(response.token.split(".")[1]))
-          //Store the role, only allows for visual admin controls
-          localStorage.setItem('role', payload.role)
-          //Go to homepage after successful login
-          this.router.navigate(["home"])
-          location.reload();
+          this.router.navigate(['home']);
         } else {
-          // Handle error here
           console.error('Login failed');
         }
       };
