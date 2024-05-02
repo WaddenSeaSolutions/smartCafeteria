@@ -57,7 +57,8 @@ export class LoginPageComponent {
 
       this.websocketService.socket.onmessage = (event) => {
         const response = JSON.parse(event.data);
-        if (response.success) {
+        if (response.token) { // check for the presence of the token property
+          localStorage.setItem('token', response.token);
           this.router.navigate(['home']);
         } else {
           console.error('Login failed');
