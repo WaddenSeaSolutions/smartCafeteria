@@ -50,6 +50,8 @@ builder.Services.AddSingleton<OrderOptionCreateHandler>();
 
 builder.Services.AddSingleton<OrderOptionDeleteHandler>();
 
+builder.Services.AddSingleton<MQTTClientService>();
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
@@ -96,5 +98,7 @@ app.UseCors(options =>
 });
 
 app.MapControllers();
+
+app.Services.GetService<MQTTClientService>().CommunicateWithBroker();
 
 app.Run();
