@@ -9,4 +9,8 @@ public class OrderOption
     public Boolean active { get; set; }
     
     public bool IsUpdated { get; set; }
+    
+    public bool isNew { get; set; }
+    
+    public bool IsDeleted { get; set; }
 }

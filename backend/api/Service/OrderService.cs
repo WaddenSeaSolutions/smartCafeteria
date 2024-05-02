@@ -28,8 +28,8 @@ public class OrderService : IOrderService
         return _orderDal.UpdateOrderOption(orderOption);
     }
 
-    public OrderOption ReadOrderOption(OrderOption orderOption)
+    public List<OrderOption> GetOrderOptions()
     {
-        return _orderDal.ReadOrderOption(orderOption);
+        return _orderDal.GetOrderOptions();
     }
 }
