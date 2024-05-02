@@ -27,4 +27,9 @@ public class OrderService : IOrderService
     {
         return _orderDal.UpdateOrderOption(orderOption);
     }
+
+    public OrderOption ReadOrderOption(OrderOption orderOption)
+    {
+        return _orderDal.ReadOrderOption(orderOption);
+    }
 }

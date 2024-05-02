@@ -48,9 +48,14 @@ builder.Services.AddSingleton<AuthenticationHandler>();
 
 builder.Services.AddSingleton<OrderOptionCreateHandler>();
 
+builder.Services.AddSingleton<OrderOptionUpdateHandler>();
+
 builder.Services.AddSingleton<OrderOptionDeleteHandler>();
 
-builder.Services.AddSingleton<MQTTClientService>();
+builder.Services.AddSingleton<MqttClientService>();
+
+
+
 
 builder.Services.AddHttpContextAccessor();
 
@@ -67,6 +72,8 @@ IMessageHandler orderOptionCreateHandler = builder.Services.BuildServiceProvider
 
 IMessageHandler orderOptionDeleteHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionDeleteHandler>();
 
+IMessageHandler orderOptionUpdateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionUpdateHandler>();
+
 IMessageHandler adminAuthenticationHandler = builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationHandler>();
 
 //a dictionary mapping message types to handlers.
@@ -74,9 +81,10 @@ Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMe
 {
     { "login", loginHandler },
     {"register", registerHandler},
-    { "registerPersonnel", registerPersonnelHandler },
+    {"registerPersonnel", registerPersonnelHandler },
     {"authentication", adminAuthenticationHandler},
     {"orderOptionCreate", orderOptionCreateHandler},
+    {"orderOptionUpdate", orderOptionUpdateHandler},
     {"orderOptionDelete", orderOptionDeleteHandler}
 };
 
@@ -99,6 +107,6 @@ app.UseCors(options =>
 
 app.MapControllers();
 
-app.Services.GetService<MQTTClientService>().CommunicateWithBroker();
+app.Services.GetService<MqttClientService>().CommunicateWithBroker();
 
 app.Run();

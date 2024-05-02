@@ -24,14 +24,15 @@ public class WebSocketManager
                 var connectionMetadata = new ConnectionMetadata
                 {
                     ConnectionId = socket.ConnectionInfo.Id.ToString(),
+                    Socket = socket
                 };
                 _connectionMetadata[socket.ConnectionInfo.Id] = connectionMetadata;
-            };  
+            };
             
             socket.OnMessage = message =>
             {
                 var jsonDocument = JsonDocument.Parse(message);
-                var messageType = jsonDocument.RootElement.GetProperty("Type").GetString();
+                var messageType = jsonDocument.RootElement.GetProperty("action").GetString();
                 HandleMessage(messageType, message, socket);
             };
         });
