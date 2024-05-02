@@ -40,26 +40,43 @@ export class LoginPageComponent {
     password: this.password,
   });
 
-  constructor(private router: Router, private websocketService: WebsocketService) { }
+  constructor(private router: Router, private websocketService: WebsocketService) {
+    // const checkIfLoggedIn = localStorage.getItem('token') != null;
+    // if (checkIfLoggedIn) {
+    //   this.router.navigate(['home']);
+    // }
+  }
+
 
   login() {
     console.log('Username validity:', this.username.valid);
     console.log('Password validity:', this.password.valid);
-    if (this.myFormGroup.valid) {
+    if (this.myFormGroup.valid || true) {
       const loginMessage = {
         action: 'login',
         Username: this.myFormGroup.value.username,
         Password: this.myFormGroup.value.password,
       };
-      console.log('Sending login message:', loginMessage);
+
+      console.log('Sending login message:', loginMessage); // Log the message being sent
 
       this.websocketService.sendData(loginMessage);
 
       this.websocketService.socket.onmessage = (event) => {
+        console.log('Received message from server:', event.data); // Log the message received from the server
+
         const response = JSON.parse(event.data);
         if (response.success) {
-          this.router.navigate(['home']);
+          // store token
+          localStorage.setItem('token', response.token);
+          let payload = JSON.parse(atob(response.token.split(".")[1]))
+          //Store the role, only allows for visual admin controls
+          localStorage.setItem('role', payload.role)
+          //Go to homepage after successful login
+          this.router.navigate(["home"])
+          location.reload();
         } else {
+          // Handle error here
           console.error('Login failed');
         }
       };
