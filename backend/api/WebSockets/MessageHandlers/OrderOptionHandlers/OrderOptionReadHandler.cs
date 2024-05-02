@@ -18,10 +18,13 @@ public class OrderOptionReadHandler : IMessageHandler
     {
         if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
         {
-            OrderOption orderOption = JsonSerializer.Deserialize<OrderOption>(message);
+            List<OrderOption> orderOptions = _orderService.GetOrderOptions();
             
-            OrderOption orderOptionToJson = _orderService.ReadOrderOption(orderOption);
+            string orderOptionsJson = JsonSerializer.Serialize(orderOptions);
+            
+            socket.Send(orderOptionsJson);
+            
         }
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 }
