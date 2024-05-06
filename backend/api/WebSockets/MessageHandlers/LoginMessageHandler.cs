@@ -21,6 +21,12 @@ public class LoginMessageHandler : IMessageHandler
         LoginData loginData = JsonSerializer.Deserialize<LoginData>(message);
         User userToBeAuthenticated = _userService.loginUser(loginData.Username, loginData.Password);
 
+        if (userToBeAuthenticated == null)
+        {
+            await socket.Send("Invalid username or password");
+            return;
+        }
+        
         string tokenForUser = _tokenService.createToken(userToBeAuthenticated);
         var response = new { token = tokenForUser };
         
