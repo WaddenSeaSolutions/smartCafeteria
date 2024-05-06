@@ -8,5 +8,5 @@ public interface IOrderService
 
     public OrderOption DeleteOrderOption(OrderOption orderOption);
     public OrderOption UpdateOrderOption(OrderOption orderOption);
-    List<OrderOption> GetOrderOptions();
+    public List<OrderOption> GetOrderOptions();
 }

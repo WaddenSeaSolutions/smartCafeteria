@@ -41,10 +41,10 @@ export class LoginPageComponent {
   });
 
   constructor(private router: Router, private websocketService: WebsocketService) {
-    // const checkIfLoggedIn = localStorage.getItem('token') != null;
-    // if (checkIfLoggedIn) {
-    //   this.router.navigate(['home']);
-    // }
+    const checkIfLoggedIn = localStorage.getItem('token') != null;
+     if (checkIfLoggedIn) {
+       this.router.navigate(['home']);
+     }
   }
 
 

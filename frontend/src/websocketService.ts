@@ -17,9 +17,15 @@ export class WebsocketService {
       this.sendOrderOptionReadRequest();
     };
 
+
     this.socket.onmessage = (event) => {
       const response = JSON.parse(event.data);
       const property = Object.keys(response)[0];
+
+      if (Array.isArray(response) && response.length > 0 && response[0].OptionName){
+        this.service.orderOptions = response;
+        console.log(service.orderOptions)
+      }
 
       switch (property) {
         case 'InvalidToken':
@@ -46,7 +52,7 @@ export class WebsocketService {
     const token = localStorage.getItem('token');
     if (token) {
       const authMessage = {
-        action: 'authenticate',
+        action: 'authentication',
         token: token
       };
       this.sendData(authMessage);
