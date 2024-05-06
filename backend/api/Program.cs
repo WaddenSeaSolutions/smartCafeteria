@@ -48,6 +48,8 @@ builder.Services.AddSingleton<AuthenticationHandler>();
 
 builder.Services.AddSingleton<OrderOptionCreateHandler>();
 
+builder.Services.AddSingleton<OrderOptionReadHandler>();
+
 builder.Services.AddSingleton<OrderOptionUpdateHandler>();
 
 builder.Services.AddSingleton<OrderOptionDeleteHandler>();
@@ -72,6 +74,8 @@ IMessageHandler registerPersonnelHandler = builder.Services.BuildServiceProvider
 
 IMessageHandler orderOptionCreateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionCreateHandler>();
 
+IMessageHandler orderOptionReadHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionReadHandler>();
+
 IMessageHandler orderOptionDeleteHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionDeleteHandler>();
 
 IMessageHandler orderOptionUpdateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionUpdateHandler>();
@@ -86,6 +90,7 @@ Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMe
     {"registerPersonnel", registerPersonnelHandler },
     {"authentication", adminAuthenticationHandler},
     {"orderOptionCreate", orderOptionCreateHandler},
+    {"orderOptionRead", orderOptionReadHandler},
     {"orderOptionUpdate", orderOptionUpdateHandler},
     {"orderOptionDelete", orderOptionDeleteHandler}
 };

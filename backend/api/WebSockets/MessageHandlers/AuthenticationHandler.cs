@@ -45,7 +45,13 @@ namespace backend.WebSockets.MessageHandlers
             }
             catch (SecurityTokenException)
             {
-                socket.Send("Invalid token");
+                var response = new
+                {
+                    status = "error",
+                    InvalidToken = "Invalid token"
+                };
+
+                socket.Send(JsonSerializer.Serialize(response));
             }
         }
     }
