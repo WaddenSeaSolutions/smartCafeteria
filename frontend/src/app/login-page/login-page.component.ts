@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import {WebsocketService} from "../../websocketService";
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login-page',
@@ -40,7 +41,8 @@ export class LoginPageComponent {
     password: this.password,
   });
 
-  constructor(private router: Router, private websocketService: WebsocketService) {
+  constructor(private router: Router, private websocketService: WebsocketService, private toastController: ToastController) {
+    // existing code
     // const checkIfLoggedIn = localStorage.getItem('token') != null;
     // if (checkIfLoggedIn) {
     //   this.router.navigate(['home']);
@@ -49,8 +51,6 @@ export class LoginPageComponent {
 
 
   login() {
-    console.log('Username validity:', this.username.valid);
-    console.log('Password validity:', this.password.valid);
     if (this.myFormGroup.valid) {
       const loginMessage = {
         action: 'login',
@@ -60,16 +60,6 @@ export class LoginPageComponent {
       console.log('Sending login message:', loginMessage);
 
       this.websocketService.sendData(loginMessage);
-
-      this.websocketService.socket.onmessage = (event) => {
-        const response = JSON.parse(event.data);
-        if (response.token) { // check for the presence of the token property
-          localStorage.setItem('token', response.token);
-          this.router.navigate(['home']);
-        } else {
-          console.error('Login failed');
-        }
-      };
     }
   }
 }

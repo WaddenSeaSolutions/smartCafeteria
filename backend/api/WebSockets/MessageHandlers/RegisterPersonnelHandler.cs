@@ -17,18 +17,27 @@ public class RegisterPersonnelHandler : IMessageHandler
     
     public Task HandleMessage(string message, IWebSocketConnection socket)
     {
-        Console.WriteLine("Hello");
         if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
         {
+            var dto = new
+            {
+                eventType = "errorResponse",
+                message = "Something went wrong. Please try again."
+            };
+            
             RegisterPersonnelData registerPersonnelData = JsonSerializer.Deserialize<RegisterPersonnelData>(message);
 
             _userService.registerPersonnel(registerPersonnelData.Username, registerPersonnelData.Password, "Personnel");
-
             socket.Send("Personnel registered");
         }
         else
         {
-            socket.Send("Unauthorized");
+            var dto = new
+            {
+                eventType = "errorResponse",
+                message = "Something went wrong. Please try again"
+            };
+            socket.Send(JsonSerializer.Serialize(dto));
         }
 
         return Task.CompletedTask;
