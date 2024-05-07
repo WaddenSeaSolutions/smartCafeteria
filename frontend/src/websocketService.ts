@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
 import {Service} from "./service";
-import {OrderOption} from "./interface";
+import {ToastController} from "@ionic/angular";
 import {Router} from "@angular/router";
 
 @Injectable({
@@ -9,38 +10,48 @@ import {Router} from "@angular/router";
 export class WebsocketService {
   public socket: WebSocket;
 
-  constructor(public service: Service, private router: Router) {
+  constructor(public service: Service, public toast: ToastController, public router: Router) {
     this.socket = new WebSocket('ws://localhost:8181');
+    this.handleEventsEmittedByTheServer();
+
     this.socket.onopen = () => {
       this.authenticate();
       this.sendOrderOptionReadRequest();
-    };
+    }
 
+  }
 
-    this.socket.onmessage = (event) => {
-      const response = JSON.parse(event.data);
+  sendData(data: any): void {
+    this.socket.send(JSON.stringify(data));
+  }
 
-      if (Array.isArray(response) && response.length > 0 && response[0].OptionName) {
-        this.service.orderOptions = response;
-        console.log(this.service.orderOptions);
-      } else {
-        if (response.hasOwnProperty('InvalidToken')) {
-          localStorage.removeItem('token');
-          this.router.navigate(['login-page']);
-        } else if (response.hasOwnProperty('OptionName')) {
-          const orderOption: OrderOption = response.OptionName;
-          if (orderOption.isNew) {
-            this.service.addOrderOption(orderOption);
-          } else if (orderOption.IsUpdated) {
-            this.service.updateOrderOption(orderOption);
-          } else if (orderOption.IsDeleted) {
-            this.service.deleteOrderOption(orderOption);
-          }
-        } else {
-          console.log('Server response:', event.data);
-        }
-      }
-    };
+  handleEventsEmittedByTheServer() {
+    this.socket.addEventListener('message', (event) => {
+      const data = JSON.parse(event.data) as any;
+      console.log("Received: " + JSON.stringify(data));
+      this.handleErrorResponse(data);
+      //@ts-ignore
+      this[data.eventType]?.call(this, data);
+    });
+    console.log(this.service.orderOptions);
+
+    this.socket.onerror = (err) => {
+      console.error(err);
+    }
+  }
+
+  async errorResponse(data: any) {
+    const toast = await this.toast.create({
+      message: 'hey'
+    });
+    toast.present();
+
+  };
+
+  successfulLogin(data: any) {
+    console.log(data)
+    localStorage.setItem('token', data.token);
+    this.router.navigate(['home']);
   }
 
   authenticate(): void {
@@ -54,8 +65,10 @@ export class WebsocketService {
     }
   }
 
-  sendData(data: any): void {
-    this.socket.send(JSON.stringify(data));
+  handleErrorResponse(data: any): void {
+    if (data.status === 'error' && data.InvalidToken) {
+      localStorage.removeItem('token');
+    }
   }
 
   sendOrderOptionReadRequest(): void {
