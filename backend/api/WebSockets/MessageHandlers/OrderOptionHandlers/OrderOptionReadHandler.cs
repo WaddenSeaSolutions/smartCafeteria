@@ -22,9 +22,13 @@ public class OrderOptionReadHandler : IMessageHandler
             
             string orderOptionsJson = JsonSerializer.Serialize(orderOptions);
             
+            Console.WriteLine(orderOptionsJson);
             socket.Send(orderOptionsJson);
+            return Task.CompletedTask;
             
         }
+
+        socket.Send("You do not have permission to read order options.");
         return Task.CompletedTask;
     }
 }

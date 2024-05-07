@@ -21,8 +21,6 @@ public class TokenService : ITokenService
 
     public string createToken(User user)
     {
-        try
-        {
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -41,19 +39,10 @@ public class TokenService : ITokenService
         
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("An exeption happend when creating token: "+ e.Message);
-            throw new Exception("Failed to create a token");
-        }
-
     }
 
     public User validateTokenAndReturnUser(string token)
     {
-        try
-        {
             var principal = validateAndReturnToken(token); //Validating the token has not been tampered
     
             var nameClaim = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name); // Saves username of the user
@@ -61,20 +50,11 @@ public class TokenService : ITokenService
             User userFromToken = _tokenDal.userFromUsername(nameClaim.Value);
 
             return userFromToken;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("validateTokenAndReturnUser failed: " + e.Message);
-            throw new Exception("Could not validate token");
-        }
-        
     }
     
 
     private ClaimsPrincipal validateAndReturnToken(string token)
     {
-        try
-        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var validationParameters = new TokenValidationParameters
             {
@@ -89,12 +69,6 @@ public class TokenService : ITokenService
             ClaimsPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
 
             return principal;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("Token validation failed: " + e.Message);
-            throw new Exception("Token validation failed");
-        }
     }
     
 }

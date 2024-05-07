@@ -10,10 +10,11 @@ import {LoginPageComponent} from "./login-page/login-page.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {RegisterPersonnelComponent} from "./register-personnel/register-personnel.component";
+import {OrderOptionControlComponent} from "./order-option-control/order-option-control.component";
 
 
 @NgModule({
-  declarations: [AppComponent, LoginPageComponent, RegisterPersonnelComponent],
+  declarations: [AppComponent, LoginPageComponent, RegisterPersonnelComponent, OrderOptionControlComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule, HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

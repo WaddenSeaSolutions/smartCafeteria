@@ -19,8 +19,7 @@ namespace backend.WebSockets.MessageHandlers
         {
             // Extract the token from the message
             var jsonDocument = JsonDocument.Parse(message);
-            var token = jsonDocument.RootElement.GetProperty("Token").GetString();
-            
+            var token = jsonDocument.RootElement.GetProperty("token").GetString();
             try
             {
                 // Validate the token and get the user
@@ -41,11 +40,18 @@ namespace backend.WebSockets.MessageHandlers
                     Console.WriteLine("Exception thrown in AdminAuthenticationHandler");
                 }
 
-                socket.Send("User Authenticated");
             }
-            catch (SecurityTokenException)
+            catch (SecurityTokenException e)
             {
-                socket.Send("Invalid token");
+                Console.WriteLine("Hello");
+                Console.WriteLine(e.Message);
+                var response = new
+                {
+                    status = "error",
+                    InvalidToken = "Invalid token"
+                };
+
+                socket.Send(JsonSerializer.Serialize(response));
             }
         }
     }

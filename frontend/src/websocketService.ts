@@ -13,12 +13,11 @@ export class WebsocketService {
   constructor(public service: Service, public toast: ToastController, public router: Router) {
     this.socket = new WebSocket('ws://localhost:8181');
     this.handleEventsEmittedByTheServer();
-    this.sendOrderOptionReadRequest();
 
     this.socket.onopen = () => {
-      this.authenticate();
+    this.authenticate();
+    this.sendOrderOptionReadRequest();
     }
-
   }
 
   sendData(data: any): void {
@@ -33,10 +32,17 @@ export class WebsocketService {
       //@ts-ignore
       this[data.eventType]?.call(this, data);
     });
+    console.log(this.service.orderOptions);
 
     this.socket.onerror = (err) => {
       console.error(err);
     }
+  }
+
+  successfulLogin(data: any) {
+    console.log(data)
+    localStorage.setItem('token', data.token);
+    this.router.navigate(['home']);
   }
 
 
@@ -47,14 +53,6 @@ async errorResponse(data: any) {
     toast.present();
 
 };
-
-
-  successfulLogin(data: any) {
-    console.log(data)
-      localStorage.setItem('token', data.token);
-      this.router.navigate(['home']);
-    }
-
   authenticate(): void {
     const token = localStorage.getItem('token');
     if (token !== null) {
@@ -78,8 +76,6 @@ async errorResponse(data: any) {
     };
     this.sendData(request);
   }
-
-  // Add this method to your WebsocketService
   registerPersonnel(data: any) {
     if (data.response == 'ok') {
 
