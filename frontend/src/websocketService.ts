@@ -62,6 +62,9 @@ async errorResponse(data: any) {
       };
       this.sendData(authMessage);
     }
+    else {
+      this.router.navigate(['login-page']);
+    }
   }
 
   handleErrorResponse(data: any): void {
