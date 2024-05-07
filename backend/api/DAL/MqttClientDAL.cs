@@ -18,15 +18,15 @@ public class MqttClientDAL
         return null;
     }
 
-    public Order CreateNewOrderFromMqtt(OrderMqtt order)
+    public OrderMqtt CreateNewOrderFromMqtt(OrderMqtt order)
     {
         try
         {
             var sql = $@"INSERT INTO cafeteria.order (timestamp, payment, done, userId) 
-            VALUES (@timestamp, @payment,@done,@userId)";
+            VALUES (@timestamp, @payment,@done,@userId) RETURNING *;";
             using (var conn = _dataSource.OpenConnection())
             {
-                return conn.QueryFirst<Order>(sql,
+                return conn.QueryFirst<OrderMqtt>(sql,
                     new { timestamp = order.Timestamp, payment = order.Payment, done = order.Done, userId = 1 });
             }
         }

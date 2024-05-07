@@ -10,5 +10,5 @@ public class OrderMqtt
     
     public Boolean Done { get; set; }
     
-    public string Options { get; set; }
+    public int UserId { get; set; }
 }

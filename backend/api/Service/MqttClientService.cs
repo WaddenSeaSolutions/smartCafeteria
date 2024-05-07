@@ -15,56 +15,88 @@ public class MqttClientService
     {
         _mqttClientDal = mqttClientDal;
     }
+    
+    /// <summary>
+    /// This method is used to connect and communicate with a Mqtt server.
+    /// The method receives a string of numbers which is then parsed and seperated into a list.
+    /// The numbers are used to create a order in the database.
+    /// </summary>
     public async Task CommunicateWithBroker()
     {
         var mqttFactory = new MqttFactory();
         var mqttClient = mqttFactory.CreateMqttClient();
         
         var mqttClientOptions = new MqttClientOptionsBuilder()
-            .WithTcpServer("mqtt.flespi.io", 1883) // Set the server and port
-            .WithCredentials("FlespiToken H2AG1ypT28ZX4gUZgktOb38QbqbQZvmIR37AFAxNhOyZUCO7u2xR140gBOjoCXSY", "") // Add credentials
-            .WithProtocolVersion(MqttProtocolVersion.V500) // Use MQTT 5.0
+            .WithTcpServer("mqtt.flespi.io", 1883) 
+            .WithCredentials("FlespiToken H2AG1ypT28ZX4gUZgktOb38QbqbQZvmIR37AFAxNhOyZUCO7u2xR140gBOjoCXSY", "")
+            .WithProtocolVersion(MqttProtocolVersion.V500) 
             .Build();
 
         await mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
-        Console.WriteLine("HJÆÆÆÆÆÆÆÆÆÆÆÆÆÆLP");
 
         var mqttSubscribeOptions = mqttFactory.CreateSubscribeOptionsBuilder()
             .WithTopicFilter(f => f.WithTopic("Cafeteria/CompleteOrder")).Build();
 
         await mqttClient.SubscribeAsync(mqttSubscribeOptions, CancellationToken.None);
         
-        Console.WriteLine("HJÆÆÆÆÆÆÆÆÆÆÆÆÆÆLP");
 
         mqttClient.ApplicationMessageReceivedAsync += async e =>
         {
             try
             {
                 var message = e.ApplicationMessage.ConvertPayloadToString();
-                Console.WriteLine("Message received:" + message);
-                var messageObject = JsonSerializer.Deserialize<String>(message);
-                var orderNumbers = message.Split(",").Select(int.Parse).ToList();
-                var timestamp = DateTimeOffset.UtcNow;
-                var userId = 1;
-                OrderMqtt order = new OrderMqtt
+        Console.WriteLine("Message received:" + message);
+        
+        // Create a list to store the parsed integers
+        var orderNumbers = new List<int>();
+
+        // Split the message
+        foreach (var str in message.Split(','))
+        {
+            // Check if the string is not empty or whitespace
+            if (!string.IsNullOrWhiteSpace(str))
+            {
+                // Try to parse the string as an integer
+                if (int.TryParse(str, out int num))
                 {
-                    Id = userId,
-                    Done = false,
-                    Payment = false,
-                    Timestamp = timestamp,
-                    Options = messageObject
-                };
-                var pongMessage = new MqttApplicationMessageBuilder().WithTopic("response_topic")
-                    .WithPayload("Message received by the backend")
-                    .WithQualityOfServiceLevel(e.ApplicationMessage.QualityOfServiceLevel)
-                    .WithRetainFlag(e.ApplicationMessage.Retain)
-                    .Build();
-                await mqttClient.PublishAsync(pongMessage, CancellationToken.None);
-                
-                var insertionResult = _mqttClientDal.CreateNewOrderFromMqtt(order);
-                
-                _mqttClientDal.AddContentToOrder(orderNumbers,insertionResult.Id);
-                Console.WriteLine("HJÆÆÆÆÆÆÆÆÆÆÆÆÆÆLP");
+                    orderNumbers.Add(num);
+                }
+                else
+                {
+                    // Log a warning if the parsing fails
+                    Console.WriteLine($"Warning: Unable to parse '{str}' as an integer.");
+                }
+            }
+            else
+            {
+                // Log a warning if the string is empty or whitespace
+                Console.WriteLine($"Warning: Ignoring empty or whitespace value in message: '{str}'");
+            }
+        }
+
+        // Create an OrderMqtt object
+        var timestamp = DateTimeOffset.UtcNow;
+        var userId = 1;
+        OrderMqtt order = new OrderMqtt
+        {
+            Id = userId,
+            Done = false,
+            Payment = false,
+            Timestamp = timestamp, 
+            UserId = 1// Consider deserializing to a different type if needed
+        };
+        
+        // Publishing a response message
+        var pongMessage = new MqttApplicationMessageBuilder()
+            .WithTopic("Cafeteria/Response")
+            .WithPayload("Message received by the backend")
+            .WithQualityOfServiceLevel(e.ApplicationMessage.QualityOfServiceLevel)
+            .WithRetainFlag(e.ApplicationMessage.Retain)
+            .Build();
+        await mqttClient.PublishAsync(pongMessage, CancellationToken.None);
+        
+        var insertionResult = _mqttClientDal.CreateNewOrderFromMqtt(order);
+        _mqttClientDal.AddContentToOrder(orderNumbers, insertionResult.Id);
                 
             }
             catch (Exception exc)
@@ -72,6 +104,13 @@ public class MqttClientService
                 Console.WriteLine(exc.Message);
                 Console.WriteLine(exc.InnerException);
                 Console.WriteLine(exc.StackTrace);
+                var errorMessage = new MqttApplicationMessageBuilder()
+                    .WithTopic("Cafeteria/Response")
+                    .WithPayload("Something went wrong")
+                    .WithQualityOfServiceLevel(e.ApplicationMessage.QualityOfServiceLevel)
+                    .WithRetainFlag(e.ApplicationMessage.Retain)
+                    .Build();
+                await mqttClient.PublishAsync(errorMessage, CancellationToken.None);
             }
         };
     }
