@@ -103,15 +103,7 @@ export class RegisterPersonnelComponent {
     return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
       return new Promise<ValidationErrors | null>((resolve) => {
         this.websocketService.sendData({action: 'registerPersonnel', username: control.value});
-
-        this.websocketService.socket.onmessage = (event) => {
-          const response = JSON.parse(event.data);
-
-          if (response.action === 'registerPersonnel') {
-            resolve(response.exists ? {usernameExists: true} : null);
-          }
-        }
-      });
+      })
     };
   }
 
@@ -123,43 +115,11 @@ export class RegisterPersonnelComponent {
       Password: this.password.value,
     }
     try {
+
       this.websocketService.sendData(registrant);
-
-      this.websocketService.socket.onmessage = (event) => {
-        const response = JSON.parse(event.data);
-
-        if (response.ok) {
-          this.okResponse("Din konto blev oprettet")
-          // Proceed to login-page if the request was successful
-          this.router.navigate(["login-page"]);
-        } else {
-          this.errorResponse("Noget gik galt")
-        }
-      }
     } catch (error) {
       this.errorResponse("Noget gik galt")
     }
-  }
-
-
-  async okResponse(message: string, duration: number = 2000) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: duration,
-      position: 'bottom', // Displays in the bottom
-      color: 'success', // Green Color for ok response
-      buttons: [
-        {
-          text: 'Close',
-          role: 'cancel',
-          handler: () => {
-            console.log('Toast dismissed');
-          }
-        }
-      ]
-    });
-
-    toast.present();
   }
 
   async errorResponse(message: string, duration: number = 2000) {

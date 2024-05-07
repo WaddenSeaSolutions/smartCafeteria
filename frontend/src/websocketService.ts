@@ -15,10 +15,9 @@ export class WebsocketService {
     this.handleEventsEmittedByTheServer();
 
     this.socket.onopen = () => {
-      this.authenticate();
-      this.sendOrderOptionReadRequest();
+    this.authenticate();
+    this.sendOrderOptionReadRequest();
     }
-
   }
 
   sendData(data: any): void {
@@ -40,20 +39,20 @@ export class WebsocketService {
     }
   }
 
-  async errorResponse(data: any) {
-    const toast = await this.toast.create({
-      message: 'hey'
-    });
-    toast.present();
-
-  };
-
   successfulLogin(data: any) {
     console.log(data)
     localStorage.setItem('token', data.token);
     this.router.navigate(['home']);
   }
 
+
+async errorResponse(data: any) {
+    const toast = await this.toast.create({
+      message: 'Something went wrong'
+    });
+    toast.present();
+
+};
   authenticate(): void {
     const token = localStorage.getItem('token');
     if (token !== null) {
@@ -76,5 +75,10 @@ export class WebsocketService {
       action: 'orderOptionRead'
     };
     this.sendData(request);
+  }
+  registerPersonnel(data: any) {
+    if (data.response == 'ok') {
+
+    }
   }
 }
