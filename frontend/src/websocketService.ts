@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
 import {Service} from "./service";
 import {OrderOption} from "./interface";
 import {Router} from "@angular/router";
@@ -20,20 +19,16 @@ export class WebsocketService {
 
     this.socket.onmessage = (event) => {
       const response = JSON.parse(event.data);
-      const property = Object.keys(response)[0];
 
-      if (Array.isArray(response) && response.length > 0 && response[0].OptionName){
+      if (Array.isArray(response) && response.length > 0 && response[0].OptionName) {
         this.service.orderOptions = response;
-        console.log(service.orderOptions)
-      }
-
-      switch (property) {
-        case 'InvalidToken':
+        console.log(this.service.orderOptions);
+      } else {
+        if (response.hasOwnProperty('InvalidToken')) {
           localStorage.removeItem('token');
-          router.navigate(['login-page']);
-          break;
-        case 'OptionName':
-          const orderOption: OrderOption = response.data;
+          this.router.navigate(['login-page']);
+        } else if (response.hasOwnProperty('OptionName')) {
+          const orderOption: OrderOption = response.OptionName;
           if (orderOption.isNew) {
             this.service.addOrderOption(orderOption);
           } else if (orderOption.IsUpdated) {
@@ -41,16 +36,16 @@ export class WebsocketService {
           } else if (orderOption.IsDeleted) {
             this.service.deleteOrderOption(orderOption);
           }
-          break;
-        default:
+        } else {
           console.log('Server response:', event.data);
+        }
       }
     };
   }
 
   authenticate(): void {
     const token = localStorage.getItem('token');
-    if (token) {
+    if (token !== null) {
       const authMessage = {
         action: 'authentication',
         token: token
@@ -69,6 +64,4 @@ export class WebsocketService {
     };
     this.sendData(request);
   }
-
-
 }
