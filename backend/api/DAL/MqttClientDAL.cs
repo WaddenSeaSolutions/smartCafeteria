@@ -4,11 +4,11 @@ using Npgsql;
 
 namespace backend.DAL;
 
-public class MQTTClientDAL
+public class MqttClientDAL
 {
     private readonly NpgsqlDataSource _dataSource;
 
-    public MQTTClientDAL(NpgsqlDataSource dataSource)
+    public MqttClientDAL(NpgsqlDataSource dataSource)
     {
         _dataSource = dataSource;
     }
@@ -18,7 +18,7 @@ public class MQTTClientDAL
         return null;
     }
 
-    public Order CreateNewOrderFromMQTT(OrderMQTT order)
+    public Order CreateNewOrderFromMqtt(OrderMqtt order)
     {
         try
         {

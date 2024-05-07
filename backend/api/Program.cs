@@ -52,7 +52,7 @@ builder.Services.AddSingleton<OrderOptionUpdateHandler>();
 
 builder.Services.AddSingleton<OrderOptionDeleteHandler>();
 
-builder.Services.AddSingleton<MQTTClientDAL>();
+builder.Services.AddSingleton<MqttClientDAL>();
 
 builder.Services.AddSingleton<MqttClientService>();
 
@@ -100,6 +100,7 @@ var app = builder.Build();
 
 
 app.UseCors(options =>
+
 {
     options.SetIsOriginAllowed(origin => true)
         .AllowAnyMethod()
@@ -108,6 +109,7 @@ app.UseCors(options =>
 });
 
 app.MapControllers();
+
 
 app.Services.GetService<MqttClientService>().CommunicateWithBroker();
 

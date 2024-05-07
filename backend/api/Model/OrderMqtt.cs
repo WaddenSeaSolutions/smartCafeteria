@@ -1,6 +1,6 @@
 namespace backend.Model;
 
-public class OrderMQTT
+public class OrderMqtt
 {
     public int Id { get; set; }
     
