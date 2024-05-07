@@ -41,7 +41,7 @@ public class MqttClientDAL
     {
         try
         {
-            var sql = $@"INSERT INTO cefeteria.ordercontent (orderid, orderoptionid) VALUES (@orderid,@orderoptionid)";
+            var sql = $@"INSERT INTO cafeteria.userorder (orderid, orderoptionid) VALUES (@orderid,@orderoptionid)";
             using (var conn = _dataSource.OpenConnection())
             {
                 foreach (var number in orderNumbers)

@@ -61,17 +61,9 @@ public class MqttClientService
                 {
                     orderNumbers.Add(num);
                 }
-                else
-                {
-                    // Log a warning if the parsing fails
-                    Console.WriteLine($"Warning: Unable to parse '{str}' as an integer.");
-                }
+                else { Console.WriteLine($"Warning: Unable to parse '{str}' as an integer."); }
             }
-            else
-            {
-                // Log a warning if the string is empty or whitespace
-                Console.WriteLine($"Warning: Ignoring empty or whitespace value in message: '{str}'");
-            }
+            else { Console.WriteLine($"Warning: Ignoring empty or whitespace value in message: '{str}'"); }
         }
 
         // Create an OrderMqtt object
