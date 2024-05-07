@@ -4,11 +4,11 @@ using Npgsql;
 
 namespace backend.DAL;
 
-public class MQTTClientDAL
+public class MqttClientDAL
 {
     private readonly NpgsqlDataSource _dataSource;
 
-    public MQTTClientDAL(NpgsqlDataSource dataSource)
+    public MqttClientDAL(NpgsqlDataSource dataSource)
     {
         _dataSource = dataSource;
     }
@@ -18,15 +18,15 @@ public class MQTTClientDAL
         return null;
     }
 
-    public Order CreateNewOrderFromMQTT(OrderMQTT order)
+    public OrderMqtt CreateNewOrderFromMqtt(OrderMqtt order)
     {
         try
         {
             var sql = $@"INSERT INTO cafeteria.order (timestamp, payment, done, userId) 
-            VALUES (@timestamp, @payment,@done,@userId)";
+            VALUES (@timestamp, @payment,@done,@userId) RETURNING *;";
             using (var conn = _dataSource.OpenConnection())
             {
-                return conn.QueryFirst<Order>(sql,
+                return conn.QueryFirst<OrderMqtt>(sql,
                     new { timestamp = order.Timestamp, payment = order.Payment, done = order.Done, userId = 1 });
             }
         }
@@ -41,7 +41,7 @@ public class MQTTClientDAL
     {
         try
         {
-            var sql = $@"INSERT INTO cefeteria.ordercontent (orderid, orderoptionid) VALUES (@orderid,@orderoptionid)";
+            var sql = $@"INSERT INTO cafeteria.userorder (orderid, orderoptionid) VALUES (@orderid,@orderoptionid)";
             using (var conn = _dataSource.OpenConnection())
             {
                 foreach (var number in orderNumbers)

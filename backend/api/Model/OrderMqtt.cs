@@ -1,6 +1,6 @@
 namespace backend.Model;
 
-public class OrderMQTT
+public class OrderMqtt
 {
     public int Id { get; set; }
     
@@ -10,5 +10,5 @@ public class OrderMQTT
     
     public Boolean Done { get; set; }
     
-    public string Options { get; set; }
+    public int UserId { get; set; }
 }
