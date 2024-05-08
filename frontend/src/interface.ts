@@ -7,8 +7,5 @@ export interface Users{
 export interface OrderOption {
   Id: number;
   OptionName: string;
-  active: boolean;
-  IsUpdated: boolean;
-  isNew: boolean;
-  IsDeleted: boolean;
+  Active: boolean;
 }

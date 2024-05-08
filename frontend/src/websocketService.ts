@@ -16,7 +16,7 @@ export class WebsocketService {
 
     this.socket.onopen = () => {
     this.authenticate();
-    this.sendOrderOptionReadRequest();
+    this.sendData({action: 'orderOptionRead'});
     }
   }
 
@@ -32,11 +32,19 @@ export class WebsocketService {
       //@ts-ignore
       this[data.eventType]?.call(this, data);
     });
-    console.log(this.service.orderOptions);
-
     this.socket.onerror = (err) => {
       console.error(err);
     }
+  }
+
+  orderOptions(data: any): void {
+    console.log(data.orderOptions); // Add this line to check the received data
+    this.service.orderOptions = data.orderOptions;
+  }
+
+  orderOptionCreated(data: any): void {
+    console.log(data.orderOption.OptionName)
+    this.service.addOrderOption(data.orderOption);
   }
 
   successfulLogin(data: any) {
@@ -71,13 +79,6 @@ async errorResponse(data: any) {
     if (data.status === 'error' && data.InvalidToken) {
       localStorage.removeItem('token');
     }
-  }
-
-  sendOrderOptionReadRequest(): void {
-    const request = {
-      action: 'orderOptionRead'
-    };
-    this.sendData(request);
   }
   registerPersonnel(data: any) {
     if (data.response == 'ok') {

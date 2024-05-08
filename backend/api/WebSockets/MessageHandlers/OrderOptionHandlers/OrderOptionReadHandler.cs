@@ -19,8 +19,12 @@ public class OrderOptionReadHandler : IMessageHandler
         if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
         {
             List<OrderOption> orderOptions = _orderService.GetOrderOptions();
-            
-            string orderOptionsJson = JsonSerializer.Serialize(orderOptions);
+            var response = new
+            {
+                eventType = "orderOptions",
+                orderOptions = orderOptions
+            };
+            string orderOptionsJson = JsonSerializer.Serialize(response);
             
             Console.WriteLine(orderOptionsJson);
             socket.Send(orderOptionsJson);

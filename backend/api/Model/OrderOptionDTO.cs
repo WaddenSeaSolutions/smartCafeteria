@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace backend.Model;
 
 public class OrderOptionDTO
 {
+    [Required]
     public string OptionName { get; set; }
     
-    public Boolean active { get; set; }
+    public Boolean Active { get; set; }
 }
