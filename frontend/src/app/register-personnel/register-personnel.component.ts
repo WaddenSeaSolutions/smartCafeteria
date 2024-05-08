@@ -94,9 +94,6 @@ export class RegisterPersonnelComponent {
 
   constructor(private websocketService: WebsocketService, private router: Router, private toastController: ToastController) {
     this.checkIfLoggedIn = localStorage.getItem('token') != null;
-     if (this.checkIfLoggedIn){
-       this.router.navigate(['home'])
-    }
   }
 
   nameValidator(): AsyncValidatorFn {
