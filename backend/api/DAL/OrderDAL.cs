@@ -17,10 +17,11 @@ public class OrderDAL
     {
         try
         {
-            var sql = "INSERT INTO cafeteria.orderoption (optionname, active) VALUES (@optionName, @active) RETURNING id";
+            var sql = "INSERT INTO cafeteria.orderoption (optionname, active) VALUES (@optionname, @active) RETURNING *";
             using (var conn = _dataSource.OpenConnection())
             {
-                return conn.QueryFirst<OrderOption>(sql, new {optionName = optionToCreate.OptionName, active = optionToCreate.active});
+                OrderOption orderOption = conn.QueryFirst<OrderOption>(sql, new {optionname = optionToCreate.OptionName, active = optionToCreate.Active});
+                return orderOption;
             }
         }
         catch (Exception e)
@@ -34,7 +35,7 @@ public class OrderDAL
     {
         try
         {
-            var sql = "DELETE FROM cafeteria.orderoption WHERE id = @id RETURNING id";
+            var sql = "DELETE FROM cafeteria.orderoption WHERE id = @id RETURNING *";
             using (var conn = _dataSource.OpenConnection())
             {
                 return conn.QueryFirst<OrderOption>(sql, new {id = orderOption.Id});
@@ -51,33 +52,16 @@ public class OrderDAL
     {
         try
         {
-            var sql = "UPDATE cafeteria.orderoption SET active = @active WHERE id = @id RETURNING id";
+            var sql = "UPDATE cafeteria.orderoption SET active = @active WHERE id = @id RETURNING *";
             using (var conn = _dataSource.OpenConnection())
             {
-                return conn.QueryFirst<OrderOption>(sql, new {active = orderOption.active, id = orderOption.Id});
+                return conn.QueryFirst<OrderOption>(sql, new {active = orderOption.Active, id = orderOption.Id});
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw new Exception("Failed to update order option");
-        }
-    }
-
-    public OrderOption ReadOrderOption(OrderOption orderOption)
-    {
-        try
-        {
-            var sql = "SELECT * FROM cafeteria.orderoption WHERE id = @id";
-            using (var conn = _dataSource.OpenConnection())
-            {
-                return conn.QueryFirst<OrderOption>(sql, new {id = orderOption.Id});
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw new Exception("Failed to read order option");
         }
     }
 

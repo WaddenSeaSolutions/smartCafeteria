@@ -43,7 +43,6 @@ namespace backend.WebSockets.MessageHandlers
             }
             catch (SecurityTokenException e)
             {
-                Console.WriteLine("Hello");
                 Console.WriteLine(e.Message);
                 var response = new
                 {

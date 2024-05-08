@@ -21,9 +21,12 @@ public class OrderOptionUpdateHandler : IMessageHandler
             OrderOption orderOption = JsonSerializer.Deserialize<OrderOption>(message);
         
             OrderOption updatedOrderOption = _orderService.UpdateOrderOption(orderOption);
-            updatedOrderOption.IsUpdated = true; //Shows frontend that it needs to replace this order option instead of adding it to the list.
-            
-            string updatedOrderOptionJson = JsonSerializer.Serialize(updatedOrderOption);
+            var response = new
+            {
+                eventType = "orderOptionUpdated",
+                orderOption = updatedOrderOption
+            };
+            string updatedOrderOptionJson = JsonSerializer.Serialize(response);
         
             foreach (var connection in WebSocketManager._connectionMetadata.Values)
             {
