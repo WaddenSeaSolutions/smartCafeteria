@@ -35,7 +35,9 @@ public class MqttClientService
         await mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
 
         var mqttSubscribeOptions = mqttFactory.CreateSubscribeOptionsBuilder()
-            .WithTopicFilter(f => f.WithTopic("Cafeteria/CompleteOrder")).Build();
+            .WithTopicFilter(f => f.WithTopic("Cafeteria/CompleteOrder"))
+            .WithTopicFilter(f => f.WithTopic("Cafeteria/GetOptions"))
+            .Build();
 
         await mqttClient.SubscribeAsync(mqttSubscribeOptions, CancellationToken.None);
         
@@ -44,10 +46,36 @@ public class MqttClientService
         {
             try
             {
+                var topic = e.ApplicationMessage.Topic;
                 var message = e.ApplicationMessage.ConvertPayloadToString();
-        Console.WriteLine("Message received:" + message);
-        
-        // Create a list to store the parsed integers
+                Console.WriteLine("Message received:" + message);
+
+                if (topic == "Cafeteria/CompleteOrder")
+                {
+                    HandleCompleteOrder(message, mqttClient, e);
+                }else if (topic == "Cafeteria/GetOptions")
+                {
+                    HandleGetOrderOptions( mqttClient, e);
+                }
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+                Console.WriteLine(exc.InnerException);
+                Console.WriteLine(exc.StackTrace);
+                var errorMessage = new MqttApplicationMessageBuilder()
+                    .WithTopic("Cafeteria/Response")
+                    .WithPayload("Something went wrong")
+                    .WithQualityOfServiceLevel(e.ApplicationMessage.QualityOfServiceLevel)
+                    .WithRetainFlag(e.ApplicationMessage.Retain)
+                    .Build();
+                await mqttClient.PublishAsync(errorMessage, CancellationToken.None);
+            }
+        };
+    }
+    
+    private async void HandleCompleteOrder(string message, IMqttClient mqttClient, MqttApplicationMessageReceivedEventArgs e)
+    {
         var orderNumbers = new List<int>();
 
         // Split the message
@@ -89,24 +117,26 @@ public class MqttClientService
         
         var insertionResult = _mqttClientDal.CreateNewOrderFromMqtt(order);
         _mqttClientDal.AddContentToOrder(orderNumbers, insertionResult.Id);
-                
-            }
-            catch (Exception exc)
-            {
-                Console.WriteLine(exc.Message);
-                Console.WriteLine(exc.InnerException);
-                Console.WriteLine(exc.StackTrace);
-                var errorMessage = new MqttApplicationMessageBuilder()
-                    .WithTopic("Cafeteria/Response")
-                    .WithPayload("Something went wrong")
-                    .WithQualityOfServiceLevel(e.ApplicationMessage.QualityOfServiceLevel)
-                    .WithRetainFlag(e.ApplicationMessage.Retain)
-                    .Build();
-                await mqttClient.PublishAsync(errorMessage, CancellationToken.None);
-            }
-        };
+    }
+
+    private async void HandleGetOrderOptions(IMqttClient mqttClient, MqttApplicationMessageReceivedEventArgs e)
+    {
+        var orderOptionList = new List<string>();
+
+        orderOptionList = _mqttClientDal.GetOrderOptions();
+        
+        var orderOptionsString = string.Join(",", orderOptionList);
+
+        var pongMessage = new MqttApplicationMessageBuilder()
+            .WithTopic("Cafeteria/OrderOptions")
+            .WithPayload(orderOptionsString)
+            .WithQualityOfServiceLevel(e.ApplicationMessage.QualityOfServiceLevel)
+            .WithRetainFlag(e.ApplicationMessage.Retain)
+            .Build();
+        await mqttClient.PublishAsync(pongMessage, CancellationToken.None);
     }
 }
+
 
 public class MqttClientWantsToSendMessageToBackend
 {
