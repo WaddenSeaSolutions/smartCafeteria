@@ -17,10 +17,10 @@ public class OrderDAL
     {
         try
         {
-            var sql = "INSERT INTO cafeteria.orderoption (optionname, active) VALUES (@optionname, @active) RETURNING *";
+            var sql = "INSERT INTO cafeteria.orderoption (optionname, active, deleted) VALUES (@optionname, @active, @deleted) RETURNING *";
             using (var conn = _dataSource.OpenConnection())
             {
-                OrderOption orderOption = conn.QueryFirst<OrderOption>(sql, new {optionname = optionToCreate.OptionName, active = optionToCreate.Active});
+                OrderOption orderOption = conn.QueryFirst<OrderOption>(sql, new {optionname = optionToCreate.OptionName, active = optionToCreate.Active, deleted = optionToCreate.Deleted});
                 return orderOption;
             }
         }
@@ -35,10 +35,12 @@ public class OrderDAL
     {
         try
         {
-            var sql = "DELETE FROM cafeteria.orderoption WHERE id = @id RETURNING *";
+            Console.WriteLine(orderOption.Id);
+            Console.WriteLine(orderOption);
+            var sql = "UPDATE cafeteria.orderoption set deleted = true WHERE id = @id RETURNING *";
             using (var conn = _dataSource.OpenConnection())
             {
-                return conn.QueryFirst<OrderOption>(sql, new {id = orderOption.Id});
+                return conn.QueryFirstOrDefault<OrderOption>(sql, new {id = orderOption.Id});
             }
         }
         catch (Exception e)
@@ -69,7 +71,7 @@ public class OrderDAL
     {
         try
         {
-            var sql = "SELECT * FROM cafeteria.orderoption";
+            var sql = "SELECT * FROM cafeteria.orderoption WHERE deleted = false";
             using (var conn = _dataSource.OpenConnection())
             {
                 return conn.Query<OrderOption>(sql).ToList();

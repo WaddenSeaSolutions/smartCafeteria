@@ -8,4 +8,6 @@ public class OrderOptionDTO
     public string OptionName { get; set; }
     
     public Boolean Active { get; set; }
+    
+    public Boolean Deleted { get; set; }
 }

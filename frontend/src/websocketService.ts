@@ -47,6 +47,11 @@ export class WebsocketService {
     this.service.addOrderOption(data.orderOption);
   }
 
+  orderOptionDeleted(data: any): void {
+    console.log(data.orderOption)
+    this.service.deleteOrderOption(data.orderOption);
+  }
+
   successfulLogin(data: any) {
     console.log(data)
     localStorage.setItem('token', data.token);
