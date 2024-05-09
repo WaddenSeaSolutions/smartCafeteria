@@ -16,7 +16,8 @@ public class OrderOptionReadHandler : IMessageHandler
     
     public Task HandleMessage(string message, IWebSocketConnection socket)
     {
-        if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
+        if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin
+            || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "customer");
         {
             List<OrderOption> orderOptions = _orderService.GetOrderOptions();
             var response = new

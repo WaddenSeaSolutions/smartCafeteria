@@ -20,13 +20,11 @@ public class OrderOptionCreateHandler : IMessageHandler
         {
             OrderOptionDTO orderOptionDto = JsonSerializer.Deserialize<OrderOptionDTO>(message);
             
-            if (string.IsNullOrEmpty(orderOptionDto.OptionName))
-            {
-                Console.WriteLine("OptionName cannot be null or empty");
-            }
+            orderOptionDto.Active = true;
+            orderOptionDto.Deleted = false;
             
             OrderOption orderOptionToJson = _orderService.CreateOrderOption(orderOptionDto);
-            orderOptionToJson.Active = true;
+            
             var response = new
             {
                 eventType = "orderOptionCreated",

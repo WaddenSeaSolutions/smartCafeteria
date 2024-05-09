@@ -3,6 +3,7 @@ import {Service} from "../../service";
 import {Router} from "@angular/router";
 import {WebsocketService} from "../../websocketService";
 import {FormControl, Validators} from "@angular/forms";
+import {OrderOption} from "../../interface";
 
 @Component({
   selector: 'app-order-option-control',
@@ -17,7 +18,10 @@ import {FormControl, Validators} from "@angular/forms";
   <ion-card>
     <p>{{orderOption.OptionName}}</p>
     <p *ngIf="orderOption.Active ? 'Aktiv' : 'ikke aktiv'">{{orderOption.Active ? 'Aktiv' : 'ikke aktiv'}}</p>
-
+    <ion-item>
+      <ion-button (click)="updateOrderOption(orderOption)">Opdater</ion-button>
+      <ion-button (click)="deleteOrderOption(orderOption)">Slet</ion-button>
+    </ion-item>
   </ion-card>
   </div>
     </div>
@@ -48,4 +52,23 @@ export class OrderOptionControlComponent {
       this.websocketService.sendData(createMenuOptionMessage);
     }
   }
-}
+
+  updateOrderOption(orderOption: OrderOption) {
+    const updateOrderOptionMessage = {
+      action: 'orderOptionUpdated',
+      Id: orderOption.Id,
+      OptionName: orderOption.OptionName,
+      Active: orderOption.Active,
+    };
+    console.log('Sending updateOrderOption message:', updateOrderOptionMessage);
+    this.websocketService.sendData(updateOrderOptionMessage);
+  }
+
+  deleteOrderOption(orderOption: OrderOption) {
+    const deleteOrderOptionMessage = {
+      action: 'orderOptionDelete',
+      Id: orderOption.Id,
+    };
+    this.websocketService.sendData(deleteOrderOptionMessage);
+    }
+  }
