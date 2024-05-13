@@ -20,11 +20,15 @@ public class OrderOptionDeleteHandler : IMessageHandler
             WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
         {
             OrderOption orderOption = JsonSerializer.Deserialize<OrderOption>(message);
-
-            OrderOption deletedOrderOption = _orderService.DeleteOrderOption(orderOption);
-            deletedOrderOption.IsDeleted = true; //Shows frontend that it needs to remove this order option from the list.
-
-            string deletedOrderOptionJsonString = JsonSerializer.Serialize(deletedOrderOption);
+            
+            orderOption = _orderService.DeleteOrderOption(orderOption);
+            var response = new
+            {
+                eventType = "orderOptionDeleted",
+                orderOption = orderOption
+            };
+            
+            string deletedOrderOptionJsonString = JsonSerializer.Serialize(response);
 
             foreach (var connection in WebSocketManager._connectionMetadata)
             {

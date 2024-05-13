@@ -23,12 +23,17 @@ public class LoginMessageHandler : IMessageHandler
 
         if (userToBeAuthenticated == null)
         {
-            await socket.Send("Invalid username or password");
+            var dto = new
+            {
+                eventType = "errorResponse",
+                message = "Invalid username or password"
+            };
+            await socket.Send(JsonSerializer.Serialize(dto));
             return;
         }
         
         string tokenForUser = _tokenService.createToken(userToBeAuthenticated);
-        var response = new { token = tokenForUser };
+        var response = new { eventType= "successfulLogin",  token = tokenForUser };
         
         await socket.Send(JsonSerializer.Serialize(response));
     }

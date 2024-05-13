@@ -11,6 +11,9 @@ import {WebsocketService} from "../../websocketService";
         <ion-button (click)="openCreatePersonnel();">Opret nyt personale</ion-button>
       </ion-card>
     </ion-content>
+    <div>
+      <ion-button (click)="navigateToOrderOption()">Ændre salat muligheder</ion-button>
+    </div>
   `,
   styleUrls: ['home.page.scss'],
 })
@@ -33,5 +36,10 @@ export class HomePage {
     // Send a WebSocket message
     this.websocketService.sendData({action: 'openCreatePersonnel'});
     this.router.navigate(['register-personnel'])
+  }
+
+
+  async navigateToOrderOption() {
+    this.router.navigate(['order-option-control']);
   }
 }

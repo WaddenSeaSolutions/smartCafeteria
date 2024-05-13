@@ -17,10 +17,11 @@ public class OrderDAL
     {
         try
         {
-            var sql = "INSERT INTO cafeteria.orderoption (optionname, active) VALUES (@optionName, @active) RETURNING id";
+            var sql = "INSERT INTO cafeteria.orderoption (optionname, active, deleted) VALUES (@optionname, @active, @deleted) RETURNING *";
             using (var conn = _dataSource.OpenConnection())
             {
-                return conn.QueryFirst<OrderOption>(sql, new {optionName = optionToCreate.OptionName, active = optionToCreate.active});
+                OrderOption orderOption = conn.QueryFirst<OrderOption>(sql, new {optionname = optionToCreate.OptionName, active = optionToCreate.Active, deleted = optionToCreate.Deleted});
+                return orderOption;
             }
         }
         catch (Exception e)
@@ -34,10 +35,12 @@ public class OrderDAL
     {
         try
         {
-            var sql = "DELETE FROM cafeteria.orderoption WHERE id = @id RETURNING id";
+            Console.WriteLine(orderOption.Id);
+            Console.WriteLine(orderOption);
+            var sql = "UPDATE cafeteria.orderoption set deleted = true WHERE id = @id RETURNING *";
             using (var conn = _dataSource.OpenConnection())
             {
-                return conn.QueryFirst<OrderOption>(sql, new {id = orderOption.Id});
+                return conn.QueryFirstOrDefault<OrderOption>(sql, new {id = orderOption.Id});
             }
         }
         catch (Exception e)
@@ -51,10 +54,10 @@ public class OrderDAL
     {
         try
         {
-            var sql = "UPDATE cafeteria.orderoption SET active = @active WHERE id = @id RETURNING id";
+            var sql = "UPDATE cafeteria.orderoption SET active = @active WHERE id = @id RETURNING *";
             using (var conn = _dataSource.OpenConnection())
             {
-                return conn.QueryFirst<OrderOption>(sql, new {active = orderOption.active, id = orderOption.Id});
+                return conn.QueryFirst<OrderOption>(sql, new {active = orderOption.Active, id = orderOption.Id});
             }
         }
         catch (Exception e)
@@ -64,28 +67,11 @@ public class OrderDAL
         }
     }
 
-    public OrderOption ReadOrderOption(OrderOption orderOption)
-    {
-        try
-        {
-            var sql = "SELECT * FROM cafeteria.orderoption WHERE id = @id";
-            using (var conn = _dataSource.OpenConnection())
-            {
-                return conn.QueryFirst<OrderOption>(sql, new {id = orderOption.Id});
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw new Exception("Failed to read order option");
-        }
-    }
-
     public List<OrderOption> GetOrderOptions()
     {
         try
         {
-            var sql = "SELECT * FROM cafeteria.orderoption";
+            var sql = "SELECT * FROM cafeteria.orderoption WHERE deleted = false";
             using (var conn = _dataSource.OpenConnection())
             {
                 return conn.Query<OrderOption>(sql).ToList();

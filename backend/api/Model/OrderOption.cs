@@ -5,12 +5,7 @@ public class OrderOption
     public int Id { get; set; }
     
     public string OptionName { get; set; }
+    public Boolean Active { get; set; }
     
-    public Boolean active { get; set; }
-    
-    public bool IsUpdated { get; set; }
-    
-    public bool isNew { get; set; }
-    
-    public bool IsDeleted { get; set; }
+    public Boolean Deleted { get; set; }
 }

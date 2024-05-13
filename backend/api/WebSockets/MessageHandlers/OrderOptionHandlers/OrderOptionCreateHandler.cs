@@ -20,10 +20,17 @@ public class OrderOptionCreateHandler : IMessageHandler
         {
             OrderOptionDTO orderOptionDto = JsonSerializer.Deserialize<OrderOptionDTO>(message);
             
-            OrderOption orderOptionToJson = _orderService.CreateOrderOption(orderOptionDto);
-            orderOptionToJson.isNew = true; //Shows frontend that it needs to add this orderoption to the list.
+            orderOptionDto.Active = true;
+            orderOptionDto.Deleted = false;
             
-            string orderOptionJson = JsonSerializer.Serialize(orderOptionToJson);
+            OrderOption orderOptionToJson = _orderService.CreateOrderOption(orderOptionDto);
+            
+            var response = new
+            {
+                eventType = "orderOptionCreated",
+                orderOption = orderOptionToJson
+            };
+            string orderOptionJson = JsonSerializer.Serialize(response);
             foreach (var connection in WebSocketManager._connectionMetadata)
             {
                 if (connection.Value.Role == "personnel" || connection.Value.IsAdmin)
