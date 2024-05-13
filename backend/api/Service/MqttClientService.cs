@@ -117,6 +117,15 @@ public class MqttClientService
         
         var insertionResult = _mqttClientDal.CreateNewOrderFromMqtt(order);
         _mqttClientDal.AddContentToOrder(orderNumbers, insertionResult.Id);
+        
+        var pongMessage2 = new MqttApplicationMessageBuilder()
+            .WithTopic("Cafeteria/OrderOptions")
+            .WithPayload("Order number: " + insertionResult.Id)
+            .WithQualityOfServiceLevel(e.ApplicationMessage.QualityOfServiceLevel)
+            .WithRetainFlag(e.ApplicationMessage.Retain)
+            .Build();
+
+        await mqttClient.PublishAsync(pongMessage2, CancellationToken.None);
     }
 
     private async void HandleGetOrderOptions(IMqttClient mqttClient, MqttApplicationMessageReceivedEventArgs e)
