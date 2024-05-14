@@ -6,9 +6,9 @@ namespace backend.Service;
 
 public class OrderService : IOrderService
 {
-    private readonly OrderDAL _orderDal;
+    private readonly IOrderDAL _orderDal;
     
-    public OrderService(OrderDAL orderDal)
+    public OrderService(IOrderDAL orderDal)
     {
         _orderDal = orderDal;
     }
