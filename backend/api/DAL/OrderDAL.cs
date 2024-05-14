@@ -54,10 +54,10 @@ public class OrderDAL
     {
         try
         {
-            var sql = "UPDATE cafeteria.orderoption SET active = @active WHERE id = @id RETURNING *";
+            var sql = "UPDATE cafeteria.orderoption SET active = @active, optionname = @optionname WHERE id = @id RETURNING *";
             using (var conn = _dataSource.OpenConnection())
             {
-                return conn.QueryFirst<OrderOption>(sql, new {active = orderOption.Active, id = orderOption.Id});
+                return conn.QueryFirst<OrderOption>(sql, new {active = orderOption.Active, optionname = orderOption.OptionName, id = orderOption.Id});
             }
         }
         catch (Exception e)
@@ -71,7 +71,7 @@ public class OrderDAL
     {
         try
         {
-            var sql = "SELECT * FROM cafeteria.orderoption WHERE deleted = false";
+            var sql = "SELECT * FROM cafeteria.orderoption WHERE deleted = false ORDER BY id ASC";
             using (var conn = _dataSource.OpenConnection())
             {
                 return conn.Query<OrderOption>(sql).ToList();

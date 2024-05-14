@@ -19,7 +19,7 @@ public class OrderOptionUpdateHandler : IMessageHandler
         if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
         {
             OrderOption orderOption = JsonSerializer.Deserialize<OrderOption>(message);
-        
+            
             OrderOption updatedOrderOption = _orderService.UpdateOrderOption(orderOption);
             var response = new
             {
@@ -27,18 +27,18 @@ public class OrderOptionUpdateHandler : IMessageHandler
                 orderOption = updatedOrderOption
             };
             string updatedOrderOptionJson = JsonSerializer.Serialize(response);
-        
+    
             foreach (var connection in WebSocketManager._connectionMetadata.Values)
             {
-                if (connection.Role == "personnel" || connection.IsAdmin)
+                if ((connection.Role == "personnel" || connection.IsAdmin) && connection.Socket.IsAvailable)
                 {
                     connection.Socket.Send(updatedOrderOptionJson);
                 }
             }
-        
+    
             return Task.CompletedTask;
         }
-    
+
         return Task.CompletedTask;
     }
 }
