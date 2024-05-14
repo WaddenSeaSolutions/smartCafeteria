@@ -1,10 +1,11 @@
-﻿using backend.Model;
+﻿using backend.Interface;
+using backend.Model;
 using Dapper;
 using Npgsql;
 
 namespace backend.DAL;
 
-public class OrderDAL
+public class OrderDAL : IOrderDAL
 {
     private readonly NpgsqlDataSource _dataSource;
     
