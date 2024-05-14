@@ -13,9 +13,14 @@ public class MqttClientDAL
         _dataSource = dataSource;
     }
 
-    public OrderOption GetOrderOptions(OrderOption orderOption)
+    public List<string> GetOrderOptions()
     {
-        return null;
+        var sql = $@"SELECT optionname FROM cafeteria.orderoption WHERE deleted = false AND active = true LIMIT 7";
+
+        using (var conn = _dataSource.OpenConnection())
+        {
+            return conn.Query<string>(sql).AsList();
+        }
     }
 
     public OrderMqtt CreateNewOrderFromMqtt(OrderMqtt order)
