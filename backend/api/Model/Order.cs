@@ -9,4 +9,6 @@ public class Order
     public Boolean Payment { get; set; }
     
     public Boolean Done { get; set; }
+    
+    public Array OrderOptions { get; set; }
 }
