@@ -10,13 +10,13 @@ namespace tests;
 [TestFixture]
 public class OrderOptionTests
 {
-    private Mock<IOrderDAL> _mockOrderDAL;
-    private OrderService _orderService;
+    private Mock<IOrderOptionDAL> _mockOrderDAL;
+    private IOrderOptionService _orderOptionService;
     [SetUp]
     public void Setup()
     {
-        _mockOrderDAL = new Mock<IOrderDAL>();
-        _orderService = new OrderService(_mockOrderDAL.Object);
+        _mockOrderDAL = new Mock<IOrderOptionDAL>();
+        _orderOptionService = new OrderOptionService(_mockOrderDAL.Object);
     }
     
     [Test]
@@ -50,7 +50,7 @@ public class OrderOptionTests
             });
 
         // Act
-        var createdOrderOption = _orderService.CreateOrderOption(optionToCreate);
+        var createdOrderOption = _orderOptionService.CreateOrderOption(optionToCreate);
 
         // Assert
         Assert.IsNotNull(createdOrderOption);
@@ -83,7 +83,7 @@ public class OrderOptionTests
             }) ;
 
         // Act
-        var deletedOrderOption = _orderService.DeleteOrderOption(orderOptionToDelete);
+        var deletedOrderOption = _orderOptionService.DeleteOrderOption(orderOptionToDelete);
 
         // Assert
         Assert.IsNotNull(deletedOrderOption);
@@ -114,7 +114,7 @@ public class OrderOptionTests
             });
 
         // Act
-        var updatedOrderOption = _orderService.UpdateOrderOption(orderOptionToUpdate);
+        var updatedOrderOption = _orderOptionService.UpdateOrderOption(orderOptionToUpdate);
 
         // Assert
         Assert.IsNotNull(updatedOrderOption);
@@ -137,7 +137,7 @@ public class OrderOptionTests
             .Returns(expectedOrderOptions);
 
         // Act
-        var actualOrderOptions = _orderService.GetOrderOptions();
+        var actualOrderOptions = _orderOptionService.GetOrderOptions();
 
         // Assert
         Assert.IsNotNull(actualOrderOptions);

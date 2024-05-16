@@ -7,11 +7,11 @@ namespace backend.WebSockets.MessageHandlers;
 
 public class OrderOptionCreateHandler : IMessageHandler
 {
-    private readonly IOrderService _orderService;
+    private readonly IOrderOptionService _orderOptionService;
     
-    public OrderOptionCreateHandler(IOrderService orderService)
+    public OrderOptionCreateHandler(IOrderOptionService orderOptionService)
     {
-        _orderService = orderService;
+        _orderOptionService = orderOptionService;
     }
     
     public Task HandleMessage(string message, IWebSocketConnection socket)
@@ -23,7 +23,7 @@ public class OrderOptionCreateHandler : IMessageHandler
             orderOptionDto.Active = true;
             orderOptionDto.Deleted = false;
             
-            OrderOption orderOptionToJson = _orderService.CreateOrderOption(orderOptionDto);
+            OrderOption orderOptionToJson = _orderOptionService.CreateOrderOption(orderOptionDto);
             
             var response = new
             {

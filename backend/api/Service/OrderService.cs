@@ -1,4 +1,3 @@
-﻿using backend.DAL;
 using backend.Interface;
 using backend.Model;
 
@@ -12,24 +11,8 @@ public class OrderService : IOrderService
     {
         _orderDal = orderDal;
     }
-    
-    public OrderOption CreateOrderOption(OrderOptionDTO optionToCreate)
+    public Order CreateOrder(OrderDTO orderDto)
     {
-        return _orderDal.CreateOrderOption(optionToCreate);
-    }
-
-    public OrderOption DeleteOrderOption(OrderOption orderOption)
-    {
-       return _orderDal.DeleteOrderOption(orderOption);
-    }
-
-    public OrderOption UpdateOrderOption(OrderOption orderOption)
-    {
-        return _orderDal.UpdateOrderOption(orderOption);
-    }
-
-    public List<OrderOption> GetOrderOptions()
-    {
-        return _orderDal.GetOrderOptions();
+        return _orderDal.CreateOrder(orderDto);
     }
 }

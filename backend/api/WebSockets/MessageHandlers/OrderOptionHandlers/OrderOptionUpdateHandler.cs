@@ -7,11 +7,11 @@ namespace backend.WebSockets.MessageHandlers;
 
 public class OrderOptionUpdateHandler : IMessageHandler
 {
-    private readonly IOrderService _orderService;
+    private readonly IOrderOptionService _orderOptionService;
     
-    public OrderOptionUpdateHandler(IOrderService orderService)
+    public OrderOptionUpdateHandler(IOrderOptionService orderOptionService)
     {
-        _orderService = orderService;
+        _orderOptionService = orderOptionService;
     }
     
     public Task HandleMessage(string message, IWebSocketConnection socket)
@@ -20,7 +20,7 @@ public class OrderOptionUpdateHandler : IMessageHandler
         {
             OrderOption orderOption = JsonSerializer.Deserialize<OrderOption>(message);
             
-            OrderOption updatedOrderOption = _orderService.UpdateOrderOption(orderOption);
+            OrderOption updatedOrderOption = _orderOptionService.UpdateOrderOption(orderOption);
             var response = new
             {
                 eventType = "orderOptionUpdated",
