@@ -81,7 +81,7 @@ public class MqttClientService
         // Split the message
         foreach (var str in message.Split(','))
         {
-            // Check if the string is not empty or whitespace
+            // Check if the string is not empty
             if (!string.IsNullOrWhiteSpace(str))
             {
                 // Try to parse the string as an integer
@@ -93,8 +93,7 @@ public class MqttClientService
             }
             else { Console.WriteLine($"Warning: Ignoring empty or whitespace value in message: '{str}'"); }
         }
-
-        // Create an OrderMqtt object
+        
         var timestamp = DateTimeOffset.UtcNow;
         var userId = 1;
         OrderMqtt order = new OrderMqtt
@@ -103,10 +102,9 @@ public class MqttClientService
             Done = false,
             Payment = false,
             Timestamp = timestamp, 
-            UserId = 1// Consider deserializing to a different type if needed
+            UserId = 1
         };
         
-        // Publishing a response message
         var pongMessage = new MqttApplicationMessageBuilder()
             .WithTopic("Cafeteria/Response")
             .WithPayload("Message received by the backend")

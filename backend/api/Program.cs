@@ -20,11 +20,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add DALs to the container
-builder.Services.AddSingleton<OrderDAL>();
 builder.Services.AddSingleton<TokenDAL>();
 builder.Services.AddSingleton<IUserDAL,UserDAL>();
 builder.Services.AddSingleton<ITokenDAL,TokenDAL>();
 builder.Services.AddSingleton<IRegisterCustomerDAL,RegisterCustomerDAL>();
+builder.Services.AddSingleton<IOrderDAL,OrderDAL>();
 
 // Add services to the container.
 builder.Services.AddSingleton<UserService>();
