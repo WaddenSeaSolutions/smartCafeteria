@@ -10,5 +10,5 @@ public class Order
     
     public Boolean Done { get; set; }
     
-    public Array OrderOptions { get; set; }
+    public List<OrderOption> OrderOptions { get; set; }
 }
