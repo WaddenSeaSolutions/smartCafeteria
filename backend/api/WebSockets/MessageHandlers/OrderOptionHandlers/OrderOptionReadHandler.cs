@@ -7,11 +7,11 @@ namespace backend.WebSockets.MessageHandlers;
 
 public class OrderOptionReadHandler : IMessageHandler
 {
-    private readonly IOrderService _orderService;
+    private readonly IOrderOptionService _orderOptionService;
     
-    public OrderOptionReadHandler(IOrderService orderService)
+    public OrderOptionReadHandler(IOrderOptionService orderOptionService)
     {
-        _orderService = orderService;
+        _orderOptionService = orderOptionService;
     }
     
     public Task HandleMessage(string message, IWebSocketConnection socket)
@@ -19,7 +19,7 @@ public class OrderOptionReadHandler : IMessageHandler
         if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin
             || WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "customer");
         {
-            List<OrderOption> orderOptions = _orderService.GetOrderOptions();
+            List<OrderOption> orderOptions = _orderOptionService.GetOrderOptions();
             var response = new
             {
                 eventType = "orderOptions",

@@ -9,4 +9,6 @@ public class OrderDTO
     public Boolean Done { get; set; }
     
     public Array OrderOptions { get; set; }
+    
+    public int UserId { get; set; }
 }

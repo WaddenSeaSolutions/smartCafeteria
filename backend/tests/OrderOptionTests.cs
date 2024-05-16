@@ -10,12 +10,12 @@ namespace tests;
 public class OrderOptionTests
 {
     private Mock<IOrderDAL> _mockOrderDAL;
-    private OrderService _orderService;
+    private OrderOptionService _orderOptionService;
     [SetUp]
     public void Setup()
     {
         _mockOrderDAL = new Mock<IOrderDAL>();
-        _orderService = new OrderService(_mockOrderDAL.Object);
+        _orderOptionService = new OrderOptionService(_mockOrderDAL.Object);
     }
     
     [Test]
@@ -40,7 +40,7 @@ public class OrderOptionTests
             .Returns(expectedOrderOption);
 
         // Act
-        var createdOrderOption = _orderService.CreateOrderOption(optionToCreate);
+        var createdOrderOption = _orderOptionService.CreateOrderOption(optionToCreate);
 
         // Assert
         Assert.IsNotNull(createdOrderOption);

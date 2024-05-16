@@ -21,14 +21,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add DALs to the container
-builder.Services.AddSingleton<OrderDAL>();
+builder.Services.AddSingleton<OrderOptionDAL>();
 builder.Services.AddSingleton<TokenDAL>();
 builder.Services.AddSingleton<IUserDAL,UserDAL>();
 builder.Services.AddSingleton<ITokenDAL,TokenDAL>();
 builder.Services.AddSingleton<IRegisterCustomerDAL,RegisterCustomerDAL>();
 
 // Add services to the container.
-builder.Services.AddSingleton<IOrderService, OrderService>();
+builder.Services.AddSingleton<IOrderOptionService, OrderOptionService>();
 builder.Services.AddSingleton<ITokenService,TokenService>();
 builder.Services.AddSingleton<IUserService,UserService>();
 builder.Services.AddSingleton<RegisterCustomerService>();
@@ -47,7 +47,7 @@ builder.Services.AddSingleton<OrderOptionUpdateHandler>();
 builder.Services.AddSingleton<OrderOptionDeleteHandler>();
 
 //OrderFromCustomerHandler
-builder.Services.AddSingleton<orderFromCustomerHandler>();
+builder.Services.AddSingleton<OrderFromCustomerHandler>();
 
 
 builder.Services.AddSingleton<MqttClientDAL>();
@@ -70,7 +70,7 @@ IMessageHandler orderOptionReadHandler = builder.Services.BuildServiceProvider()
 IMessageHandler orderOptionDeleteHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionDeleteHandler>();
 IMessageHandler orderOptionUpdateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionUpdateHandler>();
 
-IMessageHandler orderFromCustomerHandler = builder.Services.BuildServiceProvider().GetRequiredService<orderFromCustomerHandler>();
+IMessageHandler orderFromCustomerHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderFromCustomerHandler>();
 
 //Authentication handler for all roles, admin, personnel and customer
 IMessageHandler authenticationHandler = builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationHandler>();

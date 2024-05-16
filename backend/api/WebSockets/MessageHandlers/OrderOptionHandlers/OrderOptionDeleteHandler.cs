@@ -7,11 +7,11 @@ namespace backend.WebSockets.MessageHandlers;
 
 public class OrderOptionDeleteHandler : IMessageHandler
 {
-    private readonly IOrderService _orderService;
+    private readonly IOrderOptionService _orderOptionService;
 
-    public OrderOptionDeleteHandler(IOrderService orderService)
+    public OrderOptionDeleteHandler(IOrderOptionService orderOptionService)
     {
-        _orderService = orderService;
+        _orderOptionService = orderOptionService;
     }
 
     public Task HandleMessage(string message, IWebSocketConnection socket)
@@ -21,7 +21,7 @@ public class OrderOptionDeleteHandler : IMessageHandler
         {
             OrderOption orderOption = JsonSerializer.Deserialize<OrderOption>(message);
             
-            orderOption = _orderService.DeleteOrderOption(orderOption);
+            orderOption = _orderOptionService.DeleteOrderOption(orderOption);
             var response = new
             {
                 eventType = "orderOptionDeleted",

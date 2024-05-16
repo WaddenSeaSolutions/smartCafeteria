@@ -7,11 +7,11 @@ namespace backend.WebSockets.MessageHandlers;
 
 public class OrderHandler : IMessageHandler
 {
-    private readonly IOrderService _orderService;
+    private readonly IOrderOptionService _orderOptionService;
 
-    public OrderHandler(IOrderService orderService)
+    public OrderHandler(IOrderOptionService orderOptionService)
     {
-        _orderService = orderService;
+        _orderOptionService = orderOptionService;
     }
     
     /// <summary>
