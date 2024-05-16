@@ -44,10 +44,24 @@ public class OrderCreateHandler : IMessageHandler
 
             Order order = _orderService.CreateOrder(orderDto);
             
+            var response = new
+            {
+                eventType = "orderCreated",
+                orderOption = order
+            };
+
+            string orderJson = JsonSerializer.Serialize(response);
+            foreach (var connection in WebSocketManager._connectionMetadata)
+            {
+                if (connection.Value.Role == "customer" || connection.Value.IsAdmin || connection.Value.Role == "personnel")
+                {
+                    await connection.Value.Socket.Send(orderJson);
+                }
+            }
         }
         else
         {
-            socket.Send("You are not authorized to create an order.");
+            socket.Send("You are not authorized to create an order");
         }
     }
 }
