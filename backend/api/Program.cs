@@ -22,6 +22,7 @@ builder.Services.AddSwaggerGen();
 
 // Add DALs to the container
 builder.Services.AddSingleton<OrderOptionDal>();
+
 builder.Services.AddSingleton<TokenDAL>();
 builder.Services.AddSingleton<IUserDAL,UserDAL>();
 builder.Services.AddSingleton<ITokenDAL,TokenDAL>();
