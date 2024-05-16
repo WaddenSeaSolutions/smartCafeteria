@@ -5,11 +5,11 @@ using Npgsql;
 
 namespace backend.DAL;
 
-public class OrderOptionDAL : IOrderDAL
+public class OrderOptionOptionDal : IOrderOptionDAL
 {
     private readonly NpgsqlDataSource _dataSource;
     
-    public OrderOptionDAL(NpgsqlDataSource dataSource)
+    public OrderOptionOptionDal(NpgsqlDataSource dataSource)
     {
         _dataSource = dataSource;
     }

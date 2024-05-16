@@ -9,12 +9,12 @@ namespace tests;
 
 public class OrderOptionTests
 {
-    private Mock<IOrderDAL> _mockOrderDAL;
+    private Mock<IOrderOptionDAL> _mockOrderDAL;
     private OrderOptionService _orderOptionService;
     [SetUp]
     public void Setup()
     {
-        _mockOrderDAL = new Mock<IOrderDAL>();
+        _mockOrderDAL = new Mock<IOrderOptionDAL>();
         _orderOptionService = new OrderOptionService(_mockOrderDAL.Object);
     }
     

@@ -6,30 +6,30 @@ namespace backend.Service;
 
 public class OrderOptionService : IOrderOptionService
 {
-    private readonly IOrderDAL _orderDal;
+    private readonly IOrderOptionDAL _orderOptionDal;
     
-    public OrderOptionService(IOrderDAL orderDal)
+    public OrderOptionService(IOrderOptionDAL orderOptionDal)
     {
-        _orderDal = orderDal;
+        _orderOptionDal = orderOptionDal;
     }
     
     public OrderOption CreateOrderOption(OrderOptionDTO optionToCreate)
     {
-        return _orderDal.CreateOrderOption(optionToCreate);
+        return _orderOptionDal.CreateOrderOption(optionToCreate);
     }
 
     public OrderOption DeleteOrderOption(OrderOption orderOption)
     {
-       return _orderDal.DeleteOrderOption(orderOption);
+       return _orderOptionDal.DeleteOrderOption(orderOption);
     }
 
     public OrderOption UpdateOrderOption(OrderOption orderOption)
     {
-        return _orderDal.UpdateOrderOption(orderOption);
+        return _orderOptionDal.UpdateOrderOption(orderOption);
     }
 
     public List<OrderOption> GetOrderOptions()
     {
-        return _orderDal.GetOrderOptions();
+        return _orderOptionDal.GetOrderOptions();
     }
 }
