@@ -11,7 +11,7 @@ namespace tests;
 public class OrderOptionTests
 {
     private Mock<IOrderOptionDAL> _mockOrderDAL;
-    private OrderOptionService _orderOptionService;
+    private IOrderOptionService _orderOptionService;
     [SetUp]
     public void Setup()
     {
@@ -83,7 +83,7 @@ public class OrderOptionTests
             }) ;
 
         // Act
-        var deletedOrderOption = _orderService.DeleteOrderOption(orderOptionToDelete);
+        var deletedOrderOption = _orderOptionService.DeleteOrderOption(orderOptionToDelete);
 
         // Assert
         Assert.IsNotNull(deletedOrderOption);
@@ -114,7 +114,7 @@ public class OrderOptionTests
             });
 
         // Act
-        var updatedOrderOption = _orderService.UpdateOrderOption(orderOptionToUpdate);
+        var updatedOrderOption = _orderOptionService.UpdateOrderOption(orderOptionToUpdate);
 
         // Assert
         Assert.IsNotNull(updatedOrderOption);
@@ -137,7 +137,7 @@ public class OrderOptionTests
             .Returns(expectedOrderOptions);
 
         // Act
-        var actualOrderOptions = _orderService.GetOrderOptions();
+        var actualOrderOptions = _orderOptionService.GetOrderOptions();
 
         // Assert
         Assert.IsNotNull(actualOrderOptions);
