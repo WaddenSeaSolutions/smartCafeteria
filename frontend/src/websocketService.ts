@@ -52,6 +52,11 @@ export class WebsocketService {
     this.service.deleteOrderOption(data.orderOption);
   }
 
+    orderOptionUpdated(data: any): void {
+        console.log(data.orderOption)
+        this.service.updateOrderOption(data.orderOption);
+    }
+
   successfulLogin(data: any) {
     console.log(data)
     localStorage.setItem('token', data.token);

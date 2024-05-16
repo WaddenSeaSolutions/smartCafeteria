@@ -26,6 +26,7 @@ export class Service{
       this.orderOptions.splice(index, 1);
     }
   }
+
 }
 
 

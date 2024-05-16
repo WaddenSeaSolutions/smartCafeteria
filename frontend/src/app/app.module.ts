@@ -7,15 +7,16 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import {LoginPageComponent} from "./login-page/login-page.component";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {RegisterPersonnelComponent} from "./register-personnel/register-personnel.component";
 import {OrderOptionControlComponent} from "./order-option-control/order-option-control.component";
+import {UpdateOrderOptionComponent} from "./update-order-option/update-order-option.component";
 
 
 @NgModule({
-  declarations: [AppComponent, LoginPageComponent, RegisterPersonnelComponent, OrderOptionControlComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule, HttpClientModule],
+  declarations: [AppComponent, LoginPageComponent, RegisterPersonnelComponent, OrderOptionControlComponent, UpdateOrderOptionComponent],
+    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule, HttpClientModule, FormsModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
