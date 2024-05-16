@@ -16,15 +16,18 @@
     &lt;TestId&gt;NUnit3x::E6F350BD-E316-4BDD-AE7B-885323A59F4A::net8.0::backend.Tests.RegisterCustomerTests.RegisterCustomer_CreatesCustomer_ReturnsTrue&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bab9aa59_002De9ea_002D4f4b_002Dba73_002D75404ec71540/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;backend&amp;gt; #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bab9aa59_002De9ea_002D4f4b_002Dba73_002D75404ec71540/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;backend&amp;gt; #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::LoginMessageHandlerTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::RegisterCustomerTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::LoginTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::tests.OrderOptionTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bb9c8167_002D8b68_002D400e_002Dafff_002D2877f03cdac0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;backend&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\pjusk\Documents\GitHub\smartCafeteria\backend\tests" Presentation="&amp;lt;backend&amp;gt;\&amp;lt;tests&amp;gt;" /&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bb9c8167_002D8b68_002D400e_002Dafff_002D2877f03cdac0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;backend&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::EAEECD23-AF6E-45F6-BEEC-CF8EDB6C19E4::net8.0::tests.OrderOptionTests.DeleteOptionTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/EnvironmentVariablesIndexed/=/@EntryIndexedValue"></s:String>
 	<s:Boolean x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/EnvironmentVariablesIndexed/=DOTNET_005FENVIRONMENT/@EntryIndexRemoved">True</s:Boolean>
