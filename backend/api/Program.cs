@@ -70,7 +70,8 @@ IMessageHandler orderOptionReadHandler = builder.Services.BuildServiceProvider()
 IMessageHandler orderOptionDeleteHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionDeleteHandler>();
 IMessageHandler orderOptionUpdateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderOptionUpdateHandler>();
 
-IMessageHandler orderFromCustomerHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderCreateHandler>();
+//Handlers for customers orders and personnel order handling
+IMessageHandler orderCreateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderCreateHandler>();
 
 //Authentication handler for all roles, admin, personnel and customer
 IMessageHandler authenticationHandler = builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationHandler>();
@@ -78,7 +79,7 @@ IMessageHandler authenticationHandler = builder.Services.BuildServiceProvider().
 //a dictionary mapping message types to handlers.
 Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMessageHandler>
 {
-    { "login", loginHandler },
+    {"login", loginHandler },
     {"register", registerHandler},
     {"registerPersonnel", registerPersonnelHandler },
     {"authentication", authenticationHandler},
@@ -86,7 +87,7 @@ Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMe
     {"orderOptionRead", orderOptionReadHandler},
     {"orderOptionUpdate", orderOptionUpdateHandler},
     {"orderOptionDelete", orderOptionDeleteHandler},
-    {"orderFromCustomer", orderFromCustomerHandler}
+    {"orderCreateHandler", orderCreateHandler}
 };
 
 // Instantiate the WebSocketManager with the dictionary of handlers. Should now have handlers stored in the WebSocketManager

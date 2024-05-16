@@ -2,7 +2,7 @@ using backend.Model;
 
 namespace backend.Interface;
 
-public interface IOrderDAL
+public interface IOrderOptionDAL
 {
     public OrderOption CreateOrderOption(OrderOptionDTO optionToCreate);
     public OrderOption DeleteOrderOption(OrderOption orderOption);

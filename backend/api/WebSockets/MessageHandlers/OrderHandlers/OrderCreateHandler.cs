@@ -5,15 +5,16 @@ using Fleck;
 
 namespace backend.WebSockets.MessageHandlers.OrderHandlers;
 
-public class OrderFromCustomerHandler : IMessageHandler
+public class OrderCreateHandler : IMessageHandler
 {
+
+    private readonly IOrderService _orderService;
     
-    private readonly IOrderOptionService _orderOptionService;
-    
-    public OrderFromCustomerHandler(IOrderOptionService orderOptionService)
+    public OrderCreateHandler(IOrderService orderService)
     {
-        _orderOptionService = orderOptionService;
+        _orderService = orderService;
     }
+    
     public Task HandleMessage(string message, IWebSocketConnection socket)
     {
         if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "customer" ||
@@ -25,7 +26,7 @@ public class OrderFromCustomerHandler : IMessageHandler
             orderDto.Payment = false;
             orderDto.UserId = WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].UserId;
             
-            
+            Order order = _orderService.CreateOrder(orderDto);
             
         }
 
