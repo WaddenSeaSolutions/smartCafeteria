@@ -21,17 +21,20 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add DALs to the container
-builder.Services.AddSingleton<OrderOptionOptionDal>();
+builder.Services.AddSingleton<OrderOptionDal>();
 builder.Services.AddSingleton<TokenDAL>();
 builder.Services.AddSingleton<IUserDAL,UserDAL>();
 builder.Services.AddSingleton<ITokenDAL,TokenDAL>();
 builder.Services.AddSingleton<IRegisterCustomerDAL,RegisterCustomerDAL>();
+builder.Services.AddSingleton<IOrderDAL, OrderDAL>();
+builder.Services.AddSingleton<IOrderOptionDAL, OrderOptionDal>();
 
 // Add services to the container.
 builder.Services.AddSingleton<IOrderOptionService, OrderOptionService>();
 builder.Services.AddSingleton<ITokenService,TokenService>();
 builder.Services.AddSingleton<IUserService,UserService>();
 builder.Services.AddSingleton<RegisterCustomerService>();
+builder.Services.AddSingleton<IOrderService, OrderService>();
 
 // Add message handlers to the container.
 builder.Services.AddSingleton<LoginMessageHandler>();
@@ -40,6 +43,7 @@ builder.Services.AddSingleton<RegisterPersonnelHandler>();
 
 //Authentication handler
 builder.Services.AddSingleton<AuthenticationHandler>();
+
 //OrderOption handlers, create, read, update and delete
 builder.Services.AddSingleton<OrderOptionCreateHandler>();
 builder.Services.AddSingleton<OrderOptionReadHandler>();
@@ -72,6 +76,7 @@ IMessageHandler orderOptionUpdateHandler = builder.Services.BuildServiceProvider
 
 //Handlers for customers orders and personnel order handling
 IMessageHandler orderCreateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderCreateHandler>();
+
 
 //Authentication handler for all roles, admin, personnel and customer
 IMessageHandler authenticationHandler = builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationHandler>();
