@@ -32,22 +32,15 @@ public class OrderDAL : IOrderDAL
                     var order = conn.QueryFirst<Order>(sqlOrder,
                         new { timestamp = orderDto.Timestamp, payment = orderDto.Payment, done = orderDto.Done, userId = orderDto.UserId },
                         transaction: transaction);
-
-                    if (orderDto.OrderOptions != null)
-                    {
+                    
                         foreach (var option in orderDto.OrderOptions)
                         {
                             conn.Execute(sqlOrderOption, new { orderid = order.Id, orderoptionid = option.Id }, transaction: transaction);
                         }
                         
                         var orderOptions = conn.Query<OrderOption>(sqlFetchOrderOptions, new { orderid = order.Id }, transaction: transaction).ToList();
-                        Console.WriteLine("hello"+orderOptions);
-                        Console.WriteLine("hello"+orderOptions);
-                        Console.WriteLine("hello"+orderOptions);
-                        Console.WriteLine("hello"+orderOptions);
 
                         order.OrderOptions = orderOptions;
-                    }
 
                     order.OrderOptions = conn.Query<OrderOption>(sqlFetchOrderOptions, new { orderid = order.Id }, transaction: transaction).ToList();
 
