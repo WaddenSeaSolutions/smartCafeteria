@@ -19,9 +19,10 @@ public async Task HandleMessage(string message, IWebSocketConnection socket)
 {
     Console.WriteLine("OrderCreateHandler called");
     if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "customer" ||
-        WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
-    {
+        WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin){
+        
         OrderDTO orderDto = JsonSerializer.Deserialize<OrderDTO>(message);
+
         //Set the order to not done and not paid
         orderDto.Done = false;
         orderDto.Payment = false;
