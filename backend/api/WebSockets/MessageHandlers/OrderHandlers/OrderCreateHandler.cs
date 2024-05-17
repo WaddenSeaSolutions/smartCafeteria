@@ -54,7 +54,7 @@ public async Task HandleMessage(string message, IWebSocketConnection socket)
             string orderJson = JsonSerializer.Serialize(response);
             foreach (var connection in WebSocketManager._connectionMetadata)
             {
-                if (connection.Value.Role == "customer" || connection.Value.IsAdmin || connection.Value.Role == "personnel")
+                if (connection.Value.UserId == order.UserId || connection.Value.IsAdmin || connection.Value.Role == "personnel")
                 {
                     await connection.Value.Socket.Send(orderJson);
                 }

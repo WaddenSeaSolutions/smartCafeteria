@@ -10,5 +10,6 @@ public class Order
     
     public Boolean Done { get; set; }
     
+    public int UserId { get; set; }
     public List<OrderOption> OrderOptions { get; set; }
 }
