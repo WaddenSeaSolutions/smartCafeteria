@@ -15,4 +15,9 @@ public class OrderService : IOrderService
     {
         return _orderDal.CreateOrder(orderDto);
     }
+
+    public List<Order> GetOrders()
+    {
+        return _orderDal.ReadOrder();
+    }
 }

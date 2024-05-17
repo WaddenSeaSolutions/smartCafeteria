@@ -5,4 +5,5 @@ namespace backend.Interface;
 public interface IOrderService
 {
     Order CreateOrder(OrderDTO orderDto);
+    List<Order> GetOrders();
 }
