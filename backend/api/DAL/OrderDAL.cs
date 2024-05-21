@@ -20,9 +20,8 @@ public class OrderDAL : IOrderDAL
 
         var sqlOrderOption = $@"INSERT INTO cafeteria.userorder (orderid, orderoptionid) VALUES (@orderid,@orderoptionid)";
 
-        var sqlFetchOrderOptions = $@"SELECT o.* FROM cafeteria.orderoption o
-    INNER JOIN userorder uo ON o.id = uo.id
-    WHERE uo.orderid = @orderid";
+        var sqlFetchOrderOptions = $@"SELECT * FROM cafeteria.orderoption o
+        WHERE o.id IN (SELECT uo.orderoptionid FROM cafeteria.userorder uo WHERE uo.orderid = @orderid)";
 
         using (var conn = _dataSource.OpenConnection())
         {
@@ -33,19 +32,20 @@ public class OrderDAL : IOrderDAL
                     var order = conn.QueryFirst<Order>(sqlOrder,
                         new { timestamp = orderDto.Timestamp, payment = orderDto.Payment, done = orderDto.Done, userId = orderDto.UserId },
                         transaction: transaction);
-
-                    if (orderDto.OrderOptions != null)
-                    {
+                    
                         foreach (var option in orderDto.OrderOptions)
                         {
                             conn.Execute(sqlOrderOption, new { orderid = order.Id, orderoptionid = option.Id }, transaction: transaction);
                         }
-                    }
+                        
+                        var orderOptions = conn.Query<OrderOption>(sqlFetchOrderOptions, new { orderid = order.Id }, transaction: transaction).ToList();
+
+                        order.OrderOptions = orderOptions;
 
                     order.OrderOptions = conn.Query<OrderOption>(sqlFetchOrderOptions, new { orderid = order.Id }, transaction: transaction).ToList();
 
                     transaction.Commit();
-
+                    
                     return order;
                 }
                 catch (Exception e)

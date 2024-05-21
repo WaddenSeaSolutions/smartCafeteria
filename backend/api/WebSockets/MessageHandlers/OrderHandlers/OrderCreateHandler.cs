@@ -19,9 +19,10 @@ public async Task HandleMessage(string message, IWebSocketConnection socket)
 {
     Console.WriteLine("OrderCreateHandler called");
     if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "customer" ||
-        WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
-    {
+        WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin){
+        
         OrderDTO orderDto = JsonSerializer.Deserialize<OrderDTO>(message);
+
         //Set the order to not done and not paid
         orderDto.Done = false;
         orderDto.Payment = false;
@@ -53,7 +54,7 @@ public async Task HandleMessage(string message, IWebSocketConnection socket)
             string orderJson = JsonSerializer.Serialize(response);
             foreach (var connection in WebSocketManager._connectionMetadata)
             {
-                if (connection.Value.Role == "customer" || connection.Value.IsAdmin || connection.Value.Role == "personnel")
+                if (connection.Value.UserId == order.UserId || connection.Value.IsAdmin || connection.Value.Role == "personnel")
                 {
                     await connection.Value.Socket.Send(orderJson);
                 }
