@@ -4,12 +4,28 @@ using backend.Interface;
 using backend.Service;
 using backend.WebSockets.MessageHandlers;
 using backend.WebSockets.MessageHandlers.OrderHandlers;
+using Dapper;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
+var env = Environment.GetEnvironmentVariable("pgconn") ?? builder.Configuration.GetConnectionString("pgconn");
+
+var Uri = new Uri(env);
+
+var 
+    ProperlyFormattedConnectionString = string.Format(
+        "Server={0};Database={1};User Id={2};Password={3};Port={4};Pooling=true;MaxPoolSize=3",
+        Uri.Host,
+        Uri.AbsolutePath.Trim('/'),
+        Uri.UserInfo.Split(':')[0],
+        Uri.UserInfo.Split(':')[1],
+        Uri.Port > 0 ? Uri.Port : 5432);
+
+
 
 if (builder.Environment.IsDevelopment())
 {
-    builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString,
+    builder.Services.AddNpgsqlDataSource(ProperlyFormattedConnectionString,
         dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
 }
 if (builder.Environment.IsProduction())
@@ -61,6 +77,7 @@ builder.Services.AddSingleton<MqttClientService>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
+
 
 // Instantiate the LoginMessageHandler and store it as an variable.
 IMessageHandler loginHandler = builder.Services.BuildServiceProvider().GetRequiredService<LoginMessageHandler>();
@@ -114,5 +131,6 @@ app.UseCors(options =>
 app.MapControllers();
 
 app.Services.GetService<MqttClientService>().CommunicateWithBroker();
-
+var str = app.Services.GetService<NpgsqlDataSource>().OpenConnection().QueryFirst<string>("select 'hello world'");
+Console.WriteLine(str);
 app.Run();
