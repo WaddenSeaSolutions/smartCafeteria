@@ -5,7 +5,16 @@ export interface Users{
 
 
 export interface OrderOption {
-  Id: number;
-  OptionName: string;
-  Active: boolean;
+  id: number;
+  optionName: string;
+  active: boolean;
+}
+
+export interface Order {
+  id: number;
+  timestamp: string;
+  payment: boolean;
+  done: boolean;
+  userId: number;
+  orderOptions: OrderOption[];
 }

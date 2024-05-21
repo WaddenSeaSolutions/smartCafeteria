@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {WebsocketService} from "../../websocketService";
+import {Service} from "../../service";
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,16 @@ import {WebsocketService} from "../../websocketService";
     <div>
       <ion-button (click)="navigateToOrderOption()">Ændre salat muligheder</ion-button>
     </div>
+
+    <div *ngFor="let order of this.service.orders">
+    <ion-card>
+        <div style="margin: 1%">
+            <ion-title>{{order.id}}</ion-title>
+            <ion-title *ngIf="order.payment ? 'Betalt' : 'ikke Betalt'"></ion-title>
+            <ion-title>Bestilt: {{order.timestamp}}</ion-title>
+        </div>
+    </ion-card>
+    </div>
   `,
   styleUrls: ['home.page.scss'],
 })
@@ -21,7 +32,7 @@ export class HomePage {
 
   public checkIfAdmin: boolean;
 
-  constructor(private router: Router, private websocketService: WebsocketService) {
+  constructor(private router: Router, private websocketService: WebsocketService, public service: Service) {
     //Checks if the user is an admin role, if not the user should not be shown the admin
     this.checkIfAdmin = localStorage.getItem('role') === 'admin';
 
@@ -38,8 +49,9 @@ export class HomePage {
     this.router.navigate(['register-personnel'])
   }
 
-
   async navigateToOrderOption() {
     this.router.navigate(['order-option-control']);
   }
+
+
 }

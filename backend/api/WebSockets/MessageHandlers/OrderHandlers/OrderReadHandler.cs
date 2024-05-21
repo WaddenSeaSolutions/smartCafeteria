@@ -25,7 +25,7 @@ public class OrderReadHandler : IMessageHandler
 
             var response = new
             {
-                eventType = "orders",
+                eventType = "ordersRead",
                 orders = orders
             };
 

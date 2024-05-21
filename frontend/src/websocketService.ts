@@ -37,6 +37,11 @@ export class WebsocketService {
     }
   }
 
+  ordersRead(data: any): void {
+    console.log(data.orderOptions);
+    this.service.orders = data.orders;
+  }
+
   orderOptions(data: any): void {
     console.log(data.orderOptions); // Add this line to check the received data
     this.service.orderOptions = data.orderOptions;
