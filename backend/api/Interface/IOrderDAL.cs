@@ -5,5 +5,5 @@ namespace backend.Interface;
 public interface IOrderDAL
 {
     Order CreateOrder(OrderDTO orderDto);
-    List<Order> ReadOrder();
+    List<Order> GetOrders();
 }

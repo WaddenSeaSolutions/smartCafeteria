@@ -18,6 +18,6 @@ public class OrderService : IOrderService
 
     public List<Order> GetOrders()
     {
-        return _orderDal.ReadOrder();
+        return _orderDal.GetOrders();
     }
 }
