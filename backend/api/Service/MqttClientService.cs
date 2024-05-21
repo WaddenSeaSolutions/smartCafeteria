@@ -136,7 +136,7 @@ public class MqttClientService
         await mqttClient.PublishAsync(pongMessage, CancellationToken.None);
         
         var insertionResult = _mqttClientDal.CreateNewOrderFromMqtt(order, selectedOrderOptions);
-        // _mqttClientDal.AddContentToOrder(orderNumbers, insertionResult.Id);
+        _mqttClientDal.AddContentToOrder(orderNumbers, insertionResult.Id);
         
         var pongMessage2 = new MqttApplicationMessageBuilder()
             .WithTopic("Cafeteria/OrderOptions")
@@ -187,7 +187,7 @@ public class MqttClientService
             orderOptionList[i].Number = i + 1;
         }
         
-        var orderOptionsString = string.Join(",", orderOptionList);
+        var orderOptionsString = string.Join(",", orderOptionList.Select(o => o.OptionName));
 
         var pongMessage = new MqttApplicationMessageBuilder()
             .WithTopic("Cafeteria/OrderOptions")

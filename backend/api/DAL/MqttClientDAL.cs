@@ -25,7 +25,6 @@ public class MqttClientDAL
 
     public OrderMqtt CreateNewOrderFromMqtt(OrderMqtt order, List<OrderOptionMqtt> orderOptionList)
     {
-        Console.WriteLine(orderOptionList.ToString());
         using (var conn = _dataSource.OpenConnection())
         using (var transaction = conn.BeginTransaction())
         {
