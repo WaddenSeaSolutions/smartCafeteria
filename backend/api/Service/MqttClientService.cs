@@ -10,10 +10,30 @@ namespace backend.Service;
 public class MqttClientService
 {
     private readonly MqttClientDAL _mqttClientDal;
+    private List<string> optionNames;
+    private List<OrderOptionMqtt> orderOptionList;
 
     public MqttClientService(MqttClientDAL mqttClientDal)
     {
         _mqttClientDal = mqttClientDal;
+        InitializeOrderOptions();
+    }
+    
+    private void InitializeOrderOptions()
+    {
+        // Get the list of order options
+        orderOptionList = _mqttClientDal.GetOrderOptions();
+
+        // Sort the orderOptionList by Id in ascending order
+        orderOptionList = orderOptionList.OrderBy(o => o.Id).ToList();
+        
+        for (int i = 0; i < orderOptionList.Count && i < 7; i++)
+        {
+            orderOptionList[i].Number = i + 1; 
+        }
+
+        // Extract OptionNames into a string list
+        optionNames = orderOptionList.Select(o => o.OptionName).ToList();
     }
     
     /// <summary>
@@ -94,6 +114,8 @@ public class MqttClientService
             else { Console.WriteLine($"Warning: Ignoring empty or whitespace value in message: '{str}'"); }
         }
         
+        var selectedOrderOptions = MapNumbersToOrderOptions(orderNumbers);
+        
         var timestamp = DateTimeOffset.UtcNow;
         var userId = 1;
         OrderMqtt order = new OrderMqtt
@@ -113,7 +135,7 @@ public class MqttClientService
             .Build();
         await mqttClient.PublishAsync(pongMessage, CancellationToken.None);
         
-        var insertionResult = _mqttClientDal.CreateNewOrderFromMqtt(order);
+        var insertionResult = _mqttClientDal.CreateNewOrderFromMqtt(order, selectedOrderOptions);
         _mqttClientDal.AddContentToOrder(orderNumbers, insertionResult.Id);
         
         var pongMessage2 = new MqttApplicationMessageBuilder()
@@ -125,14 +147,47 @@ public class MqttClientService
 
         await mqttClient.PublishAsync(pongMessage2, CancellationToken.None);
     }
+    
+    private List<OrderOptionMqtt> MapNumbersToOrderOptions(List<int> orderNumbers)
+    {
+        var selectedOrderOptions = new List<OrderOptionMqtt>();
+
+        foreach (var number in orderNumbers)
+        {
+            var orderOption = GetOptionByNumber(number);
+            if (orderOption != null)
+            {
+                selectedOrderOptions.Add(orderOption);
+            }
+            else
+            {
+                Console.WriteLine($"Warning: No OrderOption found for number '{number}'");
+            }
+        }
+
+        return selectedOrderOptions;
+    }
+    
+    private OrderOptionMqtt GetOptionByNumber(int number)
+    {
+        return orderOptionList.FirstOrDefault(o => o.Number == number);
+    }
+    
 
     private async void HandleGetOrderOptions(IMqttClient mqttClient, MqttApplicationMessageReceivedEventArgs e)
     {
-        var orderOptionList = new List<string>();
+        optionNames = orderOptionList.Select(o => o.OptionName).ToList();
 
         orderOptionList = _mqttClientDal.GetOrderOptions();
         
-        var orderOptionsString = string.Join(",", orderOptionList);
+        orderOptionList = orderOptionList.OrderBy(o => o.Id).ToList();
+        
+        for (int i = 0; i < orderOptionList.Count && i < 7; i++)
+        {
+            orderOptionList[i].Number = i + 1;
+        }
+        
+        var orderOptionsString = string.Join(",", orderOptionList.Select(o => o.OptionName));
 
         var pongMessage = new MqttApplicationMessageBuilder()
             .WithTopic("Cafeteria/OrderOptions")

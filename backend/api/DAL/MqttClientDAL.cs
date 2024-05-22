@@ -13,32 +13,53 @@ public class MqttClientDAL
         _dataSource = dataSource;
     }
 
-    public List<string> GetOrderOptions()
+    public List<OrderOptionMqtt> GetOrderOptions()
     {
-        var sql = $@"SELECT optionname FROM cafeteria.orderoption WHERE deleted = false AND active = true LIMIT 7";
+        var sql = $@"SELECT * FROM cafeteria.orderoption WHERE deleted = false AND active = true LIMIT 7";
 
         using (var conn = _dataSource.OpenConnection())
         {
-            return conn.Query<string>(sql).AsList();
+            return conn.Query<OrderOptionMqtt>(sql).AsList();
         }
     }
 
-    public OrderMqtt CreateNewOrderFromMqtt(OrderMqtt order)
+    public OrderMqtt CreateNewOrderFromMqtt(OrderMqtt order, List<OrderOptionMqtt> orderOptionList)
     {
-        try
+        using (var conn = _dataSource.OpenConnection())
+        using (var transaction = conn.BeginTransaction())
         {
-            var sql = $@"INSERT INTO cafeteria.order (timestamp, payment, done, userId) 
-            VALUES (@timestamp, @payment,@done,@userId) RETURNING *;";
-            using (var conn = _dataSource.OpenConnection())
+            try
             {
-                return conn.QueryFirst<OrderMqtt>(sql,
-                    new { timestamp = order.Timestamp, payment = order.Payment, done = order.Done, userId = 1 });
+                var insertOrderSql = @"
+                INSERT INTO cafeteria.order (timestamp, payment, done, userId) 
+                VALUES (@timestamp, @payment, @done, @userId) RETURNING *;";
+            
+                var createdOrder = conn.QueryFirst<OrderMqtt>(insertOrderSql,
+                    new { timestamp = order.Timestamp, payment = order.Payment, done = order.Done, userId = 1 },
+                    transaction);
+                
+                var insertOrderOptionsSql = @"
+                INSERT INTO cafeteria.userorder (orderid, orderoptionid) 
+                VALUES (@orderid, @orderoptionid);";
+            
+                foreach (var orderOption in orderOptionList)
+                {
+                    var parameters = new { orderid = createdOrder.Id, orderoptionid = orderOption.Id };
+                    conn.Execute(insertOrderOptionsSql, parameters, transaction);
+                }
+
+                transaction.Commit();
+
+                // Return the created order
+                return createdOrder;
             }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw new Exception("Failed to create a new order from MQTT");
+            catch (Exception e)
+            {
+                // Rollback the transaction in case of an error
+                transaction.Rollback();
+                Console.WriteLine(e);
+                throw new Exception("Failed to create a new order with content from MQTT");
+            }
         }
     }
 
