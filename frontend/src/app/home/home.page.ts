@@ -16,14 +16,21 @@ import {Service} from "../../service";
       <ion-button (click)="navigateToOrderOption()">Ændre salat muligheder</ion-button>
     </div>
 
-    <div *ngFor="let order of this.service.orders">
-    <ion-card>
-        <div style="margin: 1%">
-            <ion-title>{{order.id}}</ion-title>
-            <ion-title *ngIf="order.payment ? 'Betalt' : 'ikke Betalt'"></ion-title>
-            <ion-title>Bestilt: {{order.timestamp}}</ion-title>
+    <div style="display: flex; flex-wrap: wrap;">
+        <div *ngFor="let order of this.service.orders.slice().reverse()" style="flex: 0 0 calc(33.33% - 10px); margin: 5px;">
+            <ion-card style="box-shadow: 0px 0px 10px rgba(0,0,0,0.5);" [ngStyle]="{'border': order.Done ? '1px solid green' : '1px solid red'}">
+                <div style="margin: 1%">
+                    <ion-title>{{order.Id}}</ion-title>
+                    <ion-title>{{order.Payment ? 'Betalt' : 'ikke Betalt'}}</ion-title>
+                    <ion-title>Bestilt: {{order.Timestamp}}</ion-title>
+
+
+                    <div *ngFor="let option of order.OrderOptions">
+                        <ion-title>{{option.optionName}}</ion-title>
+                    </div>
+                </div>
+            </ion-card>
         </div>
-    </ion-card>
     </div>
   `,
   styleUrls: ['home.page.scss'],

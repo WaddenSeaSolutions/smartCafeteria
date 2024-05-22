@@ -11,10 +11,10 @@ export interface OrderOption {
 }
 
 export interface Order {
-  id: number;
-  timestamp: string;
-  payment: boolean;
-  done: boolean;
-  userId: number;
-  orderOptions: OrderOption[];
+  Id: number;
+  Timestamp: string;
+  Payment: boolean;
+  Done: boolean;
+  UserId: number;
+  OrderOptions: OrderOption[];
 }
