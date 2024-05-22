@@ -33,10 +33,10 @@ public class OrderDAL : IOrderDAL
                         new { timestamp = orderDto.Timestamp, payment = orderDto.Payment, done = orderDto.Done, userId = orderDto.UserId },
                         transaction: transaction);
                     
-                        foreach (var option in orderDto.OrderOptions)
+                        foreach (var id in orderDto.OrderOptionId)
                         {
-                            conn.Execute(sqlOrderOption, new { orderid = order.Id, orderoptionid = option.Id }, transaction: transaction);
-                        }
+                            conn.Execute(sqlOrderOption, new { orderid = order.Id, orderoptionid = id }, transaction: transaction);
+                        }   
                         
                         var orderOptions = conn.Query<OrderOption>(sqlFetchOrderOptions, new { orderid = order.Id }, transaction: transaction).ToList();
 
@@ -52,10 +52,11 @@ public class OrderDAL : IOrderDAL
                 {
                     Console.WriteLine(e);
                     transaction.Rollback();
-                    throw new Exception("Failed to create a new order");
                 }
             }
         }
+
+        return null;
     }
 
     public List<Order> GetOrders()
@@ -81,8 +82,9 @@ public class OrderDAL : IOrderDAL
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw new Exception("Failed to read orders");
             }
         }
+
+        return null;
     }
 }

@@ -58,9 +58,10 @@ public class MqttClientDAL
                 // Rollback the transaction in case of an error
                 transaction.Rollback();
                 Console.WriteLine(e);
-                throw new Exception("Failed to create a new order with content from MQTT");
             }
         }
+
+        return null;
     }
 
     public void AddContentToOrder(List<int> orderNumbers, int orderId)
@@ -82,7 +83,6 @@ public class MqttClientDAL
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw new Exception("Failed to add content to order");
         }
     }
 }

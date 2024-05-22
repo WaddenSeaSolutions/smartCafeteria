@@ -38,7 +38,8 @@ public class TokenDAL : ITokenDAL
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            throw new Exception("User is deleted/banned");
         }
+
+        return null;
     }
 }

@@ -47,7 +47,7 @@ public async Task HandleMessage(string message, IWebSocketConnection socket)
             var response = new
             {
                 eventType = "orderCreated",
-                orderOption = order
+                order = order
             };
 
             string orderJson = JsonSerializer.Serialize(response);
