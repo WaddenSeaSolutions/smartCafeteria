@@ -18,7 +18,7 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_APP_EMAIL }}
           usedocket: false
-          appdir: "backend"
+          appdir: "api"
         env:
           HD_pgconn: ${{secrets.PGCONN}}
           HD_jwtKey: ${{secrets.JWTKEY}}
