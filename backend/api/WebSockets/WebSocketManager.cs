@@ -14,8 +14,9 @@ public class WebSocketManager
     {
         _messageHandlers = messageHandlers;
         _connectionMetadata = new Dictionary<Guid, ConnectionMetadata>();
-        
-        _server = new WebSocketServer("ws://0.0.0.0:8181");
+
+        var port = Environment.GetEnvironmentVariable("PORT") ?? "8181";
+        _server = new WebSocketServer("ws://0.0.0.0:"+port);
         
         _server.Start(socket =>
         {
