@@ -20,5 +20,5 @@ jobs:
           usedocket: false
           appdir: "backend"
         env:
-          HD_PGCONN: ${{secrets.PGCONN}}
-          HD_JWTKEY: ${{secrets.JWTKEY}}
+          HD_pgconn: ${{secrets.PGCONN}}
+          HD_jwtKey: ${{secrets.JWTKEY}}
