@@ -28,8 +28,9 @@ public class OrderOptionDal : IOrderOptionDAL
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw new Exception("Failed to create order option");
         }
+
+        return null;
     }
     
     public OrderOption DeleteOrderOption(OrderOption orderOption)
@@ -47,8 +48,9 @@ public class OrderOptionDal : IOrderOptionDAL
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw new Exception("Failed to delete order option");
         }
+
+        return null;
     }
 
     public OrderOption UpdateOrderOption(OrderOption orderOption)
@@ -64,8 +66,9 @@ public class OrderOptionDal : IOrderOptionDAL
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw new Exception("Failed to update order option");
         }
+
+        return null;
     }
 
     public List<OrderOption> GetOrderOptions()
@@ -81,7 +84,8 @@ public class OrderOptionDal : IOrderOptionDAL
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw new Exception("Failed to get order options");
         }
+
+        return null;
     }
 }

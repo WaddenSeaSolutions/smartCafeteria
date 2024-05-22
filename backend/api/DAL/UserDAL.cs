@@ -36,8 +36,9 @@ public class UserDAL : IUserDAL
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            throw new Exception("User is deleted/banned");
         }
+
+        return null;
     }
 
     public void registerPersonnel(string username, string hashedPassword, string role)
@@ -56,7 +57,6 @@ public class UserDAL : IUserDAL
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            throw new Exception("Failed to register personnel");
         }
     }
 }

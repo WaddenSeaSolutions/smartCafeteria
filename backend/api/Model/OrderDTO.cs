@@ -8,7 +8,7 @@ public class OrderDTO
     
     public Boolean Done { get; set; }
     
-    public List<OrderOption> OrderOptions { get; set; }
+    public List<int> OrderOptionId { get; set; }
     
     public int UserId { get; set; }
 }
