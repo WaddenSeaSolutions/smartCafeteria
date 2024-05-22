@@ -23,4 +23,4 @@ jobs:
           appdir: "backend"
         env:
           HD_pgconn: ${{secrets.PGCONN}}
-          HD_jwtKey: ${{secrets.JWTKEY
+          HD_jwtKey: ${{secrets.JWTKEY}}
