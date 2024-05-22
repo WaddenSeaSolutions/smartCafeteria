@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
 import {Service} from "./service";
 import {ToastController} from "@ionic/angular";
 import {Router} from "@angular/router";
