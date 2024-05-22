@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - run: cd backend/api && dotnet publish -c Release -o publish && echo "HD_pgconn=${{ secrets.PGCONN }}" && echo "HD_jwtKey=${{ secrets.JWTKEY }}"
+      - run: cd backend/api && dotnet publish -c Release -o publish && echo HD_pgconn && echo HD_jwtKey
       - uses: AkhileshNS/heroku-deploy@v3.13.15
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
