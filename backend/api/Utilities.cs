@@ -2,7 +2,7 @@ namespace backend;
 
 public class Utilities
 {
-    private static readonly Uri Uri = new Uri(Environment.GetEnvironmentVariable("pgconn")!);
+    private static readonly Uri Uri = new Uri(Environment.GetEnvironmentVariable("pgconn") );
 
     public static readonly string
         ProperlyFormattedConnectionString = string.Format(
