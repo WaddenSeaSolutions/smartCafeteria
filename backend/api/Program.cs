@@ -121,6 +121,8 @@ WebSocketManager webSocketManager = new WebSocketManager(messageHandlers);
 // Add the WebSocketManager to the services
 builder.Services.AddSingleton(webSocketManager);
 
+builder.WebHost.UseUrls("http://*:9999");
+
 var app = builder.Build();
 
 app.UseCors(options =>
