@@ -17,7 +17,6 @@ public class OrderCreateHandler : IMessageHandler
     
 public async Task HandleMessage(string message, IWebSocketConnection socket)
 {
-    Console.WriteLine("OrderCreateHandler called");
     if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "customer" ||
         WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin){
         

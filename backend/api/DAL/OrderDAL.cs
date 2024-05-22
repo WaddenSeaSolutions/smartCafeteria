@@ -57,4 +57,32 @@ public class OrderDAL : IOrderDAL
             }
         }
     }
+
+    public List<Order> GetOrders()
+    {
+        var sql = $@"SELECT * FROM cafeteria.order WHERE timestamp::date = current_date";
+        var sqlFetchOrderOptions = $@"SELECT * FROM cafeteria.orderoption o
+        WHERE o.id IN (SELECT uo.orderoptionid FROM cafeteria.userorder uo WHERE uo.orderid = @orderid)";
+
+        using (var conn = _dataSource.OpenConnection())
+        {
+            try
+            {
+                var orders = conn.Query<Order>(sql).ToList();
+
+                foreach (var order in orders)
+                {
+                    var orderOptions = conn.Query<OrderOption>(sqlFetchOrderOptions, new { orderid = order.Id }).ToList();
+                    order.OrderOptions = orderOptions;
+                }
+
+                return orders;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception("Failed to read orders");
+            }
+        }
+    }
 }

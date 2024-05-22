@@ -17,6 +17,7 @@ export class WebsocketService {
     this.socket.onopen = () => {
     this.authenticate();
     this.sendData({action: 'orderOptionRead'});
+    this.sendData({action: 'orderReadHandler'})
     }
   }
 
@@ -37,28 +38,28 @@ export class WebsocketService {
     }
   }
 
+    ordersRead(data: any): void {
+    console.log(data.orderOptions);
+    this.service.orders = data.orders;
+  }
+
   orderOptions(data: any): void {
-    console.log(data.orderOptions); // Add this line to check the received data
     this.service.orderOptions = data.orderOptions;
   }
 
   orderOptionCreated(data: any): void {
-    console.log(data.orderOption.OptionName)
     this.service.addOrderOption(data.orderOption);
   }
 
   orderOptionDeleted(data: any): void {
-    console.log(data.orderOption)
     this.service.deleteOrderOption(data.orderOption);
   }
 
     orderOptionUpdated(data: any): void {
-        console.log(data.orderOption)
         this.service.updateOrderOption(data.orderOption);
     }
 
   successfulLogin(data: any) {
-    console.log(data)
     localStorage.setItem('token', data.token);
     this.router.navigate(['home']);
   }
