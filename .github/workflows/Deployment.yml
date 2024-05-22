@@ -22,4 +22,5 @@ jobs:
           usedocket: false
           appdir: "backend"
         env:
-          HD_AZ: ${{secrets.HD_AZ}}
+          HD_pgconn: ${{secrets.PGCONN}}
+          HD_jwtKey: ${{secrets.JWTKEY
