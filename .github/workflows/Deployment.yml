@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Deployment
 
 on:
@@ -10,29 +8,17 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-
       - run: cd backend/api && dotnet publish -c Release -o publish
-
-      - name: Debug Environment Variables
-        run: |
-          echo "HEROKU_API_KEY=${{ secrets.HEROKU_API_KEY }}"
-          echo "HEROKU_APP_NAME=${{ secrets.HEROKU_APP_NAME }}"
-          echo "HEROKU_EMAIL=${{ secrets.HEROKU_APP_EMAIL }}"
-          echo "HD_pgconn=${{ secrets.PGCONN }}"
-          echo "HD_jwtKey=${{ secrets.JWTKEY }}"
-      
-      - name: Deploy to Heroku
-        uses: AkhileshNS/heroku-deploy@v3.13.15
+      - uses: AkhileshNS/heroku-deploy@v3.13.15
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_APP_EMAIL }}
-          usedocker: false
+          usedocket: false
           appdir: "backend"
         env:
-          HD_pgconn: ${{ secrets.PGCONN }}
-          HD_jwtKey: ${{ secrets.JWTKEY }}
+          HD_pgconn: ${{secrets.PGCONN}}
+          HD_jwtKey: ${{secrets.JWTKEY}}
