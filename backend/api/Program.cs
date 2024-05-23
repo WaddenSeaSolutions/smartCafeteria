@@ -8,7 +8,7 @@ using Dapper;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
-var env = Environment.GetEnvironmentVariable("pgconn") ?? builder.Configuration.GetConnectionString("PG_CONN");
+var env = Environment.GetEnvironmentVariable("PG_CONN") ?? builder.Configuration.GetConnectionString("PG_CONN");
 
 var Uri = new Uri(env);
 
