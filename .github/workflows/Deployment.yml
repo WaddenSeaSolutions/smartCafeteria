@@ -19,6 +19,6 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: false
           appdir: "backend/api"
-        # env:
-        #   HD_JWT_KEY: ${{secrets.JWT_KEY}}
-        #   HD_PG_CONN: ${{secrets.PG_CONN}}
+        env:
+          HD_JWT_KEY: ${{secrets.JWT_KEY}}
+          HD_PG_CONN: ${{secrets.PG_CONN}}
