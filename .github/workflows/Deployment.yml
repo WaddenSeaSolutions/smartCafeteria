@@ -1,4 +1,4 @@
-this is the workflow file: name: Deployment
+name: Deployment
 
 on:
   workflow_dispatch:
