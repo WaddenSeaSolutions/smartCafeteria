@@ -11,14 +11,21 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - run: cd backend/api && dotnet publish -c Release -o publish
-      - uses: AkhileshNS/heroku-deploy@v3.13.15
+      - name: Publish .NET Project
+        run: |
+          cd backend/api
+          dotnet publish -c Release -o publish
+      - name: Set Heroku Buildpack
+        run: |
+          heroku buildpacks:set -a ${{ secrets.HEROKU_APP_NAME }} heroku/dotnet
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.13.15
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_APP_EMAIL }}
           usedocker: false
-          appdir: "backend/api"
-        # env:
-        #   # HD_JWT_KEY: ${{secrets.JWT_KEY}}
-        #   # HD_PG_CONN: ${{secrets.PG_CONN}}
+          appdir: "api/publish"
+        env:
+          HD_JWT_KEY: ${{ secrets.JWT_KEY }}
+          HD_PG_CONN: ${{ secrets.PG_CONN }}
