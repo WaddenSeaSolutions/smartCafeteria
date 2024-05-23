@@ -1,4 +1,4 @@
-name: Deployment
+this is the workflow file: name: Deployment
 
 on:
   workflow_dispatch:
@@ -11,15 +11,8 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - name: Publish .NET Project
-        run: |
-          cd backend/api
-          dotnet publish -c Release -o publish
-      - name: Set Heroku Buildpack
-        run: |
-          heroku buildpacks:set -a ${{ secrets.HEROKU_APP_NAME }} jincod/dotnetcore
-      - name: Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.13.15
+      - run: cd backend/api && dotnet publish -c Release -o publish
+      - uses: AkhileshNS/heroku-deploy@v3.13.15
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
@@ -27,5 +20,5 @@ jobs:
           usedocker: false
           appdir: "backend/api"
         env:
-          HD_JWT_KEY: ${{ secrets.JWT_KEY }}
-          HD_PG_CONN: ${{ secrets.PG_CONN }}
+          HD_JWT_KEY: ${{secrets.JWT_KEY}}
+          HD_PG_CONN: ${{secrets.PG_CONN}}
