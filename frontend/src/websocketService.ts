@@ -10,7 +10,7 @@ export class WebsocketService {
   public socket: WebSocket;
 
   constructor(public service: Service, public toast: ToastController, public router: Router) {
-    this.socket = new WebSocket('wss://https://smartcafeteriasocket-58246761d167.herokuapp.com/');
+    this.socket = new WebSocket('ws://smartcafeteriasocket-58246761d167.herokuapp.com/');
     this.handleEventsEmittedByTheServer();
 
     this.socket.onopen = () => {
