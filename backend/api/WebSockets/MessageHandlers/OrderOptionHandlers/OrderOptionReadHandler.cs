@@ -25,11 +25,7 @@ public class OrderOptionReadHandler : IMessageHandler
                 eventType = "orderOptions",
                 orderOptions = orderOptions
             };
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = null
-            };
-            string orderOptionsJson = JsonSerializer.Serialize(response, options);
+            string orderOptionsJson = JsonSerializer.Serialize(response);
             
             Console.WriteLine(orderOptionsJson);
             socket.Send(orderOptionsJson);

@@ -6,12 +6,12 @@ public class Order
 
     public string Timestamp { get; set; }
 
-    public Boolean Payment { get; set; }
+    public bool Payment { get; set; }
 
-    public Boolean Done { get; set; }
+    public bool Done { get; set; }
 
     public int UserId { get; set; }
 
-    public List<OrderOption> OrderOptions;
+    public List<OrderOption> OrderOptions { get; set; }
     
 }

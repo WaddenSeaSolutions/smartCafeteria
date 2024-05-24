@@ -17,20 +17,28 @@ public class OrderUpdateHandler : IMessageHandler
 
     public async Task HandleMessage(string message, IWebSocketConnection socket)
     {
-        Order order = JsonSerializer.Deserialize<Order>(message);
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+        };
+
+        Order order = JsonSerializer.Deserialize<Order>(message, options);
+        Console.WriteLine(order.Done);
+        Console.WriteLine(order.Payment);
 
         // Check if the user is authorized to update the order
         if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" ||
             WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
         {
             Order updatedOrder = _orderService.UpdateOrder(order);
-
+            Console.WriteLine("Response for OrderUpdate");
             // Create a response
             var response = new
             {
                 eventType = "orderUpdated",
                 order = updatedOrder
             };
+            Console.WriteLine("Response for OrderUpdate 2");
 
             string orderJson = JsonSerializer.Serialize(response);
 

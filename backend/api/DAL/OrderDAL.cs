@@ -63,7 +63,7 @@ public class OrderDAL : IOrderDAL
     {
         var sql = $@"SELECT * FROM cafeteria.order WHERE timestamp::date = current_date";
         var sqlFetchOrderOptions = $@"SELECT * FROM cafeteria.orderoption o
-        WHERE o.id IN (SELECT uo.orderoptionid FROM cafeteria.userorder uo WHERE uo.orderid = @orderid)";
+    WHERE o.id IN (SELECT uo.orderoptionid FROM cafeteria.userorder uo WHERE uo.orderid = @orderid AND uo.orderoptionid = o.id)";
 
         using (var conn = _dataSource.OpenConnection())
         {
@@ -90,11 +90,20 @@ public class OrderDAL : IOrderDAL
 
     public Order UpdateOrder(Order order)
     {
-        var sql = $@"UPDATE cafeteria.order SET (done,payment) VALUES (@done, @active) WHERE id = @id RETURNING *";
+        var sql = $@"UPDATE cafeteria.order SET done = @done, payment = @payment WHERE id = @id RETURNING *";
 
-        using (var conn = _dataSource.OpenConnection())
+        try
         {
-            return conn.QueryFirst<Order>(sql, new { done = order.Done, payment = order.Payment, id = order.Id });
+            using (var conn = _dataSource.OpenConnection())
+            {
+                return conn.QueryFirst<Order>(sql, new { done = order.Done, payment = order.Payment, id = order.Id });
+            }
         }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
     }
 }
