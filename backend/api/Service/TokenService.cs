@@ -12,7 +12,7 @@ public class TokenService : ITokenService
 {
     private ITokenDAL _tokenDal;
     
-    private static readonly byte[] Secret = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("jwtKey")!);
+    private static readonly byte[] Secret = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")!);
 
     public TokenService(ITokenDAL tokenDal)
     {

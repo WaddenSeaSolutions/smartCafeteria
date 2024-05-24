@@ -1,0 +1,24 @@
+name: Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - run: cd backend/api && dotnet publish -c Release -o publish
+      - uses: AkhileshNS/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "smartcafeteriasocket"
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          usedocker: false
+          appdir: "backend/api"
+        env:
+          HD_JWT_KEY: ${{secrets.JWT_KEY}}
+          HD_PG_CONN: ${{secrets.PG_CONN}}

@@ -8,7 +8,7 @@ using Dapper;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
-var env = Environment.GetEnvironmentVariable("pgconn") ?? builder.Configuration.GetConnectionString("pgconn");
+var env = Environment.GetEnvironmentVariable("PG_CONN") ?? builder.Configuration.GetConnectionString("PG_CONN");
 
 var Uri = new Uri(env);
 
@@ -113,6 +113,8 @@ WebSocketManager webSocketManager = new WebSocketManager(messageHandlers);
 
 // Add the WebSocketManager to the services
 builder.Services.AddSingleton(webSocketManager);
+
+builder.WebHost.UseUrls("http://*:9999");
 
 var app = builder.Build();
 
