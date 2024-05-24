@@ -24,7 +24,7 @@ import {body} from "ionicons/icons";
                         <ion-input [formControl]="UpdatedOrderOptionName"></ion-input>
                     </ion-title>
 
-                    <ion-title>Status: <ion-checkbox [formControl]="updatedOrderOptionActive" [(ngModel)]="orderOption.active" checked></ion-checkbox></ion-title>
+                    <ion-title>Status: <ion-checkbox [formControl]="updatedOrderOptionActive" [(ngModel)]="orderOption.Active" checked></ion-checkbox></ion-title>
 
                     <br>
 
@@ -43,7 +43,7 @@ export class UpdateOrderOptionComponent implements OnInit{
 
     constructor(private modalController: ModalController, private webSocketService: WebsocketService) {}
     ngOnInit(): void {
-        this.UpdatedOrderOptionName.setValue(this.orderOption.optionName);
+        this.UpdatedOrderOptionName.setValue(this.orderOption.OptionName);
     }
     dismissModal() {
         this.modalController.dismiss();
@@ -57,7 +57,7 @@ export class UpdateOrderOptionComponent implements OnInit{
     updateOrderOption() {
         const body = {
             action: 'orderOptionUpdate',
-            Id: this.orderOption.id,
+            Id: this.orderOption.Id,
             OptionName: this.UpdatedOrderOptionName.value,
             Active: this.updatedOrderOptionActive.value
         };

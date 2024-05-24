@@ -14,14 +14,14 @@ export class Service{
   }
 
   updateOrderOption(orderOption: OrderOption): void {
-    const index = this.orderOptions.findIndex(option => option.id === orderOption.id);
+    const index = this.orderOptions.findIndex(option => option.Id === orderOption.Id);
     if (index !== -1) {
       this.orderOptions[index] = orderOption;
     }
   }
 
   deleteOrderOption(orderOption: OrderOption): void {
-    const index = this.orderOptions.findIndex(option => option.id === orderOption.id);
+    const index = this.orderOptions.findIndex(option => option.Id === orderOption.Id);
     if (index !== -1) {
       this.orderOptions.splice(index, 1);
     }

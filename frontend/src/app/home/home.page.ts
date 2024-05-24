@@ -29,7 +29,7 @@ import {Service} from "../../service";
                     <ion-title>Indhold: </ion-title>
                     <div style="border-top: 2px solid grey">
                     <div *ngFor="let option of order.OrderOptions">
-                        <ion-title>{{option.optionName}}</ion-title>
+                        <ion-title>{{option.OptionName}}</ion-title>
                     </div>
                 </div>
                 </div>

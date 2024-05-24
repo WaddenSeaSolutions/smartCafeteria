@@ -87,4 +87,14 @@ public class OrderDAL : IOrderDAL
 
         return null;
     }
+
+    public Order UpdateOrder(Order order)
+    {
+        var sql = $@"UPDATE cafeteria.order SET (done,payment) VALUES (@done, @active) WHERE id = @id RETURNING *";
+
+        using (var conn = _dataSource.OpenConnection())
+        {
+            return conn.QueryFirst<Order>(sql, new { done = order.Done, payment = order.Payment, id = order.Id });
+        }
+    }
 }

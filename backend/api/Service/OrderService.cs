@@ -21,8 +21,8 @@ public class OrderService : IOrderService
         return _orderDal.GetOrders();
     }
 
-    public Order UpdateOrder(OrderDTO? orderDto)
+    public Order UpdateOrder(Order order)
     {
-        throw new NotImplementedException();
+        return _orderDal.UpdateOrder(order);
     }
 }
