@@ -16,6 +16,7 @@ import {Service} from "../../service";
       <ion-button (click)="navigateToOrderOption()">Ændre salat muligheder</ion-button>
     </div>
 
+    <div style="overflow-y: auto">
     <ion-grid>
       <ion-row>
         <ion-col size="3" *ngFor="let order of this.service.orders" style="margin: 5px;">
@@ -36,6 +37,7 @@ import {Service} from "../../service";
         </ion-col>
       </ion-row>
     </ion-grid>
+    </div>
   `,
   styleUrls: ['home.page.scss'],
 })
