@@ -6,7 +6,7 @@ import {Service} from "../../service";
 @Component({
   selector: 'app-home',
   template: `
-    <ion-content style="--background: none; position: absolute;">
+    <ion-content style="--background: none; position: absolute; display: contents">
       <ion-card  *ngIf="checkIfAdmin">
         <ion-title>Modereringskontrol:</ion-title>
         <ion-button (click)="openCreatePersonnel();">Opret nyt personale</ion-button>
@@ -16,21 +16,27 @@ import {Service} from "../../service";
       <ion-button (click)="navigateToOrderOption()">Ændre salat muligheder</ion-button>
     </div>
 
-    <div style="display: flex; flex-wrap: wrap;">
-        <div *ngFor="let order of this.service.orders.slice().reverse()" style="flex: 0 0 calc(33.33% - 10px); margin: 5px;">
+    <div style="overflow-y: auto">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="3" *ngFor="let order of this.service.orders" style="margin: 5px;">
             <ion-card style="box-shadow: 0px 0px 10px rgba(0,0,0,0.5);" [ngStyle]="{'border': order.Done ? '1px solid green' : '1px solid red'}">
-                <div style="margin: 1%">
-                    <ion-title>{{order.Id}}</ion-title>
+                <div style="margin: 1%; display: contents">
+                    <ion-title>Odre Id: {{order.Id}}</ion-title>
                     <ion-title>{{order.Payment ? 'Betalt' : 'ikke Betalt'}}</ion-title>
                     <ion-title>Bestilt: {{order.Timestamp}}</ion-title>
-
-
+                    <br>
+                    <ion-title>Indhold: </ion-title>
+                    <div style="border-top: 2px solid grey">
                     <div *ngFor="let option of order.OrderOptions">
                         <ion-title>{{option.optionName}}</ion-title>
                     </div>
                 </div>
+                </div>
             </ion-card>
-        </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     </div>
   `,
   styleUrls: ['home.page.scss'],
@@ -42,12 +48,6 @@ export class HomePage {
   constructor(private router: Router, private websocketService: WebsocketService, public service: Service) {
     //Checks if the user is an admin role, if not the user should not be shown the admin
     this.checkIfAdmin = localStorage.getItem('role') === 'admin';
-
-    // Handle WebSocket messages
-    this.websocketService.socket.onmessage = (event) => {
-      const response = JSON.parse(event.data);
-      // Handle the response here
-    };
   }
 
   async openCreatePersonnel(){

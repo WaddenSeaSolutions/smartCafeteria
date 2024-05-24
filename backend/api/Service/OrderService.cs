@@ -20,4 +20,9 @@ public class OrderService : IOrderService
     {
         return _orderDal.GetOrders();
     }
+
+    public Order UpdateOrder(OrderDTO? orderDto)
+    {
+        throw new NotImplementedException();
+    }
 }

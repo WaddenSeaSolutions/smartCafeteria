@@ -12,20 +12,10 @@ var env = Environment.GetEnvironmentVariable("PG_CONN") ?? builder.Configuration
 
 var Uri = new Uri(env);
 
-var 
-    ProperlyFormattedConnectionString = string.Format(
-        "Server={0};Database={1};User Id={2};Password={3};Port={4};Pooling=true;MaxPoolSize=3",
-        Uri.Host,
-        Uri.AbsolutePath.Trim('/'),
-        Uri.UserInfo.Split(':')[0],
-        Uri.UserInfo.Split(':')[1],
-        Uri.Port > 0 ? Uri.Port : 5432);
-
-
 
 if (builder.Environment.IsDevelopment())
 {
-    builder.Services.AddNpgsqlDataSource(ProperlyFormattedConnectionString,
+    builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString,
         dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
 }
 if (builder.Environment.IsProduction())
@@ -70,6 +60,7 @@ builder.Services.AddSingleton<OrderOptionDeleteHandler>();
 //OrderFromCustomerHandler
 builder.Services.AddSingleton<OrderCreateHandler>();
 builder.Services.AddSingleton<OrderReadHandler>();
+builder.Services.AddSingleton<OrderUpdateHandler>();
 
 builder.Services.AddSingleton<MqttClientDAL>();
 builder.Services.AddSingleton<MqttClientService>();
@@ -95,6 +86,7 @@ IMessageHandler orderOptionUpdateHandler = builder.Services.BuildServiceProvider
 //Handlers for customer and personnel order handling
 IMessageHandler orderCreateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderCreateHandler>();
 IMessageHandler OrderReadHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderReadHandler>();
+IMessageHandler orderUpdateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderUpdateHandler>();
 
 
 //Authentication handler for all roles, admin, personnel and customer
@@ -112,7 +104,8 @@ Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMe
     {"orderOptionUpdate", orderOptionUpdateHandler},
     {"orderOptionDelete", orderOptionDeleteHandler},
     {"orderCreateHandler", orderCreateHandler},
-    {"orderReadHandler", OrderReadHandler}
+    {"orderReadHandler", OrderReadHandler},
+    {"orderUpdateHandler", orderUpdateHandler}
 };
 
 // Instantiate the WebSocketManager with the dictionary of handlers. Should now have handlers stored in the WebSocketManager
@@ -135,6 +128,4 @@ app.UseCors(options =>
 app.MapControllers();
 
 app.Services.GetService<MqttClientService>().CommunicateWithBroker();
-var str = app.Services.GetService<NpgsqlDataSource>().OpenConnection().QueryFirst<string>("select 'hello world'");
-Console.WriteLine(str);
 app.Run();
