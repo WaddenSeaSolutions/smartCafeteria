@@ -2,19 +2,19 @@ import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {WebsocketService} from "../../websocketService";
 import {Service} from "../../service";
+import {Order} from "../../interface";
+import {FormControl, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-home',
   template: `
     <ion-content style="--background: none; position: absolute; display: contents">
-      <ion-card  *ngIf="checkIfAdmin">
-        <ion-title>Modereringskontrol:</ion-title>
-        <ion-button (click)="openCreatePersonnel();">Opret nyt personale</ion-button>
-      </ion-card>
     </ion-content>
-    <div>
+    <ion-item>
+      <ion-button *ngIf="checkIfAdmin" (click)="openCreatePersonnel();">Opret nyt personale</ion-button>
       <ion-button (click)="navigateToOrderOption()">Ændre salat muligheder</ion-button>
-    </div>
+      <ion-button (click)="removeToken()">Log ud</ion-button>
+    </ion-item>
 
     <div style="overflow-y: auto">
     <ion-grid>
@@ -29,8 +29,13 @@ import {Service} from "../../service";
                     <ion-title>Indhold: </ion-title>
                     <div style="border-top: 2px solid grey">
                     <div *ngFor="let option of order.OrderOptions">
-                        <ion-title>{{option.optionName}}</ion-title>
+                        <ion-title>{{option.OptionName}}</ion-title>
                     </div>
+                      <div>
+                        <ion-item><ion-checkbox >Betalt?</ion-checkbox></ion-item>
+                        <ion-item><ion-checkbox >Færdig?</ion-checkbox></ion-item>
+                        <ion-item><ion-button (click)="updateOrder(order);" style="flex: auto">Opdater</ion-button></ion-item>
+                      </div>
                 </div>
                 </div>
             </ion-card>
@@ -42,11 +47,13 @@ import {Service} from "../../service";
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
   public checkIfAdmin: boolean;
 
+
   constructor(private router: Router, private websocketService: WebsocketService, public service: Service) {
-    //Checks if the user is an admin role, if not the user should not be shown the admin
+
+
+    //Checks if the user is an admin role, if not the user should not be shown the admin options
     this.checkIfAdmin = localStorage.getItem('role') === 'admin';
   }
 
@@ -61,4 +68,18 @@ export class HomePage {
   }
 
 
+  removeToken() { // Method for logging out
+    // Remove the token from the local storage
+    localStorage.removeItem('token');
+    this.router.navigate(['login-page']);
+  }
+
+  updateOrder(order: Order) {
+    this.websocketService.sendData({
+      "action": "orderUpdateHandler",
+      Id: order.Id,
+      Payment: order.Payment,
+      Done: order.Done
+    });
+  }
 }

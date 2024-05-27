@@ -28,8 +28,12 @@ public class OrderReadHandler : IMessageHandler
                 eventType = "ordersRead",
                 orders = orders
             };
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = null
+            };
 
-            string ordersJson = JsonSerializer.Serialize(response);
+            string ordersJson = JsonSerializer.Serialize(response, options);
             socket.Send(ordersJson);
         }
         else

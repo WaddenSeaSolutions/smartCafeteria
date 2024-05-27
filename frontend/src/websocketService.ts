@@ -60,6 +60,9 @@ export class WebsocketService {
 
   successfulLogin(data: any) {
     localStorage.setItem('token', data.token);
+    let payload = JSON.parse(atob(data.token.split(".")[1]))
+    //Store the role, only allows for visual admin controls
+    localStorage.setItem('role', payload.role)
     this.router.navigate(['home']);
   }
 

@@ -5,9 +5,9 @@ export interface Users{
 
 
 export interface OrderOption {
-  id: number;
-  optionName: string;
-  active: boolean;
+  Id: number;
+  OptionName: string;
+  Active: boolean;
 }
 
 export interface Order {

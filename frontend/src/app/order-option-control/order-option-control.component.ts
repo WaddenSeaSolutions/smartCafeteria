@@ -22,8 +22,8 @@ import {ModalController} from "@ionic/angular";
   <div *ngFor="let orderOption of this.service.orderOptions">
   <ion-card>
     <div style="margin: 1%">
-    <ion-title>{{orderOption.optionName}}</ion-title>
-    <ion-title *ngIf="orderOption.active ? 'Aktiv' : 'ikke aktiv'">Status: {{orderOption.active ? 'Aktiv' : 'ikke aktiv'}}</ion-title>
+    <ion-title>{{orderOption.OptionName}}</ion-title>
+    <ion-title *ngIf="orderOption.Active ? 'Aktiv' : 'ikke aktiv'">Status: {{orderOption.Active ? 'Aktiv' : 'ikke aktiv'}}</ion-title>
 
       <ion-item>
       <ion-button (click)="updateOrderOption(orderOption)">Opdater</ion-button>
@@ -64,7 +64,7 @@ export class OrderOptionControlComponent {
   deleteOrderOption(orderOption: OrderOption) {
     const deleteOrderOptionMessage = {
       action: 'orderOptionDelete',
-      Id: orderOption.id,
+      Id: orderOption.Id,
     };
     this.websocketService.sendData(deleteOrderOptionMessage);
   }

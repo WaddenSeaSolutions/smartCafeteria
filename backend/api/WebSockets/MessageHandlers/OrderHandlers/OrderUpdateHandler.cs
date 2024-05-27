@@ -17,16 +17,16 @@ public class OrderUpdateHandler : IMessageHandler
 
     public async Task HandleMessage(string message, IWebSocketConnection socket)
     {
-        // Deserialize the message into an order DTO
-        OrderDTO orderDto = JsonSerializer.Deserialize<OrderDTO>(message);
+        
+        Order order = JsonSerializer.Deserialize<Order>(message);
+        Console.WriteLine(order.Done);
+        Console.WriteLine(order.Payment);
 
         // Check if the user is authorized to update the order
         if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" ||
             WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
         {
-            // Update the order
-            Order updatedOrder = _orderService.UpdateOrder(orderDto);
-
+            Order updatedOrder = _orderService.UpdateOrder(order);
             // Create a response
             var response = new
             {
@@ -34,10 +34,8 @@ public class OrderUpdateHandler : IMessageHandler
                 order = updatedOrder
             };
 
-            // Serialize the response into a JSON string
             string orderJson = JsonSerializer.Serialize(response);
 
-            // Send the updated order to all relevant connections
             foreach (var connection in WebSocketManager._connectionMetadata)
             {
                 if (connection.Value.UserId == updatedOrder.UserId || connection.Value.IsAdmin || connection.Value.Role == "personnel")
