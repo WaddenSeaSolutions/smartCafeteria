@@ -14,6 +14,7 @@ import {Service} from "../../service";
     </ion-content>
     <div>
       <ion-button (click)="navigateToOrderOption()">Ændre salat muligheder</ion-button>
+      <ion-button (click)="removeToken()">Log ud</ion-button>
     </div>
 
     <div style="overflow-y: auto">
@@ -31,6 +32,11 @@ import {Service} from "../../service";
                     <div *ngFor="let option of order.OrderOptions">
                         <ion-title>{{option.OptionName}}</ion-title>
                     </div>
+                      <div>
+                        <ion-item><ion-checkbox>Betalt?</ion-checkbox></ion-item>
+                        <ion-item><ion-checkbox>Færdig?</ion-checkbox></ion-item>
+                        <ion-item><ion-button style="flex: auto">Opdater</ion-button></ion-item>
+                      </div>
                 </div>
                 </div>
             </ion-card>
@@ -42,11 +48,12 @@ import {Service} from "../../service";
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
   public checkIfAdmin: boolean;
 
   constructor(private router: Router, private websocketService: WebsocketService, public service: Service) {
-    //Checks if the user is an admin role, if not the user should not be shown the admin
+
+
+    //Checks if the user is an admin role, if not the user should not be shown the admin options
     this.checkIfAdmin = localStorage.getItem('role') === 'admin';
   }
 
@@ -61,4 +68,9 @@ export class HomePage {
   }
 
 
+  removeToken() {
+    // Remove the token from the local storage
+    localStorage.removeItem('token');
+    this.router.navigate(['login-page']);
+  }
 }
