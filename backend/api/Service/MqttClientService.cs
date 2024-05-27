@@ -136,7 +136,7 @@ public class MqttClientService
         await mqttClient.PublishAsync(pongMessage, CancellationToken.None);
         
         var insertionResult = _mqttClientDal.CreateNewOrderFromMqtt(order, selectedOrderOptions);
-        _mqttClientDal.AddContentToOrder(orderNumbers, insertionResult.Id);
+        
         
         var pongMessage2 = new MqttApplicationMessageBuilder()
             .WithTopic("Cafeteria/OrderOptions")
