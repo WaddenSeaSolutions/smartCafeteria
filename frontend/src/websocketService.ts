@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {Service} from "./service";
 import {ToastController} from "@ionic/angular";
 import {Router} from "@angular/router";
+import {Environment} from "@angular/cli/lib/config/workspace-schema";
+import {environment} from "./environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class WebsocketService {
   public socket: WebSocket;
 
   constructor(public service: Service, public toast: ToastController, public router: Router) {
-    this.socket = new WebSocket('ws://smartcafeteriasocket-58246761d167.herokuapp.com/');
+    this.socket = new WebSocket(environment.baseUrl);
     this.handleEventsEmittedByTheServer();
 
     this.socket.onopen = () => {
