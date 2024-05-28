@@ -6,5 +6,6 @@ public interface IOrderService
 {
     Order CreateOrder(OrderDTO orderDto);
     List<Order> GetOrders();
-    Order UpdateOrder(Order order);
+    Order UpdateDoneOnOrder(UpdateDoneOnOrderDTO order);
+    Order UpdatePaymentOnOrder(UpdatePaymentOnOrderDTO updatePaymentOnOrderDto);
 }

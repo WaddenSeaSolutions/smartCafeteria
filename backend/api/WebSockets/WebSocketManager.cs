@@ -36,6 +36,10 @@ public class WebSocketManager
                 var messageType = jsonDocument.RootElement.GetProperty("action").GetString();
                 HandleMessage(messageType, message, socket);
             };
+            socket.OnClose = () =>
+            {
+                _connectionMetadata.Remove(socket.ConnectionInfo.Id);
+            };
         });
     }
 

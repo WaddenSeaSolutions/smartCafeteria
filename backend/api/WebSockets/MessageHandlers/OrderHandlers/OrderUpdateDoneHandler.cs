@@ -6,11 +6,11 @@ using backend.Interface;
 
 namespace backend.WebSockets.MessageHandlers.OrderHandlers;
 
-public class OrderUpdateHandler : IMessageHandler
+public class OrderUpdateDoneHandler : IMessageHandler
 {
     private readonly IOrderService _orderService;
 
-    public OrderUpdateHandler(IOrderService orderService)
+    public OrderUpdateDoneHandler(IOrderService orderService)
     {
         _orderService = orderService;
     }
@@ -18,15 +18,14 @@ public class OrderUpdateHandler : IMessageHandler
     public async Task HandleMessage(string message, IWebSocketConnection socket)
     {
         
-        Order order = JsonSerializer.Deserialize<Order>(message);
-        Console.WriteLine(order.Done);
-        Console.WriteLine(order.Payment);
+        UpdateDoneOnOrderDTO updateDoneOnOrderDto = JsonSerializer.Deserialize<UpdateDoneOnOrderDTO>(message);
 
+        
         // Check if the user is authorized to update the order
         if (WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].Role == "personnel" ||
             WebSocketManager._connectionMetadata[socket.ConnectionInfo.Id].IsAdmin)
         {
-            Order updatedOrder = _orderService.UpdateOrder(order);
+            Order updatedOrder = _orderService.UpdateDoneOnOrder(updateDoneOnOrderDto);
             // Create a response
             var response = new
             {

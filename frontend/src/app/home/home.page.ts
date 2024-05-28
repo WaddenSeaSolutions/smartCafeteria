@@ -32,8 +32,8 @@ import {FormControl, Validators} from "@angular/forms";
                         <ion-title>{{option.OptionName}}</ion-title>
                     </div>
                       <div>
-                        <ion-item><ion-checkbox (click)="updateOrderPayment(order.Payment)" [checked]="order.Payment">Betalt?</ion-checkbox></ion-item>
-                        <ion-item><ion-checkbox (click)="updateOrderDone(order.Done)" [checked]="order.Done">Færdig?</ion-checkbox></ion-item>
+                        <ion-item><ion-checkbox (click)="updateOrderPayment(order)" [checked]="order.Payment">Betalt?</ion-checkbox></ion-item>
+                        <ion-item><ion-checkbox (click)="updateOrderDone(order)" [checked]="order.Done">Færdig?</ion-checkbox></ion-item>
                       </div>
                 </div>
                 </div>
@@ -73,17 +73,19 @@ export class HomePage {
     this.router.navigate(['login-page']);
   }
 
-  updateOrderPayment(payment: boolean) {
+  updateOrderPayment(order: Order) {
     this.websocketService.sendData({
-      "action": "orderUpdateHandler",
-      "Payment": payment
+      "action": "orderUpdatePaymentHandler",
+      "Id": order.Id,
+      "Payment": !order.Payment, // Negate the current state
     });
   }
 
-  updateOrderDone(done: boolean) {
+  updateOrderDone(order: Order) {
     this.websocketService.sendData({
-      "action": "orderUpdateHandler",
-      "Done": done
+      "action": "orderUpdateDoneHandler",
+      "Id": order.Id,
+      "Done": !order.Done, // Negate the current state
     });
-    }
+  }
 }
