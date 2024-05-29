@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {Service} from "./service";
 import {ToastController} from "@ionic/angular";
 import {Router} from "@angular/router";
-import {environment} from "./environments/environment.prod";
+import {environment} from "./environments/environment";
+import {delay} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,28 @@ export class WebsocketService {
     this.handleEventsEmittedByTheServer();
 
     this.socket.onopen = () => {
-    this.authenticate();
-    this.sendData({action: 'orderOptionRead'});
-    this.sendData({action: 'orderReadHandler'})
+      setTimeout(() => {
+        this.authenticate();
+      }, 10000); // Wait for 10 seconds before sending the messages
     }
+
+    this.socket.onclose = () => {
+      this.reconnect();
+    }
+  }
+
+  reconnect() {
+    setTimeout(() => {
+      this.socket = new WebSocket(environment.baseUrl);
+      console.log('Reconnecting...');
+      this.socket.onopen = () => {
+        this.authenticate();
+
+      }
+      this.socket.onclose = () => {
+        this.reconnect();
+      }
+    }, 1000);
   }
 
   sendData(data: any): void {
@@ -94,6 +113,8 @@ async errorResponse(data: any) {
         token: token
       };
       this.sendData(authMessage);
+      this.sendData({action: 'orderOptionRead'});
+      this.sendData({action: 'orderReadHandler'})
     }
     else {
       this.router.navigate(['login-page']);
