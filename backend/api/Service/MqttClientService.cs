@@ -48,7 +48,7 @@ public class MqttClientService
         
         var mqttClientOptions = new MqttClientOptionsBuilder()
             .WithTcpServer("mqtt.flespi.io", 1883) 
-            .WithCredentials("FlespiToken H2AG1ypT28ZX4gUZgktOb38QbqbQZvmIR37AFAxNhOyZUCO7u2xR140gBOjoCXSY", "")
+            .WithCredentials(Environment.GetEnvironmentVariable("FLESPI_TOKEN"), "")
             .WithProtocolVersion(MqttProtocolVersion.V500) 
             .Build();
 

@@ -22,3 +22,4 @@ jobs:
         env:
           HD_JWT_KEY: ${{secrets.JWT_KEY}}
           HD_PG_CONN: ${{secrets.PG_CONN}}
+          HD_FLESPI_TOKEN: ${{secrets.FLESPI_TOKEN}}
