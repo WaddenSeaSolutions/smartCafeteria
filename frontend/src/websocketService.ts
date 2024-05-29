@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {Service} from "./service";
 import {ToastController} from "@ionic/angular";
 import {Router} from "@angular/router";
-import {Environment} from "@angular/cli/lib/config/workspace-schema";
-import {environment} from "./environments/environment";
+import {environment} from "./environments/environment.prod";
 
 @Injectable({
   providedIn: 'root'
