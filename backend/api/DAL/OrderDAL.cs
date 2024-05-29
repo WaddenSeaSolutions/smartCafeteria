@@ -63,7 +63,7 @@ public class OrderDAL : IOrderDAL
     {
         var sql = $@"SELECT * FROM cafeteria.order WHERE timestamp::date = current_date";
         var sqlFetchOrderOptions = $@"SELECT * FROM cafeteria.orderoption o
-    WHERE o.id IN (SELECT uo.orderoptionid FROM cafeteria.userorder uo WHERE uo.orderid = @orderid AND uo.orderoptionid = o.id) order by id asc";
+    WHERE o.id IN (SELECT uo.orderoptionid FROM cafeteria.userorder uo WHERE uo.orderid = @orderid AND uo.orderoptionid = o.id) order by id desc";
 
         using (var conn = _dataSource.OpenConnection())
         {
