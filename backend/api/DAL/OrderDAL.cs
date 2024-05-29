@@ -63,7 +63,7 @@ public class OrderDAL : IOrderDAL
     {
         var sql = $@"SELECT * FROM cafeteria.order WHERE timestamp::date = current_date";
         var sqlFetchOrderOptions = $@"SELECT * FROM cafeteria.orderoption o
-    WHERE o.id IN (SELECT uo.orderoptionid FROM cafeteria.userorder uo WHERE uo.orderid = @orderid AND uo.orderoptionid = o.id)";
+    WHERE o.id IN (SELECT uo.orderoptionid FROM cafeteria.userorder uo WHERE uo.orderid = @orderid AND uo.orderoptionid = o.id) order by id asc";
 
         using (var conn = _dataSource.OpenConnection())
         {
@@ -88,22 +88,27 @@ public class OrderDAL : IOrderDAL
         return null;
     }
 
-    public Order UpdateOrder(Order order)
+    public Order UpdateDoneOnOrder(UpdateDoneOnOrderDTO order)
     {
-        var sql = $@"UPDATE cafeteria.order SET done = @done, payment = @payment WHERE id = @id RETURNING *";
+        var sql = $@"UPDATE cafeteria.order SET done = @done WHERE id = @id RETURNING *";
 
-        try
-        {
+  
             using (var conn = _dataSource.OpenConnection())
             {
-                return conn.QueryFirst<Order>(sql, new { done = order.Done, payment = order.Payment, id = order.Id });
+                return conn.QueryFirst<Order>(sql, new { done = order.Done, id = order.Id });
             }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+ 
 
+    }
+
+    public Order UpdatePaymentOnOrder(UpdatePaymentOnOrderDTO updatePaymentOnOrderDto)
+    {
+        var sql = $@"UPDATE cafeteria.order SET payment = @payment WHERE id = @id RETURNING *";
+
+        using (var conn = _dataSource.OpenConnection())
+        {
+            return conn.QueryFirst<Order>(sql,
+                new { payment = updatePaymentOnOrderDto.Payment, id = updatePaymentOnOrderDto.Id });
+        }
     }
 }

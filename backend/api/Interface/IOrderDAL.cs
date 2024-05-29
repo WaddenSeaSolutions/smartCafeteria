@@ -6,5 +6,6 @@ public interface IOrderDAL
 {
     Order CreateOrder(OrderDTO orderDto);
     List<Order> GetOrders();
-    Order UpdateOrder(Order orderDto);
+    Order UpdateDoneOnOrder(UpdateDoneOnOrderDTO orderDto);
+    Order UpdatePaymentOnOrder(UpdatePaymentOnOrderDTO updatePaymentOnOrderDto);
 }

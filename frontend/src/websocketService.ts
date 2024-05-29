@@ -39,8 +39,19 @@ export class WebsocketService {
     }
   }
 
+  orderUpdated(data: any): void {
+    console.log(data.order);
+    const updatedOrder = data.order;
+    // Find the index of the order to be updated
+    const index = this.service.orders.findIndex(order => order.Id === updatedOrder.Id);
+    // If the order is found, update its boolean fields
+    if (index !== -1) {
+      this.service.orders[index].Payment = updatedOrder.Payment;
+      this.service.orders[index].Done = updatedOrder.Done;
+    }
+  }
+
     ordersRead(data: any): void {
-    console.log(data.orderOptions);
     this.service.orders = data.orders;
   }
 

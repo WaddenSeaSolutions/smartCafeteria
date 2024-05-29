@@ -21,8 +21,13 @@ public class OrderService : IOrderService
         return _orderDal.GetOrders();
     }
 
-    public Order UpdateOrder(Order order)
+    public Order UpdateDoneOnOrder(UpdateDoneOnOrderDTO updateInformation)
     {
-        return _orderDal.UpdateOrder(order);
+        return _orderDal.UpdateDoneOnOrder(updateInformation);
+    }
+
+    public Order UpdatePaymentOnOrder(UpdatePaymentOnOrderDTO updatePaymentOnOrderDto)
+    {
+        return _orderDal.UpdatePaymentOnOrder(updatePaymentOnOrderDto);
     }
 }

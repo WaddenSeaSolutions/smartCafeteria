@@ -32,9 +32,30 @@ public class WebSocketManager
             
             socket.OnMessage = message =>
             {
-                var jsonDocument = JsonDocument.Parse(message);
-                var messageType = jsonDocument.RootElement.GetProperty("action").GetString();
-                HandleMessage(messageType, message, socket);
+                try
+                {
+                      var jsonDocument = JsonDocument.Parse(message);
+                                    var messageType = jsonDocument.RootElement.GetProperty("action").GetString();
+                                    HandleMessage(messageType, message, socket);
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.InnerException);
+                    Console.WriteLine(e.StackTrace);
+                    socket.Send(JsonSerializer.Serialize(new { message = e.Message }));
+                }
+              
+            };
+            socket.OnClose = () =>
+            {
+                _connectionMetadata.Remove(socket.ConnectionInfo.Id);
+            };
+            socket.OnError = (e) =>
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                Console.WriteLine(e.StackTrace);
+                socket.Send(JsonSerializer.Serialize(new { message = e.Message }));
             };
         });
     }

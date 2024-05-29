@@ -60,7 +60,8 @@ builder.Services.AddSingleton<OrderOptionDeleteHandler>();
 //OrderFromCustomerHandler
 builder.Services.AddSingleton<OrderCreateHandler>();
 builder.Services.AddSingleton<OrderReadHandler>();
-builder.Services.AddSingleton<OrderUpdateHandler>();
+builder.Services.AddSingleton<OrderUpdateDoneHandler>();
+builder.Services.AddSingleton<OrderUpdatePaymentHandler>();
 
 builder.Services.AddSingleton<MqttClientDAL>();
 builder.Services.AddSingleton<MqttClientService>();
@@ -86,8 +87,8 @@ IMessageHandler orderOptionUpdateHandler = builder.Services.BuildServiceProvider
 //Handlers for customer and personnel order handling
 IMessageHandler orderCreateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderCreateHandler>();
 IMessageHandler OrderReadHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderReadHandler>();
-IMessageHandler orderUpdateHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderUpdateHandler>();
-
+IMessageHandler orderUpdateDoneHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderUpdateDoneHandler>();
+IMessageHandler orderUpdatePaymentHandler = builder.Services.BuildServiceProvider().GetRequiredService<OrderUpdatePaymentHandler>();
 
 //Authentication handler for all roles, admin, personnel and customer
 IMessageHandler authenticationHandler = builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationHandler>();
@@ -105,7 +106,8 @@ Dictionary<string, IMessageHandler> messageHandlers = new Dictionary<string, IMe
     {"orderOptionDelete", orderOptionDeleteHandler},
     {"orderCreateHandler", orderCreateHandler},
     {"orderReadHandler", OrderReadHandler},
-    {"orderUpdateHandler", orderUpdateHandler}
+    {"orderUpdateDoneHandler", orderUpdateDoneHandler},
+    {"orderUpdatePaymentHandler", orderUpdatePaymentHandler}
 };
 
 // Instantiate the WebSocketManager with the dictionary of handlers. Should now have handlers stored in the WebSocketManager
