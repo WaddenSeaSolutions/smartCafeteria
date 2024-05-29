@@ -2,7 +2,7 @@
 
 public class OrderDTO
 {
-    public DateTimeOffset Timestamp { get; set; }
+    public DateTime Timestamp { get; set; }
     
     public Boolean Payment { get; set; }
     
