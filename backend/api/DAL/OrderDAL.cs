@@ -92,18 +92,12 @@ public class OrderDAL : IOrderDAL
     {
         var sql = $@"UPDATE cafeteria.order SET done = @done WHERE id = @id RETURNING *";
 
-        try
-        {
+  
             using (var conn = _dataSource.OpenConnection())
             {
                 return conn.QueryFirst<Order>(sql, new { done = order.Done, id = order.Id });
             }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+ 
 
     }
 
@@ -111,17 +105,10 @@ public class OrderDAL : IOrderDAL
     {
         var sql = $@"UPDATE cafeteria.order SET payment = @payment WHERE id = @id RETURNING *";
 
-        try
+        using (var conn = _dataSource.OpenConnection())
         {
-            using (var conn = _dataSource.OpenConnection())
-            {
-                return conn.QueryFirst<Order>(sql, new { payment = updatePaymentOnOrderDto.Payment, id = updatePaymentOnOrderDto.Id });
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
+            return conn.QueryFirst<Order>(sql,
+                new { payment = updatePaymentOnOrderDto.Payment, id = updatePaymentOnOrderDto.Id });
         }
     }
 }

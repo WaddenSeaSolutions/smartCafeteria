@@ -32,8 +32,8 @@ import {FormControl, Validators} from "@angular/forms";
                         <ion-title>{{option.OptionName}}</ion-title>
                     </div>
                       <div>
-                        <ion-item><ion-checkbox (click)="updateOrderPayment(order)" [checked]="order.Payment">Betalt?</ion-checkbox></ion-item>
-                        <ion-item><ion-checkbox (click)="updateOrderDone(order)" [checked]="order.Done">Færdig?</ion-checkbox></ion-item>
+                        <ion-item><ion-checkbox (click)="updateOrderPayment(order, $event)" (ionChange)="logBox($event, order)" [checked]="order.Payment">Betalt?</ion-checkbox></ion-item>
+                        <ion-item><ion-checkbox (click)="updateOrderDone(order, $event)" (ionChange)="logBox($event, order)" [checked]="order.Done">Færdig?</ion-checkbox></ion-item>
                       </div>
                 </div>
                 </div>
@@ -73,7 +73,8 @@ export class HomePage {
     this.router.navigate(['login-page']);
   }
 
-  updateOrderPayment(order: Order) {
+  updateOrderPayment(order: Order, event: any) {
+    console.log(event)
     this.websocketService.sendData({
       "action": "orderUpdatePaymentHandler",
       "Id": order.Id,
@@ -81,11 +82,17 @@ export class HomePage {
     });
   }
 
-  updateOrderDone(order: Order) {
+  updateOrderDone(order: Order, event: any) {
+    console.log(event)
     this.websocketService.sendData({
       "action": "orderUpdateDoneHandler",
       "Id": order.Id,
       "Done": !order.Done, // Negate the current state
     });
+  }
+
+  logBox(e: any, obj: any) {
+    console.log(e)
+    console.log(obj)
   }
 }
